@@ -1,0 +1,1068 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-03-02 11:39+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Template/CmsContent/__add.ctp:3
+msgid "Add Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__add.ctp:7
+#: Template/CmsContent/__edit.ctp:7
+#: Template/CmsContent/__index.ctp:7
+#: Template/CmsContent/__view.ctp:6
+#: Template/CmsContentMeta/add.ctp:7
+#: Template/CmsContentMeta/edit.ctp:7
+#: Template/CmsContentMeta/index.ctp:7
+#: Template/CmsContentMeta/view.ctp:6
+#: Template/CmsPermission/add.ctp:7
+#: Template/CmsPermission/edit.ctp:7
+#: Template/CmsPermission/index.ctp:7
+#: Template/CmsPermission/view.ctp:6
+#: Template/CmsTerm/add.ctp:7
+#: Template/CmsTerm/edit.ctp:7
+#: Template/CmsTerm/index.ctp:7
+#: Template/CmsTerm/view.ctp:6
+#: Template/CmsTermRelation/add.ctp:7
+#: Template/CmsTermRelation/edit.ctp:7
+#: Template/CmsTermRelation/index.ctp:7
+#: Template/CmsTermRelation/view.ctp:6
+#: Template/CmsTermTaxonomy/add.ctp:7
+#: Template/CmsTermTaxonomy/edit.ctp:7
+#: Template/CmsTermTaxonomy/index.ctp:7
+#: Template/CmsTermTaxonomy/view.ctp:6
+#: Template/News/index.ctp:7
+#: Template/Page/index.ctp:7
+msgid "Navigation Bar:"
+msgstr ""
+
+#: Template/CmsContent/__add.ctp:8;14
+#: Template/CmsContent/__edit.ctp:8;21
+#: Template/CmsContent/__view.ctp:7;22
+#: Template/CmsContentMeta/add.ctp:16
+#: Template/CmsContentMeta/edit.ctp:25
+#: Template/CmsContentMeta/view.ctp:24
+#: Template/CmsPermission/add.ctp:19
+#: Template/CmsPermission/edit.ctp:28
+#: Template/CmsPermission/view.ctp:27
+#: Template/CmsTermRelation/add.ctp:19
+#: Template/CmsTermRelation/edit.ctp:26
+#: Template/CmsTermRelation/view.ctp:25
+msgid "List Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__add.ctp:11
+#: Template/CmsContent/__edit.ctp:11
+#: Template/CmsContent/__index.ctp:11;43
+#: Template/CmsContent/__view.ctp:10;144;194
+#: Template/CmsContentMeta/add.ctp:11
+#: Template/CmsContentMeta/edit.ctp:11
+#: Template/CmsContentMeta/index.ctp:11;42
+#: Template/CmsContentMeta/view.ctp:10
+#: Template/CmsPermission/add.ctp:11
+#: Template/CmsPermission/edit.ctp:11
+#: Template/CmsPermission/index.ctp:11;43
+#: Template/CmsPermission/view.ctp:10
+#: Template/CmsTerm/add.ctp:11
+#: Template/CmsTerm/edit.ctp:11
+#: Template/CmsTerm/index.ctp:11;38
+#: Template/CmsTerm/view.ctp:10;100
+#: Template/CmsTermRelation/add.ctp:11
+#: Template/CmsTermRelation/edit.ctp:11
+#: Template/CmsTermRelation/index.ctp:11;40
+#: Template/CmsTermRelation/view.ctp:10
+#: Template/CmsTermTaxonomy/add.ctp:11
+#: Template/CmsTermTaxonomy/edit.ctp:11
+#: Template/CmsTermTaxonomy/index.ctp:11;41
+#: Template/CmsTermTaxonomy/view.ctp:10;111
+#: Template/News/index.ctp:33
+#: Template/Page/index.ctp:33
+#: Template/Permission/index.ctp:55
+msgid "Actions"
+msgstr ""
+
+#: Template/CmsContent/__add.ctp:16
+#: Template/CmsContent/__edit.ctp:23
+#: Template/CmsContent/__view.ctp:24
+#: Template/CmsPermission/add.ctp:8;14
+#: Template/CmsPermission/edit.ctp:8;23
+#: Template/CmsPermission/view.ctp:7;22
+#: Template/CmsTerm/add.ctp:16
+#: Template/CmsTerm/edit.ctp:25
+#: Template/CmsTerm/view.ctp:24
+msgid "List Cms Permission"
+msgstr ""
+
+#: Template/CmsContent/__add.ctp:17
+#: Template/CmsContent/__edit.ctp:24
+#: Template/CmsContent/__index.ctp:15
+#: Template/CmsContent/__view.ctp:25
+#: Template/CmsPermission/index.ctp:8;14
+#: Template/CmsTerm/add.ctp:17
+#: Template/CmsTerm/edit.ctp:26
+#: Template/CmsTerm/index.ctp:15
+#: Template/CmsTerm/view.ctp:25
+msgid "New Cms Permission"
+msgstr ""
+
+#: Template/CmsContent/__add.ctp:19
+#: Template/CmsContent/__edit.ctp:26
+#: Template/CmsContent/__view.ctp:27
+#: Template/CmsTermRelation/add.ctp:8;14
+#: Template/CmsTermRelation/edit.ctp:8;21
+#: Template/CmsTermRelation/view.ctp:7;20
+#: Template/CmsTermTaxonomy/add.ctp:19
+#: Template/CmsTermTaxonomy/edit.ctp:26
+#: Template/CmsTermTaxonomy/view.ctp:25
+msgid "List Cms Term Relation"
+msgstr ""
+
+#: Template/CmsContent/__add.ctp:20
+#: Template/CmsContent/__edit.ctp:27
+#: Template/CmsContent/__index.ctp:16
+#: Template/CmsContent/__view.ctp:28
+#: Template/CmsTermRelation/index.ctp:8;14
+#: Template/CmsTermTaxonomy/add.ctp:20
+#: Template/CmsTermTaxonomy/edit.ctp:27
+#: Template/CmsTermTaxonomy/index.ctp:16
+#: Template/CmsTermTaxonomy/view.ctp:26
+msgid "New Cms Term Relation"
+msgstr ""
+
+#: Template/CmsContent/__edit.ctp:3
+#: Template/CmsContent/__view.ctp:13
+msgid "Edit Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__edit.ctp:14
+msgid "View Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__edit.ctp:17
+#: Template/CmsContent/__view.ctp:16
+msgid "Delete Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__edit.ctp:17
+#: Template/CmsContent/__index.ctp:60
+#: Template/CmsContent/__view.ctp:18;163;211
+#: Template/CmsContentMeta/edit.ctp:19
+#: Template/CmsContentMeta/index.ctp:61
+#: Template/CmsContentMeta/view.ctp:18
+#: Template/CmsPermission/edit.ctp:19
+#: Template/CmsPermission/index.ctp:64
+#: Template/CmsPermission/view.ctp:18
+#: Template/CmsTerm/edit.ctp:19
+#: Template/CmsTerm/index.ctp:51
+#: Template/CmsTerm/view.ctp:18;119
+#: Template/CmsTermRelation/edit.ctp:17
+#: Template/CmsTermRelation/index.ctp:58
+#: Template/CmsTermRelation/view.ctp:16
+#: Template/CmsTermTaxonomy/edit.ctp:17
+#: Template/CmsTermTaxonomy/index.ctp:58
+#: Template/CmsTermTaxonomy/view.ctp:16;128
+#: Template/News/index.ctp:62
+#: Template/Page/index.ctp:63
+#: Template/Permission/index.ctp:73
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:3
+msgid "List of Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:8;14
+#: Template/CmsContentMeta/add.ctp:17
+#: Template/CmsContentMeta/edit.ctp:26
+#: Template/CmsContentMeta/index.ctp:15
+#: Template/CmsContentMeta/view.ctp:25
+#: Template/CmsPermission/add.ctp:20
+#: Template/CmsPermission/edit.ctp:29
+#: Template/CmsPermission/index.ctp:16
+#: Template/CmsPermission/view.ctp:28
+#: Template/CmsTermRelation/add.ctp:20
+#: Template/CmsTermRelation/edit.ctp:27
+#: Template/CmsTermRelation/index.ctp:16
+#: Template/CmsTermRelation/view.ctp:26
+msgid "New Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:36
+#: Template/CmsContent/__view.ctp:60;134;186
+#: Template/CmsContentMeta/index.ctp:35
+#: Template/CmsContentMeta/view.ctp:41
+#: Template/CmsPermission/index.ctp:36
+#: Template/CmsPermission/view.ctp:43
+#: Template/CmsTerm/index.ctp:35
+#: Template/CmsTerm/view.ctp:42;90
+#: Template/CmsTermRelation/index.ctp:36
+#: Template/CmsTermRelation/view.ctp:41
+#: Template/CmsTermTaxonomy/index.ctp:36
+#: Template/CmsTermTaxonomy/view.ctp:42;103
+#: Template/Content/dashboard.ctp:118;170
+#: Template/News/index.ctp:26
+#: Template/Page/index.ctp:26
+msgid "Id"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:37
+#: Template/CmsContent/__view.ctp:63
+#: Template/CmsTermTaxonomy/view.ctp:45
+msgid "Parent"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:38
+#: Template/CmsContent/__view.ctp:37
+#: Template/CmsContent/block_add_related_page.ctp:9
+#: Template/CmsContent/block_edit_related_attached.ctp:59
+#: Template/CmsContent/block_edit_related_image.ctp:59
+#: Template/CmsContent/block_edit_related_page.ctp:59
+#: Template/CmsTerm/index.ctp:36
+#: Template/CmsTerm/view.ctp:34
+msgid "Name"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:39
+#: Template/CmsContent/__view.ctp:40
+msgid "Content Title"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:40
+#: Template/CmsContent/__view.ctp:80
+msgid "Content Deadline"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:41
+#: Template/CmsContent/__view.ctp:43
+msgid "Content Password"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:42
+#: Template/CmsContent/__view.ctp:46
+msgid "Content Status"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:58
+#: Template/CmsContent/__view.ctp:161;209
+#: Template/CmsContentMeta/index.ctp:59
+#: Template/CmsPermission/index.ctp:62
+#: Template/CmsTerm/index.ctp:49
+#: Template/CmsTerm/view.ctp:117
+#: Template/CmsTermRelation/index.ctp:56
+#: Template/CmsTermTaxonomy/index.ctp:56
+#: Template/CmsTermTaxonomy/view.ctp:126
+#: Template/News/index.ctp:60
+#: Template/Page/index.ctp:61
+#: Template/Permission/index.ctp:71
+msgid "View"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:59
+#: Template/CmsContent/__view.ctp:162;210
+#: Template/CmsContentMeta/index.ctp:60
+#: Template/CmsPermission/index.ctp:63
+#: Template/CmsTerm/index.ctp:50
+#: Template/CmsTerm/view.ctp:118
+#: Template/CmsTermRelation/index.ctp:57
+#: Template/CmsTermTaxonomy/index.ctp:57
+#: Template/CmsTermTaxonomy/view.ctp:127
+#: Template/Content/dashboard.ctp:140;192
+#: Template/News/index.ctp:61
+#: Template/Page/index.ctp:62
+#: Template/Permission/index.ctp:72
+msgid "Edit"
+msgstr ""
+
+#: Template/CmsContent/__index.ctp:60
+#: Template/CmsContent/__view.ctp:163;211
+#: Template/CmsContentMeta/index.ctp:61
+#: Template/CmsPermission/index.ctp:64
+#: Template/CmsTerm/index.ctp:51
+#: Template/CmsTerm/view.ctp:119
+#: Template/CmsTermRelation/index.ctp:58
+#: Template/CmsTermTaxonomy/index.ctp:58
+#: Template/CmsTermTaxonomy/view.ctp:128
+#: Template/News/edit.ctp:446;498;550
+#: Template/News/index.ctp:62
+#: Template/Page/edit.ctp:439;536;588;640
+#: Template/Page/index.ctp:63
+#: Template/Permission/index.ctp:73
+msgid "Delete"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:2
+msgid "Details of Cms Content"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:49
+msgid "Content Path"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:52
+msgid "Content Type"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:55
+msgid "Content Mime Type"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:66
+#: Template/News/index.ctp:30
+#: Template/Page/index.ctp:30
+msgid "Author"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:69;189
+#: Template/CmsTermRelation/index.ctp:39
+#: Template/CmsTermRelation/view.ctp:44
+#: Template/CmsTermTaxonomy/view.ctp:106
+msgid "Order"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:72;141;191
+#: Template/CmsContentMeta/index.ctp:40
+#: Template/CmsContentMeta/view.ctp:47
+#: Template/CmsPermission/view.ctp:52
+#: Template/CmsTerm/view.ctp:45;97
+#: Template/CmsTermRelation/view.ctp:47
+#: Template/CmsTermTaxonomy/view.ctp:51;108
+msgid "Created User"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:75;143;193
+#: Template/CmsContentMeta/view.ctp:50
+#: Template/CmsPermission/view.ctp:55
+#: Template/CmsTerm/view.ctp:48;99
+#: Template/CmsTermRelation/view.ctp:50
+#: Template/CmsTermTaxonomy/view.ctp:54;110
+msgid "Modified User"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:83
+#: Template/CmsContent/block_edit_related_attached.ctp:66
+#: Template/CmsContent/block_edit_related_image.ctp:66
+#: Template/CmsContent/block_edit_related_page.ctp:66
+msgid "Publish Start"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:86
+#: Template/CmsContent/block_edit_related_attached.ctp:80
+#: Template/CmsContent/block_edit_related_image.ctp:80
+#: Template/CmsContent/block_edit_related_page.ctp:80
+msgid "Publish End"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:89;140;190
+#: Template/CmsContentMeta/index.ctp:39
+#: Template/CmsContentMeta/view.ctp:55
+#: Template/CmsPermission/index.ctp:42
+#: Template/CmsPermission/view.ctp:60
+#: Template/CmsTerm/view.ctp:53;96
+#: Template/CmsTermRelation/view.ctp:55
+#: Template/CmsTermTaxonomy/view.ctp:59;107
+msgid "Created"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:92;142;192
+#: Template/CmsContentMeta/index.ctp:41
+#: Template/CmsContentMeta/view.ctp:58
+#: Template/CmsPermission/view.ctp:63
+#: Template/CmsTerm/view.ctp:56;98
+#: Template/CmsTermRelation/view.ctp:58
+#: Template/CmsTermTaxonomy/view.ctp:62;109
+#: Template/News/index.ctp:32
+#: Template/Page/index.ctp:32
+msgid "Modified"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:100
+msgid "Content Description"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:107
+msgid "Content Excerpt"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:112
+#: Template/CmsContentMeta/view.ctp:71
+#: Template/CmsPermission/view.ctp:74
+#: Template/CmsTerm/view.ctp:69
+#: Template/CmsTermRelation/view.ctp:64
+#: Template/CmsTermTaxonomy/view.ctp:82
+msgid "Related"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:116
+#: Template/CmsTerm/view.ctp:73
+msgid "Related CmsPermission"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:117
+#: Template/CmsTermTaxonomy/view.ctp:86
+msgid "Related CmsTermRelation"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:135
+#: Template/CmsPermission/index.ctp:37
+#: Template/CmsTerm/view.ctp:91
+#: Template/Permission/index.ctp:50
+msgid "Cms Term Id"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:136;188
+#: Template/CmsContentMeta/index.ctp:36
+#: Template/CmsPermission/index.ctp:38
+#: Template/CmsTerm/view.ctp:92
+#: Template/CmsTermTaxonomy/view.ctp:105
+#: Template/Permission/index.ctp:51
+msgid "Cms Content Id"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:137
+#: Template/CmsPermission/index.ctp:39
+#: Template/CmsPermission/view.ctp:46
+#: Template/CmsTerm/view.ctp:93
+#: Template/Permission/index.ctp:53
+msgid "Sys User"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:138
+#: Template/CmsPermission/index.ctp:40
+#: Template/CmsPermission/view.ctp:49
+#: Template/CmsTerm/view.ctp:94
+#: Template/Permission/index.ctp:52
+msgid "Sys Role"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:139
+#: Template/CmsPermission/index.ctp:41
+#: Template/CmsPermission/view.ctp:68
+#: Template/CmsTerm/view.ctp:95
+#: Template/Permission/index.ctp:54
+msgid "Allow"
+msgstr ""
+
+#: Template/CmsContent/__view.ctp:187
+#: Template/CmsTermTaxonomy/view.ctp:104
+msgid "Cms Term Taxonomy Id"
+msgstr ""
+
+#: Template/CmsContent/block_add_related_attached.ctp:5
+#: Template/CmsContent/block_add_related_image.ctp:5
+#: Template/CmsContent/block_add_related_page.ctp:5
+#: Template/CmsContent/block_edit_related_attached.ctp:61
+#: Template/CmsContent/block_edit_related_image.ctp:61
+#: Template/CmsContent/block_edit_related_page.ctp:61
+#: Template/CmsTerm/index.ctp:37
+#: Template/CmsTerm/view.ctp:37
+#: Template/CmsTermTaxonomy/index.ctp:39
+#: Template/CmsTermTaxonomy/view.ctp:37
+#: Template/Content/dashboard.ctp:119;171
+#: Template/News/index.ctp:27
+#: Template/Page/index.ctp:27
+msgid "Title"
+msgstr ""
+
+#: Template/CmsContent/block_add_related_attached.ctp:9
+#: Template/CmsContent/block_add_related_image.ctp:9
+#: Template/CmsContent/block_edit_related_attached.ctp:88
+#: Template/CmsContent/block_edit_related_image.ctp:88
+#: Template/CmsContent/block_edit_related_page.ctp:88
+msgid "File"
+msgstr ""
+
+#: Template/CmsContent/block_add_related_meta.ctp:5
+#: Template/CmsContent/block_edit_related_meta.ctp:66
+msgid "Key"
+msgstr ""
+
+#: Template/CmsContent/block_add_related_meta.ctp:9
+#: Template/CmsContent/block_edit_related_meta.ctp:68
+msgid "Value"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:57
+#: Template/CmsContent/block_edit_related_image.ctp:57
+#: Template/CmsContent/block_edit_related_meta.ctp:64
+#: Template/CmsContent/block_edit_related_page.ctp:57
+#: Template/Page/edit.ctp:463
+msgid "Edit Related Page"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:63
+#: Template/CmsContent/block_edit_related_image.ctp:63
+#: Template/CmsContent/block_edit_related_page.ctp:63
+#: Template/CmsTerm/view.ctp:64
+#: Template/CmsTermTaxonomy/view.ctp:77
+msgid "Description"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:68
+#: Template/CmsContent/block_edit_related_image.ctp:68
+#: Template/CmsContent/block_edit_related_page.ctp:68
+#: Template/News/edit.ctp:342
+#: Template/Page/edit.ctp:376
+msgid "Content publish"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:73
+#: Template/CmsContent/block_edit_related_image.ctp:73
+#: Template/CmsContent/block_edit_related_page.ctp:73
+msgid "Publish Deadline"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:75
+#: Template/CmsContent/block_edit_related_image.ctp:75
+#: Template/CmsContent/block_edit_related_page.ctp:75
+#: Template/News/edit.ctp:349
+#: Template/Page/edit.ctp:383
+msgid "Content deadline"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:82
+#: Template/CmsContent/block_edit_related_image.ctp:82
+#: Template/CmsContent/block_edit_related_page.ctp:82
+msgid "Content end"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:91
+#: Template/CmsContent/block_edit_related_image.ctp:91
+#: Template/CmsContent/block_edit_related_page.ctp:91
+msgid "File URL or download:"
+msgstr ""
+
+#: Template/CmsContent/block_edit_related_attached.ctp:98
+#: Template/CmsContent/block_edit_related_image.ctp:98
+#: Template/CmsContent/block_edit_related_page.ctp:98
+msgid "Remove file"
+msgstr ""
+
+#: Template/CmsContentMeta/add.ctp:3
+msgid "Add Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/add.ctp:8;14
+#: Template/CmsContentMeta/edit.ctp:8;23
+#: Template/CmsContentMeta/view.ctp:7;22
+msgid "List Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/edit.ctp:3
+#: Template/CmsContentMeta/view.ctp:13
+msgid "Edit Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/edit.ctp:14
+msgid "View Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/edit.ctp:17
+#: Template/CmsContentMeta/view.ctp:16
+msgid "Delete Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/index.ctp:3
+msgid "List of Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/index.ctp:8;14
+msgid "New Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/index.ctp:37
+#: Template/CmsContentMeta/view.ctp:36
+#: Template/News/edit.ctp:305
+#: Template/Page/edit.ctp:339
+msgid "Meta Key"
+msgstr ""
+
+#: Template/CmsContentMeta/index.ctp:38
+#: Template/CmsContentMeta/view.ctp:44
+msgid "Priority"
+msgstr ""
+
+#: Template/CmsContentMeta/view.ctp:2
+msgid "Details of Cms Content Meta"
+msgstr ""
+
+#: Template/CmsContentMeta/view.ctp:34
+#: Template/CmsPermission/view.ctp:39
+#: Template/CmsTermRelation/index.ctp:38
+#: Template/CmsTermRelation/view.ctp:37
+msgid "Cms Content"
+msgstr ""
+
+#: Template/CmsContentMeta/view.ctp:66
+msgid "Meta Value"
+msgstr ""
+
+#: Template/CmsPermission/add.ctp:3
+msgid "Add Cms Permission"
+msgstr ""
+
+#: Template/CmsPermission/add.ctp:16
+#: Template/CmsPermission/edit.ctp:25
+#: Template/CmsPermission/view.ctp:24
+#: Template/CmsTerm/add.ctp:8;14
+#: Template/CmsTerm/edit.ctp:8;23
+#: Template/CmsTerm/view.ctp:7;22
+#: Template/CmsTermTaxonomy/add.ctp:16
+#: Template/CmsTermTaxonomy/edit.ctp:23
+#: Template/CmsTermTaxonomy/view.ctp:22
+msgid "List Cms Term"
+msgstr ""
+
+#: Template/CmsPermission/add.ctp:17
+#: Template/CmsPermission/edit.ctp:26
+#: Template/CmsPermission/index.ctp:15
+#: Template/CmsPermission/view.ctp:25
+#: Template/CmsTerm/index.ctp:8;14
+#: Template/CmsTermTaxonomy/add.ctp:17
+#: Template/CmsTermTaxonomy/edit.ctp:24
+#: Template/CmsTermTaxonomy/index.ctp:15
+#: Template/CmsTermTaxonomy/view.ctp:23
+msgid "New Cms Term"
+msgstr ""
+
+#: Template/CmsPermission/edit.ctp:3
+#: Template/CmsPermission/view.ctp:13
+msgid "Edit Cms Permission"
+msgstr ""
+
+#: Template/CmsPermission/edit.ctp:14
+msgid "View Cms Permission"
+msgstr ""
+
+#: Template/CmsPermission/edit.ctp:17
+#: Template/CmsPermission/view.ctp:16
+msgid "Delete Cms Permission"
+msgstr ""
+
+#: Template/CmsPermission/index.ctp:3
+msgid "List of Cms Permission"
+msgstr ""
+
+#: Template/CmsPermission/view.ctp:2
+msgid "Details of Cms Permission"
+msgstr ""
+
+#: Template/CmsPermission/view.ctp:37
+#: Template/CmsTermTaxonomy/view.ctp:35
+msgid "Cms Term"
+msgstr ""
+
+#: Template/CmsPermission/view.ctp:69
+msgid "Yes"
+msgstr ""
+
+#: Template/CmsPermission/view.ctp:69
+msgid "No"
+msgstr ""
+
+#: Template/CmsTerm/add.ctp:3
+msgid "Add Cms Term"
+msgstr ""
+
+#: Template/CmsTerm/edit.ctp:3
+#: Template/CmsTerm/view.ctp:13
+msgid "Edit Cms Term"
+msgstr ""
+
+#: Template/CmsTerm/edit.ctp:14
+msgid "View Cms Term"
+msgstr ""
+
+#: Template/CmsTerm/edit.ctp:17
+#: Template/CmsTerm/view.ctp:16
+msgid "Delete Cms Term"
+msgstr ""
+
+#: Template/CmsTerm/index.ctp:3
+msgid "List of Cms Term"
+msgstr ""
+
+#: Template/CmsTerm/view.ctp:2
+msgid "Details of Cms Term"
+msgstr ""
+
+#: Template/CmsTermRelation/add.ctp:3
+msgid "Add Cms Term Relation"
+msgstr ""
+
+#: Template/CmsTermRelation/add.ctp:16
+#: Template/CmsTermRelation/edit.ctp:23
+#: Template/CmsTermRelation/view.ctp:22
+#: Template/CmsTermTaxonomy/add.ctp:8;14
+#: Template/CmsTermTaxonomy/edit.ctp:8;21
+#: Template/CmsTermTaxonomy/view.ctp:7;20
+msgid "List Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermRelation/add.ctp:17
+#: Template/CmsTermRelation/edit.ctp:24
+#: Template/CmsTermRelation/index.ctp:15
+#: Template/CmsTermRelation/view.ctp:23
+#: Template/CmsTermTaxonomy/index.ctp:8;14
+msgid "New Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermRelation/edit.ctp:3
+#: Template/CmsTermRelation/view.ctp:13
+msgid "Edit Cms Term Relation"
+msgstr ""
+
+#: Template/CmsTermRelation/edit.ctp:14
+msgid "View Cms Term Relation"
+msgstr ""
+
+#: Template/CmsTermRelation/edit.ctp:17
+#: Template/CmsTermRelation/view.ctp:16
+msgid "Delete Cms Term Relation"
+msgstr ""
+
+#: Template/CmsTermRelation/index.ctp:3
+msgid "List of Cms Term Relation"
+msgstr ""
+
+#: Template/CmsTermRelation/index.ctp:37
+#: Template/CmsTermRelation/view.ctp:35
+msgid "Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermRelation/view.ctp:2
+msgid "Details of Cms Term Relation"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/add.ctp:3
+msgid "Add Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/edit.ctp:3
+#: Template/CmsTermTaxonomy/view.ctp:13
+msgid "Edit Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/edit.ctp:14
+msgid "View Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/edit.ctp:17
+#: Template/CmsTermTaxonomy/view.ctp:16
+msgid "Delete Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/index.ctp:3
+msgid "List of Cms Term Taxonomy"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/index.ctp:37
+#: Template/Permission/index.ctp:15
+msgid "Term"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/index.ctp:38
+#: Template/CmsTermTaxonomy/view.ctp:70
+#: Template/News/edit.ctp:302
+#: Template/News/index.ctp:28
+#: Template/Page/edit.ctp:336
+#: Template/Page/index.ctp:28
+msgid "Taxonomy"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/index.ctp:40
+#: Template/CmsTermTaxonomy/view.ctp:48
+msgid "Count"
+msgstr ""
+
+#: Template/CmsTermTaxonomy/view.ctp:2
+msgid "Details of Cms Term Taxonomy"
+msgstr ""
+
+#: Template/Content/dashboard.ctp:27
+msgid "Dashboard"
+msgstr ""
+
+#: Template/Content/dashboard.ctp:28
+msgid "Database"
+msgstr ""
+
+#: Template/Content/dashboard.ctp:101
+msgid "List of the latest page updates"
+msgstr ""
+
+#: Template/Content/dashboard.ctp:120;172
+#: Template/News/index.ctp:29
+#: Template/Page/index.ctp:29
+msgid "Status"
+msgstr ""
+
+#: Template/Content/dashboard.ctp:121;173
+msgid "Updated"
+msgstr ""
+
+#: Template/Content/dashboard.ctp:153
+msgid "List of the latest news updates"
+msgstr ""
+
+#: Template/News/edit.ctp:292
+#: Template/Page/edit.ctp:325
+msgid "Save"
+msgstr ""
+
+#: Template/News/edit.ctp:295
+msgid "Edit News"
+msgstr ""
+
+#: Template/News/edit.ctp:296
+#: Template/Page/edit.ctp:329
+msgid "Last modified"
+msgstr ""
+
+#: Template/News/edit.ctp:301
+#: Template/Page/edit.ctp:334
+msgid "MAIN"
+msgstr ""
+
+#: Template/News/edit.ctp:303
+#: Template/Page/edit.ctp:337
+msgid "Attachments"
+msgstr ""
+
+#: Template/News/edit.ctp:304
+#: Template/Page/edit.ctp:338
+msgid "Images"
+msgstr ""
+
+#: Template/News/edit.ctp:306
+#: Template/Page/edit.ctp:340
+msgid "Permits"
+msgstr ""
+
+#: Template/News/edit.ctp:315;317
+#: Template/Page/edit.ctp:349;351
+msgid "Content slug"
+msgstr ""
+
+#: Template/News/edit.ctp:321;322
+#: Template/Page/edit.ctp:355;356
+msgid "Content title"
+msgstr ""
+
+#: Template/News/edit.ctp:323
+#: Template/Page/edit.ctp:357
+msgid "Content description"
+msgstr ""
+
+#: Template/News/edit.ctp:331
+#: Template/News/index.ctp:31
+#: Template/Page/edit.ctp:365
+#: Template/Page/index.ctp:31
+msgid "Publish"
+msgstr ""
+
+#: Template/News/edit.ctp:333
+#: Template/Page/edit.ctp:367
+msgid "Update"
+msgstr ""
+
+#: Template/News/edit.ctp:338
+#: Template/Page/edit.ctp:372
+msgid "Plublish options"
+msgstr ""
+
+#: Template/News/edit.ctp:340
+#: Template/Page/edit.ctp:374
+msgid "Publish start"
+msgstr ""
+
+#: Template/News/edit.ctp:347
+#: Template/Page/edit.ctp:381
+msgid "Publish deadline"
+msgstr ""
+
+#: Template/News/edit.ctp:355
+#: Template/Page/edit.ctp:389
+msgid "Publish status"
+msgstr ""
+
+#: Template/News/edit.ctp:363;365
+#: Template/Page/edit.ctp:399
+msgid "Publish end"
+msgstr ""
+
+#: Template/News/edit.ctp:370;372
+#: Template/Page/edit.ctp:404;406
+msgid "Content password"
+msgstr ""
+
+#: Template/News/edit.ctp:384
+#: Template/Page/edit.ctp:474
+msgid "Content Taxonomy"
+msgstr ""
+
+#: Template/News/edit.ctp:421;662
+#: Template/Page/edit.ctp:511;752
+msgid "Info"
+msgstr ""
+
+#: Template/News/edit.ctp:429
+#: Template/Page/edit.ctp:519
+msgid "List of Attachments"
+msgstr ""
+
+#: Template/News/edit.ctp:458;510;561
+#: Template/Page/edit.ctp:451;548;600;651
+msgid "Empty"
+msgstr ""
+
+#: Template/News/edit.ctp:460
+#: Template/Page/edit.ctp:550
+msgid "Add Attachments"
+msgstr ""
+
+#: Template/News/edit.ctp:470
+#: Template/Page/edit.ctp:560
+msgid "Edit Related Attached"
+msgstr ""
+
+#: Template/News/edit.ctp:471;523
+#: Template/Page/edit.ctp:464;561;613
+msgid "Use the related edit button to change the content and settings"
+msgstr ""
+
+#: Template/News/edit.ctp:481
+#: Template/Page/edit.ctp:571
+msgid "List of Images"
+msgstr ""
+
+#: Template/News/edit.ctp:512
+#: Template/Page/edit.ctp:602
+msgid "Add Images"
+msgstr ""
+
+#: Template/News/edit.ctp:522
+#: Template/Page/edit.ctp:612
+msgid "Edit Related Image"
+msgstr ""
+
+#: Template/News/edit.ctp:533
+#: Template/Page/edit.ctp:623
+msgid "List of Meta Key"
+msgstr ""
+
+#: Template/News/edit.ctp:563
+#: Template/Page/edit.ctp:653
+msgid "Add Meta Key"
+msgstr ""
+
+#: Template/News/edit.ctp:573
+#: Template/Page/edit.ctp:663
+msgid "Edit Related Meta"
+msgstr ""
+
+#: Template/News/edit.ctp:574
+#: Template/Page/edit.ctp:664
+msgid "Use the related edit button to change the content and settings of meta"
+msgstr ""
+
+#: Template/News/edit.ctp:584
+#: Template/Page/edit.ctp:674
+msgid "Content Permits"
+msgstr ""
+
+#: Template/News/edit.ctp:684
+#: Template/Page/edit.ctp:774
+msgid "Content Info"
+msgstr ""
+
+#: Template/News/index.ctp:2
+msgid "List of News"
+msgstr ""
+
+#: Template/News/index.ctp:8
+msgid "Add News"
+msgstr ""
+
+#: Template/Page/edit.ctp:328
+msgid "Edit Page"
+msgstr ""
+
+#: Template/Page/edit.ctp:335
+msgid "Pages"
+msgstr ""
+
+#: Template/Page/edit.ctp:397
+msgid "Publish stop"
+msgstr ""
+
+#: Template/Page/edit.ctp:419
+msgid "Change the Parent for this Page"
+msgstr ""
+
+#: Template/Page/edit.ctp:420
+msgid "Root Page"
+msgstr ""
+
+#: Template/Page/edit.ctp:422
+msgid "List of Related Page"
+msgstr ""
+
+#: Template/Page/edit.ctp:453
+msgid "Add Related Page"
+msgstr ""
+
+#: Template/Page/index.ctp:2
+msgid "List of Page"
+msgstr ""
+
+#: Template/Page/index.ctp:8
+msgid "Add Page"
+msgstr ""
+
+#: Template/Permission/add.ctp:2
+msgid "Add Permission"
+msgstr ""
+
+#: Template/Permission/index.ctp:5
+msgid "Manage Permits"
+msgstr ""
+
+#: Template/Permission/index.ctp:9
+msgid "Filter"
+msgstr ""
+
+#: Template/Permission/index.ctp:10
+msgid "Add new Rule"
+msgstr ""
+
+#: Template/Permission/index.ctp:12
+msgid "Permits Bar"
+msgstr ""
+
+#: Template/Permission/index.ctp:19
+msgid "Content"
+msgstr ""
+
+#: Template/Permission/index.ctp:25
+msgid "Role"
+msgstr ""
+
+#: Template/Permission/index.ctp:29
+msgid "User"
+msgstr ""
+
+#: Template/Permission/index.ctp:38
+msgid "Permits Result"
+msgstr ""
+
