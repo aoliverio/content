@@ -1,11 +1,4 @@
 # Content plugin for CakePHP
 
-## Installation
-
-You can install this plugin into your CakePHP application using [composer](http://getcomposer.org).
-
-The recommended way to install composer packages is:
-
-```
-composer require aoliverio/content
-```
+This is a backoffice Content Management System plugin for CakePHP 3.x applications.
+This plugin is under construction, the first stable version will be released soon.
