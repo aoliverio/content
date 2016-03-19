@@ -1,1 +1,1 @@
-Working for 1.0.0 stable release
+Working for 0.8.1 release
