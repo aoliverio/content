@@ -22,7 +22,7 @@ The Content plugin using this third-party libraries, managed with aoliverio/buil
 - DataTables (Add advanced interaction controls to any HTML table, http://datatables.net)
 - Summernote (Simple WYSIWYG editor on Bootstrap, http://summernote.org)
 
-and additional library managed with internal bower_components:
+And additional library managed with internal bower_components:
 
 - DatePicker (view on GitHub https://eonasdan.github.io/bootstrap-datetimepicker/)
 
