@@ -28,6 +28,7 @@ code {
 }
 
 #footer {
+    border-top: 1px solid #eee;
     margin: 20px 0;
     font-size: 0.85em;
     color: #999;
@@ -58,20 +59,20 @@ code {
 }
 
 body.rtl {
-	direction: rtl;
+    direction: rtl;
 }
 
 body.rtl #header .brand {
-	float: right;
+    float: right;
     margin-left: 5px;
 }
 body.rtl .row-fluid [class*="span"] {
-	float: right !important;
-	margin-left: 0;
-	margin-right: 2.564102564102564%;
+    float: right !important;
+    margin-left: 0;
+    margin-right: 2.564102564102564%;
 }
 body.rtl .row-fluid [class*="span"]:first-child {
-	margin-right: 0;
+    margin-right: 0;
 }
 
 body.rtl ul, body.rtl ol {
