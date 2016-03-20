@@ -1,6 +1,7 @@
 # Content plugin for CakePHP 3.x
 
 Content is a CakePHP 3.x plugin for CMS (Content Management System) backend in Bootstrap style.
+You can use this plugin individually or as an extension of [Builder](https://github.com/aoliverio/builder/).
 
 Some of the highlights:
 
