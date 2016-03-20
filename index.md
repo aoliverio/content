@@ -1,8 +1,8 @@
 ---
 layout: default
-title: "Content DOCS"
+title: "welcome"
 ---
 
 # Welcome 
 
-Content is a plugin for CakePHP applications.
+Content is a CakePHP 3.x plugin for Content Management System backend.
