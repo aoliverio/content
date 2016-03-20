@@ -1,6 +1,6 @@
 # Site title and subtitle. This is used in _includes/header.html
-title: 'Content DOCS'
-subtitle: 'this plugin in a Builder extensions'
+title: 'Content'
+subtitle: 'official documentantion'
 
 # if you wish to integrate disqus on pages set your shortname here
 disqus_shortname: ''
