@@ -1,6 +1,9 @@
-<!-- Page title -->
-<h1 class="page-header"><?= __('List of Page'); ?></h1>
-
+<?php
+/**
+ * Template setting
+ */
+$this->assign('title', __('List of Pages'));
+?>
 <!-- Actions bar -->
 <div class="well well-sm">
     <div class="text-right">
@@ -8,16 +11,9 @@
         <?= $this->Html->link(__('Add Page'), ['action' => 'add'], ['escape' => false, 'class' => 'btn btn-success', 'title' => __('Add Page')]) ?>
     </div>
 </div>
-
 <!-- Index template -->
 <div class="cmsContent thumbnail">
-    <!-- Using datatables script for this table -->
-    <script>
-        $(document).ready(function () {
-            $('#cmsContent-table').dataTable();
-        });
-    </script>
-    <table id="cmsContent-table" class="table table-striped table-hover">
+    <table id="cmsContent-table" class="table table-striped table-hover dataTable">
         <thead>
             <tr>
                 <th class="check no-sorting">
