@@ -9,7 +9,7 @@ use Cake\Utility\Text;
 use Cake\I18n\Time;
 
 /**
- * 
+ * Get number of element
  */
 $this->CmsContent = TableRegistry::get('Content.CmsContent');
 $_number_of_page = $this->CmsContent->find('all')->where(['content_type' => 'page'])->count();
@@ -18,13 +18,16 @@ $_number_of_attachments = $this->CmsContent->find('all')->where(['content_type' 
 $_number_of_images = $this->CmsContent->find('all')->where(['content_type' => 'images'])->count();
 $_number_of_taxonomy = TableRegistry::get('Content.CmsTermTaxonomy')->find('all')->count();
 $_number_of_permissions = TableRegistry::get('Content.CmsPermission')->find('all')->count();
-?>
 
-<h1 class="page-header">Content Plugin</h1>
+/**
+ * Set title for Layout block
+ */
+$this->assign('title', __('Dashboard'));
+?>
 <div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab"><?= __('Dashboard') ?></a></li>
+        <li role="presentation" class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab"><?= __('Main') ?></a></li>
         <li role="presentation"><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab"><?= __('Tables') ?></a></li>
     </ul>
     <br/>
@@ -73,7 +76,9 @@ $_number_of_permissions = TableRegistry::get('Content.CmsPermission')->find('all
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="tab2">
-            <h4><?= __('Working with tables directly') ?></h4>
+            <h4><?= __('Working with tables') ?></h4>
+            <p><?= __('If you want, you can work with database tables directly.') ?></p>
+            <hr/>
             <div class="well">
                 <a href="<?= $this->Url->build(['controller' => 'cms_content']); ?>">CMS CONTENT</a> - <?= __('They are all web content') ?>
             </div>
@@ -95,4 +100,3 @@ $_number_of_permissions = TableRegistry::get('Content.CmsPermission')->find('all
         </div>
     </div>
 </div>
-
