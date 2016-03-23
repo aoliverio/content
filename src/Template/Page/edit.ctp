@@ -1,10 +1,18 @@
-<!-- Summernote editor WYSIWYG Bootstrap -->
-<link href="<?php echo $this->Url->build('/'); ?>bower_components/summernote/dist/summernote.css" rel="stylesheet" />
-<script type="text/javascript" src="<?php echo $this->Url->build('/'); ?>bower_components/summernote/dist/summernote.min.js"></script>
+<?php
+/**
+ * Template setting
+ */
+$this->assign('title', __('Edit Page'));
+
+/**
+ * Append this block to layout script block 
+ */
+$this->append('script');
+?>
 <!-- Load datepicker -->
-<script type="text/javascript" src="<?php echo $this->Url->build('/'); ?>bower_components/moment/min/moment.min.js"></script>
-<script type="text/javascript" src="<?php echo $this->Url->build('/'); ?>bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<link rel="stylesheet" href="<?php echo $this->Url->build('/'); ?>bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript" src="<?php echo $this->Url->build('/'); ?>content/bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->Url->build('/'); ?>content/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="<?php echo $this->Url->build('/'); ?>content/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 <script>
     $(document).ready(function () {
         /**
@@ -319,15 +327,13 @@
         });
     });
 </script>
+<?php $this->end(); ?>
 
 <?= $this->Form->create(NULL, ['type' => 'file']); ?>
+<p class="text-right"><small><?= __('Last modified'); ?>: <?= $data['modified'] ?></small></p>
 <div class="pull-right">
     <input type="submit" name="button_save_action" class="btn btn-primary" value="<?= __('Save'); ?>">
 </div>
-<!-- Page title -->
-<h1 class="page-header"><?= __('Edit Page'); ?></h1>
-<p class="pull-right"><small><?= __('Last modified'); ?>: <?= $data['modified'] ?></small></p>
-
 <div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -472,38 +478,34 @@
             <div class="row">
                 <div class="col-md-9">
                     <h4 class="page-header"><?= __('Content Taxonomy'); ?></h4>
-                    <div class="well well-sm">
-                        <!-- Using datatables script for this table -->
-                        <script>
-                            $(document).ready(function () {
-                                $('#content-category-table').dataTable();
-                            });
-                        </script>
+                    <div class="thumbnail">
                         <?php
                         $TAXONOMY_CHECKED = array();
                         foreach ($data['list_of_taxonomy_checked'] as $row):
                             $TAXONOMY_CHECKED[$row['cms_term_taxonomy_id']] = 1;
                         endforeach;
                         ?>
-                        <table id="content-category-table" class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Categoria</th>
-                                    <th>Descrizione</th>
-                                    <th class="no-sorting"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($data['list_of_taxonomy'] as $row): ?>
+                        <div id="asd">
+                            <table id="content-category-table" class="table table-striped table-hover dataTable">
+                                <thead>
                                     <tr>
-                                        <td><?= $row['title']; ?></td>
-                                        <td><?= $row['description']; ?></td>
-                                        <?php $CHECKED = array_key_exists($row['id'], $TAXONOMY_CHECKED) ? ' checked' : '' ?>
-                                        <td class="text-right"><input type="checkbox" class="checkbox-content-taxonomy" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
+                                        <th>Categoria</th>
+                                        <th>Descrizione</th>
+                                        <th class="no-sorting"></th>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($data['list_of_taxonomy'] as $row): ?>
+                                        <tr>
+                                            <td><?= $row['title']; ?></td>
+                                            <td><?= $row['description']; ?></td>
+                                            <?php $CHECKED = array_key_exists($row['id'], $TAXONOMY_CHECKED) ? ' checked' : '' ?>
+                                            <td class="text-right"><input type="checkbox" class="checkbox-content-taxonomy" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -671,80 +673,61 @@
         <div role="tabpanel" class="tab-pane" id="tab7">
             <div class="row">
                 <div class="col-md-9">
-                    <h4 class="page-header"><?= __('Content Permits'); ?></h4>
-                    <div class="well well-sm">   
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#user-permits" aria-controls="user-permits" role="tab" data-toggle="tab">User</a></li>
-                            <li role="presentation"><a href="#role-permits" aria-controls="role-permits" role="tab" data-toggle="tab">Role</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="user-permits">
-                                <!-- Using datatables script for this table -->
-                                <script>
-                                    $(document).ready(function () {
-                                        $('#user-permits-table').dataTable();
-                                    });
-                                </script>
-                                <?php
-                                $USER_CHECKED = array();
-                                foreach ($data['list_of_user_checked'] as $row):
-                                    $USER_CHECKED[$row['sys_user_id']] = 1;
-                                endforeach;
-                                ?>
-                                <table id="user-permits-table" class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Username</th>
-                                            <th class="no-sorting"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($data['list_of_user'] as $row): ?>
-                                            <tr>
-                                                <td><?= $row['name']; ?></td>
-                                                <td><?= $row['username']; ?></td>
-                                                <?php $CHECKED = array_key_exists($row['id'], $USER_CHECKED) ? ' checked' : '' ?>
-                                                <td class="text-right"><input type="checkbox" class="checkbox-user-permit" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="role-permits">
-                                <!-- Using datatables script for this table -->
-                                <script>
-                                    $(document).ready(function () {
-                                        $('#role-permits-table').dataTable();
-                                    });
-                                </script>
-                                <?php
-                                $ROLE_CHECKED = array();
-                                foreach ($data['list_of_role_checked'] as $row):
-                                    $ROLE_CHECKED[$row['sys_role_id']] = 1;
-                                endforeach;
-                                ?>
-                                <table id="role-permits-table" class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th class="no-sorting"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($data['list_of_role'] as $row): ?>
-                                            <tr>
-                                                <td><?= $row['name']; ?></td>
-                                                <td><?= $row['description']; ?></td>
-                                                <?php $CHECKED = array_key_exists($row['id'], $ROLE_CHECKED) ? ' checked' : '' ?>
-                                                <td class="text-right"><input type="checkbox" class="checkbox-role-permit" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <h4 class="page-header"><?= __('Content Permits for Users'); ?></h4>
+                    <div class="thumbnail">
+                        <?php
+                        $USER_CHECKED = array();
+                        foreach ($data['list_of_user_checked'] as $row):
+                            $USER_CHECKED[$row['sys_user_id']] = 1;
+                        endforeach;
+                        ?>
+                        <table id="user-permits-table" class="table table-striped table-hover dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th class="no-sorting"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($data['list_of_user'] as $row): ?>
+                                    <tr>
+                                        <td><?= $row['name']; ?></td>
+                                        <td><?= $row['username']; ?></td>
+                                        <?php $CHECKED = array_key_exists($row['id'], $USER_CHECKED) ? ' checked' : '' ?>
+                                        <td class="text-right"><input type="checkbox" class="checkbox-user-permit" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h4 class="page-header"><?= __('Content Permits for Roles'); ?></h4>
+                    <div class="thumbnail">
+                        <?php
+                        $ROLE_CHECKED = array();
+                        foreach ($data['list_of_role_checked'] as $row):
+                            $ROLE_CHECKED[$row['sys_role_id']] = 1;
+                        endforeach;
+                        ?>
+                        <table id="role-permits-table" class="table table-striped table-hover dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th class="no-sorting"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($data['list_of_role'] as $row): ?>
+                                    <tr>
+                                        <td><?= $row['name']; ?></td>
+                                        <td><?= $row['description']; ?></td>
+                                        <?php $CHECKED = array_key_exists($row['id'], $ROLE_CHECKED) ? ' checked' : '' ?>
+                                        <td class="text-right"><input type="checkbox" class="checkbox-role-permit" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -757,14 +740,12 @@
     </div>
 </div>    
 <?= $this->Form->end(); ?>
-
 <!-- myModal 1 -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div id="related-content-edit-modal" class="modal-content"></div>
     </div>
 </div>
-
 <!-- myModal 2 -->
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-sm" role="document">
