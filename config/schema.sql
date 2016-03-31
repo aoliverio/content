@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Mar 04, 2016 alle 19:02
+-- Generation Time: Mar 31, 2016 alle 15:39
 -- Versione del server: 5.5.38
 -- PHP Version: 5.6.2
 
@@ -11,18 +11,18 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `cake3_content`
+-- Database: `plugin content`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `cms_content`
+-- Struttura della tabella `cms_contents`
 --
 
-CREATE TABLE `cms_content` (
+CREATE TABLE `cms_contents` (
 `id` bigint(20) NOT NULL,
-  `parent` bigint(20) DEFAULT '0',
+  `parent_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
   `content_title` varchar(255) NOT NULL,
   `content_description` longtext NOT NULL,
@@ -35,13 +35,13 @@ CREATE TABLE `cms_content` (
   `content_mime_type` varchar(255) NOT NULL,
   `publish_start` datetime NOT NULL,
   `publish_end` datetime NOT NULL,
-  `author` int(11) NOT NULL DEFAULT '0',
+  `author_id` int(11) NOT NULL DEFAULT '0',
   `menu_order` int(11) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL,
-  `created_user` int(11) NOT NULL,
+  `created_id` int(11) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  `modified_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -51,68 +51,99 @@ CREATE TABLE `cms_content` (
 
 CREATE TABLE `cms_content_meta` (
 `id` int(11) NOT NULL,
-  `cms_content_id` bigint(20) NOT NULL,
-  `meta_key` varchar(255) NOT NULL,
-  `meta_value` longtext NOT NULL,
-  `priority` int(11) NOT NULL DEFAULT '0',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_user` int(11) NOT NULL DEFAULT '0',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_user` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+  `content_id` int(11) NOT NULL,
+  `metakey` varchar(255) NOT NULL,
+  `metavalue` longtext NOT NULL,
+  `priority` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `cms_permission`
+-- Struttura della tabella `cms_links`
 --
 
-CREATE TABLE `cms_permission` (
-`id` int(11) NOT NULL,
-  `cms_content_id` bigint(20) NOT NULL DEFAULT '0',
-  `cms_term_id` bigint(20) NOT NULL DEFAULT '0',
-  `sys_user_id` int(11) NOT NULL DEFAULT '0',
-  `sys_role_id` int(11) NOT NULL DEFAULT '0',
-  `allow` tinyint(1) NOT NULL DEFAULT '1',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_user` int(11) NOT NULL DEFAULT '0',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_user` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `cms_term`
---
-
-CREATE TABLE `cms_term` (
+CREATE TABLE `cms_links` (
 `id` bigint(20) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `target` varchar(55) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `rel` varchar(255) NOT NULL,
+  `rss` varchar(255) NOT NULL,
+  `notes` mediumtext NOT NULL,
+  `rating` int(11) NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime NOT NULL,
-  `created_user` int(11) NOT NULL,
+  `created_id` bigint(20) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+  `modified_id` bigint(20) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `cms_term_relation`
+-- Struttura della tabella `cms_menus`
 --
 
-CREATE TABLE `cms_term_relation` (
-`id` bigint(20) NOT NULL,
-  `cms_term_taxonomy_id` bigint(20) unsigned NOT NULL,
-  `cms_content_id` bigint(20) NOT NULL,
-  `menu_order` int(11) NOT NULL DEFAULT '0',
+CREATE TABLE `cms_menus` (
+`id` int(10) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `class` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `status` int(1) DEFAULT NULL,
+  `weight` int(11) DEFAULT NULL,
+  `link_count` int(11) NOT NULL,
+  `params` text COLLATE utf8_unicode_ci,
+  `publish_start` datetime DEFAULT NULL,
+  `publish_end` datetime DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_user` int(11) NOT NULL,
+  `created_id` int(11) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+  `modified_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `cms_terms`
+--
+
+CREATE TABLE `cms_terms` (
+`id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `cms_term_permissions`
+--
+
+CREATE TABLE `cms_term_permissions` (
+`id` int(11) NOT NULL,
+  `term_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `allow` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `cms_term_relationships`
+--
+
+CREATE TABLE `cms_term_relationships` (
+`id` bigint(20) NOT NULL,
+  `content_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `term_taxonomy_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `term_order` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -122,112 +153,107 @@ CREATE TABLE `cms_term_relation` (
 
 CREATE TABLE `cms_term_taxonomy` (
 `id` bigint(20) unsigned NOT NULL,
-  `parent_id` bigint(20) NOT NULL DEFAULT '0',
-  `cms_term_id` bigint(20) unsigned NOT NULL,
-  `taxonomy` varchar(32) NOT NULL,
+  `parent_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `taxonomy` varchar(32) NOT NULL DEFAULT '',
   `title` varchar(255) NOT NULL,
-  `description` text,
-  `count` bigint(20) NOT NULL DEFAULT '0',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_user` int(11) NOT NULL DEFAULT '0',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_user` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+  `description` text NOT NULL,
+  `count` bigint(20) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `cms_content`
+-- Indexes for table `cms_contents`
 --
-ALTER TABLE `cms_content`
+ALTER TABLE `cms_contents`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `cms_content_meta`
 --
 ALTER TABLE `cms_content_meta`
- ADD PRIMARY KEY (`id`), ADD KEY `fk_cms_content_meta_cms_content1_idx` (`cms_content_id`);
-
---
--- Indexes for table `cms_permission`
---
-ALTER TABLE `cms_permission`
  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `cms_term`
+-- Indexes for table `cms_links`
 --
-ALTER TABLE `cms_term`
+ALTER TABLE `cms_links`
+ ADD PRIMARY KEY (`id`), ADD KEY `visible` (`visible`);
+
+--
+-- Indexes for table `cms_menus`
+--
+ALTER TABLE `cms_menus`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `menu_alias` (`name`);
+
+--
+-- Indexes for table `cms_terms`
+--
+ALTER TABLE `cms_terms`
  ADD PRIMARY KEY (`id`), ADD KEY `name` (`name`);
 
 --
--- Indexes for table `cms_term_relation`
+-- Indexes for table `cms_term_permissions`
 --
-ALTER TABLE `cms_term_relation`
- ADD PRIMARY KEY (`id`), ADD KEY `fk_cms_term_relation_cms_term_taxonomy1_idx` (`cms_term_taxonomy_id`), ADD KEY `fk_cms_term_relation_cms_content1_idx` (`cms_content_id`);
+ALTER TABLE `cms_term_permissions`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cms_term_relationships`
+--
+ALTER TABLE `cms_term_relationships`
+ ADD PRIMARY KEY (`id`), ADD KEY `content_id` (`content_id`), ADD KEY `term_taxonomy_id` (`term_taxonomy_id`);
 
 --
 -- Indexes for table `cms_term_taxonomy`
 --
 ALTER TABLE `cms_term_taxonomy`
- ADD PRIMARY KEY (`id`), ADD KEY `taxonomy` (`taxonomy`), ADD KEY `fk_cms_term_taxonomy_cms_term1_idx` (`cms_term_id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `parent_id` (`parent_id`), ADD KEY `term_id` (`term_id`), ADD KEY `taxonomy` (`taxonomy`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `cms_content`
+-- AUTO_INCREMENT for table `cms_contents`
 --
-ALTER TABLE `cms_content`
-MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49766;
+ALTER TABLE `cms_contents`
+MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `cms_content_meta`
 --
 ALTER TABLE `cms_content_meta`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `cms_permission`
+-- AUTO_INCREMENT for table `cms_links`
 --
-ALTER TABLE `cms_permission`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+ALTER TABLE `cms_links`
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `cms_term`
+-- AUTO_INCREMENT for table `cms_menus`
 --
-ALTER TABLE `cms_term`
-MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
+ALTER TABLE `cms_menus`
+MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `cms_term_relation`
+-- AUTO_INCREMENT for table `cms_terms`
 --
-ALTER TABLE `cms_term_relation`
-MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
+ALTER TABLE `cms_terms`
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `cms_term_permissions`
+--
+ALTER TABLE `cms_term_permissions`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `cms_term_relationships`
+--
+ALTER TABLE `cms_term_relationships`
+MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `cms_term_taxonomy`
 --
 ALTER TABLE `cms_term_taxonomy`
-MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=57;
---
--- Limiti per le tabelle scaricate
---
-
---
--- Limiti per la tabella `cms_content_meta`
---
-ALTER TABLE `cms_content_meta`
-ADD CONSTRAINT `fk_cms_content_meta_cms_content1` FOREIGN KEY (`cms_content_id`) REFERENCES `cms_content` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limiti per la tabella `cms_term_relation`
---
-ALTER TABLE `cms_term_relation`
-ADD CONSTRAINT `fk_cms_term_relation_cms_content1` FOREIGN KEY (`cms_content_id`) REFERENCES `cms_content` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_cms_term_relation_cms_term_taxonomy1` FOREIGN KEY (`cms_term_taxonomy_id`) REFERENCES `cms_term_taxonomy` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limiti per la tabella `cms_term_taxonomy`
---
-ALTER TABLE `cms_term_taxonomy`
-ADD CONSTRAINT `fk_cms_term_taxonomy_cms_term1` FOREIGN KEY (`cms_term_id`) REFERENCES `cms_term` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
