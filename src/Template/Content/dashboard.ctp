@@ -11,13 +11,13 @@ use Cake\I18n\Time;
 /**
  * Get number of element
  */
-$this->CmsContent = TableRegistry::get('Content.CmsContent');
-$_number_of_page = $this->CmsContent->find('all')->where(['content_type' => 'page'])->count();
-$_number_of_news = $this->CmsContent->find('all')->where(['content_type' => 'news'])->count();
-$_number_of_attachments = $this->CmsContent->find('all')->where(['content_type' => 'attachments'])->count();
-$_number_of_images = $this->CmsContent->find('all')->where(['content_type' => 'images'])->count();
-$_number_of_taxonomy = TableRegistry::get('Content.CmsTermTaxonomy')->find('all')->count();
-$_number_of_permissions = TableRegistry::get('Content.CmsPermission')->find('all')->count();
+$this->CmsContents = TableRegistry::get('Content.CmsContents');
+$_number_of_page = $this->CmsContents->find('all')->where(['cms_content_type_id' => 1])->count();
+$_number_of_news = $this->CmsContents->find('all')->where(['cms_content_type_id' => 2])->count();
+$_number_of_attachments = $this->CmsContents->find('all')->where(['cms_content_type_id' => 3])->count();
+$_number_of_images = $this->CmsContents->find('all')->where(['cms_content_type_id' => 4])->count();
+$_number_of_taxonomy = TableRegistry::get('Content.CmsTermTaxonomies')->find('all')->count();
+$_number_of_permissions = 0;
 
 /**
  * Set title for Layout block
@@ -80,19 +80,22 @@ $this->assign('title', __('Dashboard'));
             <p><?= __('If you want, you can work with database tables directly.') ?></p>
             <hr/>
             <div class="well">
-                <a href="<?= $this->Url->build(['controller' => 'cms_content']); ?>">CMS CONTENT</a> - <?= __('They are all web content') ?>
+                <a href="<?= $this->Url->build(['controller' => 'cms_contents']); ?>">CMS CONTENTS</a> - <?= __('They are all web content') ?>
+                <hr/>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_content_statues']); ?>">CMS CONTENT STATUES</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_content_types']); ?>">CMS CONTENT TYPES</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_content_options']); ?>">CMS CONTENT OPTIONS</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_content_roles']); ?>">CMS CONTENT ROLES</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_content_users']); ?>">CMS CONTENT USERS</a></p>
             </div>
             <div class="well">
-                <a href="<?= $this->Url->build(['controller' => 'cms_content_meta']); ?>">CMS CONTENT META</a> - <?= __('It adds meta information to the Content.') ?>
-            </div>
-            <div class="well">
-                <a href="<?= $this->Url->build(['controller' => 'cms_term']); ?>">CMS TERM</a> - <?= __('Organize contents according to categories.') ?>
-            </div>
-            <div class="well">
-                <a href="<?= $this->Url->build(['controller' => 'cms_term_taxonomy']); ?>">CMS TERM TAXONOMY</a> - <?= __('Taxonomies to classify web content.') ?>
-            </div>
-            <div class="well">
-                <a href="<?= $this->Url->build(['controller' => 'cms_term_relation']); ?>">CMS TERM RELATION</a> - <?= __('Associate content to taxonomy.') ?>
+                <a href="<?= $this->Url->build(['controller' => 'cms_terms']); ?>">CMS TERMS</a> - <?= __('Organize contents according to categories.') ?>
+                <hr/>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_term_taxonomies']); ?>">CMS TERM TAXONOMIES</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_term_taxonomy_types']); ?>">CMS TERM TAXONOMY TYPES</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_term_relationships']); ?>">CMS TERM RELATIONSHIPS</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_term_roles']); ?>">CMS CONTENT ROLES</a></p>
+                <p><a href="<?= $this->Url->build(['controller' => 'cms_term_users']); ?>">CMS CONTENT USERS</a></p>            
             </div>
             <div class="well">
                 <a href="<?= $this->Url->build(['controller' => 'cms_permission']); ?>">CMS PERMISSION</a> - <?= __('Managing permissions on content.') ?>
