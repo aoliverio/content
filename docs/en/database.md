@@ -1,8 +1,6 @@
-# Content Documentation
+# Database
 
 Content is a CakePHP 3.x plugin for Content Management System backend in Bootstrap style.
 
-## Languages
+## List of tables
 
-/en english
-/it italiano
