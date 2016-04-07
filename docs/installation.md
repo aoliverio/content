@@ -1,6 +1,6 @@
 # Installation
 
-Content is easy to install. The minimum requirements is Builder in CakePHP 3.x application.
+Content is easy to install. The minimum requirements are CakePHP 3.x application and third-party libraries.
 
 ## Minimal Requirements
 
@@ -42,17 +42,22 @@ chmod -R 777 webroot/uploads
 
 ## Creating the database 
 
-You must create database using SQL code from: 
+You must create database, or adding tables on existing database, using SQL code defined into: 
 
 ```
 /vendor/aoliverio/content/config/Schema/content.sql
 ```
 
-## Checking our installation
+If you are created a new database, just replace the values in the `Datasources.default` array in the 
+**config/app.php** file with those that apply to your setup. 
+
+## Checking the installation
 
 You can quickly check that our installation is correct, by checking the default plugin home page. 
-From your Internet browser go to this url, replacing 'your-app-baseurl' with the correct address:
+From your Internet browser go to this url, replacing `your-app-baseurl` with the correct address:
 
 ```
 http://your-app-baseurl/content
 ```
+
+At this point you can proceed with the plugin configuration.
