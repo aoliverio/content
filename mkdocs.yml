@@ -1,0 +1,12 @@
+site_name: Content Docs
+site_url: http://www.aoliverio.com
+site_description: Content Management System backend, is a Builder extension.
+site_author: Antonio Oliverio
+
+repo_url: https://github.com/aoliverio/content/
+
+pages:
+- Home: index.md
+- Getting started:
+    - Istallation: installation.md
+    - Configuration: configuration.md
