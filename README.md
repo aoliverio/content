@@ -38,7 +38,7 @@ composer require aoliverio/content
 
 Load plugin in your application:
 ```
-bin/cake plugin load Content
+bin/cake plugin load -r Content
 ```
 
 ## Docs
