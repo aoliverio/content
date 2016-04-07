@@ -40,7 +40,7 @@ mkdir webroot/uploads
 chmod -R 777 webroot/uploads
 ``` 
 
-## Creating the database 
+## Creating the Database 
 
 You must create database, or adding tables on existing database, using SQL code defined into: 
 
@@ -51,7 +51,7 @@ You must create database, or adding tables on existing database, using SQL code 
 If you are created a new database, just replace the values in the `Datasources.default` array in the 
 **config/app.php** file with those that apply to your setup. 
 
-## Checking the installation
+## Checking the Installation
 
 You can quickly check that our installation is correct, by checking the default plugin home page. 
 From your Internet browser go to this url, replacing `your-app-baseurl` with the correct address:
