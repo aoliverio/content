@@ -7,6 +7,8 @@ repo_url: https://github.com/aoliverio/content/
 
 pages:
 - Home: index.md
+- Preface:
+    - Overview: overview.md
 - Getting started:
     - Istallation: installation.md
     - Configuration: configuration.md
