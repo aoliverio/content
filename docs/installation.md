@@ -33,7 +33,7 @@ bin/cake plugin load -r Content
 ```
 
 The Content plugin uses the uploads folder for attachments and images. 
-You must create the folder webroot of your application.
+You must create the folder in webroot of your application.
 
 ```
 mkdir webroot/uploads
