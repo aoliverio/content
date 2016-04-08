@@ -60,4 +60,4 @@ From your Internet browser go to this url, replacing `your-app-baseurl` with the
 http://your-app-baseurl/content
 ```
 
-At this point you can proceed with the plugin configuration.
+If you want to customize the behavior of the plugin, you can read up in the Configuration section.
