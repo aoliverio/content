@@ -45,7 +45,7 @@ chmod -R 777 webroot/uploads
 You must create database, or adding tables on existing database, using SQL code defined into: 
 
 ```
-/vendor/aoliverio/content/config/Schema/content.sql
+/vendor/aoliverio/content/config/schema/content.sql
 ```
 
 If you are created a new database, just replace the values in the `Datasources.default` array in the 
