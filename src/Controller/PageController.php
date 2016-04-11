@@ -2,7 +2,7 @@
 
 namespace Content\Controller;
 
-use Content\Controller\CmsContentController;
+use Content\Controller\CmsContentsController;
 use Cake\ORM\TableRegistry;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Utility\Inflector;
@@ -10,7 +10,7 @@ use Cake\Utility\Inflector;
 /**
  * 
  */
-class PageController extends CmsContentController {
+class PageController extends CmsContentsController {
 
     /**
      * Index method
