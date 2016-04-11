@@ -13,6 +13,7 @@ use Content\Model\Entity\CmsContent;
  * @property \Cake\ORM\Association\BelongsTo $ParentCmsContents
  * @property \Cake\ORM\Association\BelongsTo $CmsContentStatues
  * @property \Cake\ORM\Association\BelongsTo $CmsContentTypes
+ * @property \Cake\ORM\Association\BelongsTo $CmsSites
  * @property \Cake\ORM\Association\BelongsTo $Authors
  * @property \Cake\ORM\Association\HasMany $CmsContentOptions
  * @property \Cake\ORM\Association\HasMany $ChildCmsContents
@@ -50,6 +51,11 @@ class CmsContentsTable extends Table
             'foreignKey' => 'cms_content_type_id',
             'joinType' => 'INNER',
             'className' => 'Content.CmsContentTypes'
+        ]);
+        $this->belongsTo('CmsSites', [
+            'foreignKey' => 'cms_site_id',
+            'joinType' => 'INNER',
+            'className' => 'Content.CmsSites'
         ]);
         $this->belongsTo('Authors', [
             'foreignKey' => 'author_id',
@@ -118,8 +124,7 @@ class CmsContentsTable extends Table
             ->notEmpty('publish_end');
 
         $validator
-            ->requirePresence('guid', 'create')
-            ->notEmpty('guid');
+            ->allowEmpty('guid');
 
         $validator
             ->integer('menu_order')
@@ -148,6 +153,7 @@ class CmsContentsTable extends Table
         $rules->add($rules->existsIn(['parent_id'], 'ParentCmsContents'));
         $rules->add($rules->existsIn(['cms_content_status_id'], 'CmsContentStatues'));
         $rules->add($rules->existsIn(['cms_content_type_id'], 'CmsContentTypes'));
+        $rules->add($rules->existsIn(['cms_site_id'], 'CmsSites'));
         $rules->add($rules->existsIn(['author_id'], 'Authors'));
         return $rules;
     }

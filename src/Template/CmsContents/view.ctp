@@ -34,11 +34,14 @@
                 <p><?= h($cmsContent->guid) ?></p>
                 <hr/>
                 <label class="subheader"><?= __('Author') ?></label>
-                <p><?= $cmsContent->has('author') ? $this->Html->link($cmsContent->author->name, ['controller' => 'Authors', 'action' => 'view', $cmsContent->author->id]) : '' ?></p>
+                <p><?= $cmsContent->has('author') ? $this->Html->link($cmsContent->author->name, ['controller' => 'Users', 'action' => 'view', $cmsContent->author->id]) : '' ?></p>
             </div>
             <div class="col-md-2 columns numbers end">
                 <label class="subheader"><?= __('Id') ?></label>
                 <p><?= $this->Number->format($cmsContent->id) ?></p>
+                <hr/>
+                <label class="subheader"><?= __('Cms Site Id') ?></label>
+                <p><?= $this->Number->format($cmsContent->cms_site_id) ?></p>
                 <hr/>
                 <label class="subheader"><?= __('Menu Order') ?></label>
                 <p><?= $this->Number->format($cmsContent->menu_order) ?></p>

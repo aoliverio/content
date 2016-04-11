@@ -16,6 +16,7 @@
     <?= $this->Form->input('content_mime_type'); ?>
     <?= $this->Form->input('publish_start'); ?>
     <?= $this->Form->input('publish_end'); ?>
+    <?= $this->Form->input('cms_site_id'); ?>
     <?= $this->Form->input('guid'); ?>
     <?= $this->Form->input('author_id', ['options' => $authors, 'empty' => true]); ?>
     <?= $this->Form->input('menu_order'); ?>

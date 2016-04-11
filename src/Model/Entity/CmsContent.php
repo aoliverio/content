@@ -23,6 +23,8 @@ use Cake\ORM\Entity;
  * @property string $content_mime_type
  * @property \Cake\I18n\Time $publish_start
  * @property \Cake\I18n\Time $publish_end
+ * @property int $cms_site_id
+ * @property \Content\Model\Entity\CmsSite $cms_site
  * @property string $guid
  * @property int $author_id
  * @property \Content\Model\Entity\Author $author

@@ -25,18 +25,19 @@ class CmsSitesTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.content.cms_sites',
-        'plugin.content.cms_site_options',
-        'plugin.content.cms_site_users',
-        'plugin.content.cms_terms',
-        'plugin.content.cms_term_taxonomies',
-        'plugin.content.cms_term_taxonomy_types',
-        'plugin.content.cms_term_relationships',
         'plugin.content.cms_contents',
         'plugin.content.cms_content_statues',
         'plugin.content.cms_content_types',
         'plugin.content.authors',
         'plugin.content.cms_content_options',
-        'plugin.content.csm_term_users'
+        'plugin.content.cms_term_relationships',
+        'plugin.content.cms_term_taxonomies',
+        'plugin.content.cms_terms',
+        'plugin.content.csm_term_users',
+        'plugin.content.cms_term_taxonomy_types',
+        'plugin.content.cms_site_options',
+        'plugin.content.cms_site_users',
+        'plugin.content.users'
     ];
 
     /**

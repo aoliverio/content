@@ -10,6 +10,7 @@ use Content\Model\Entity\CmsSite;
 /**
  * CmsSites Model
  *
+ * @property \Cake\ORM\Association\HasMany $CmsContents
  * @property \Cake\ORM\Association\HasMany $CmsSiteOptions
  * @property \Cake\ORM\Association\HasMany $CmsSiteUsers
  * @property \Cake\ORM\Association\HasMany $CmsTerms
@@ -31,6 +32,10 @@ class CmsSitesTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->hasMany('CmsContents', [
+            'foreignKey' => 'cms_site_id',
+            'className' => 'Content.CmsContents'
+        ]);
         $this->hasMany('CmsSiteOptions', [
             'foreignKey' => 'cms_site_id',
             'className' => 'Content.CmsSiteOptions'

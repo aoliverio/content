@@ -35,7 +35,7 @@ class CmsSitesController extends AppController {
      */
     public function view($id = null) {
         $cmsSite = $this->CmsSites->get($id, [
-            'contain' => ['CmsSiteOptions', 'CmsSiteUsers', 'CmsTerms']
+            'contain' => ['CmsContents', 'CmsSiteOptions', 'CmsSiteUsers', 'CmsTerms']
         ]);
         $this->set('cmsSite', $cmsSite);
         $this->set('_serialize', ['cmsSite']);

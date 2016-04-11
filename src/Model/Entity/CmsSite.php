@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property string $domain
+ * @property \Content\Model\Entity\CmsContent[] $cms_contents
  * @property \Content\Model\Entity\CmsSiteOption[] $cms_site_options
  * @property \Content\Model\Entity\CmsSiteUser[] $cms_site_users
  * @property \Content\Model\Entity\CmsTerm[] $cms_terms
