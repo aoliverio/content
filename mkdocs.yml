@@ -10,5 +10,8 @@ pages:
 - Preface:
     - Overview: overview.md
 - Getting started:
-    - Istallation: installation.md
+    - Installation: installation.md
     - Configuration: configuration.md
+- DEVELOPERS:
+    - Configure: Developers/content-configure.md
+    - Sessions: Developers/content-sessions.md
