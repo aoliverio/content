@@ -8,6 +8,6 @@ It is used to identify the current site in these main situations:
 
 - Site selector in src/Template/Content/dashborad.ctp
 
-This session is managed globally in src/Controller/AppController.php
+This session is managed and changed globally in src/Controller/AppController.php
 
 
