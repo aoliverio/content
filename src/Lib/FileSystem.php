@@ -2,6 +2,6 @@
 
 namespace Content\Lib;
 
-Class Filesystem {
+Class FileSystem {
     
 }
