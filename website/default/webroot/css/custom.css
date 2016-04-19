@@ -1,0 +1,41 @@
+h2{
+    padding: 15px 0px;
+}
+
+#area-riservata-label{
+    color: white;
+    font-size: 1.5em;
+    background-color: #DE1F5E;
+    text-align: center;
+    padding: 5px;
+}
+
+#area-riservata-label a {
+    color: white;
+}
+
+.box-home{
+    border: 1px solid #000000;
+    text-align: center;
+}
+
+.small-caps{
+    font-variant: small-caps;
+}
+
+/* custom .page-header */
+.page-header {
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    padding-bottom: 9px;
+}
+
+/* custom .navbar */
+.navbar {
+    border-radius: 0px;
+    margin-bottom: 0px;
+}
+
+.carousel-control {
+    margin: 0 15px;
+}
