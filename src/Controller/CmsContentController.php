@@ -309,7 +309,7 @@ class CmsContentController extends AppController {
      * @return type
      */
     public function getListOfUser($where = array(), $limit = 1000) {
-        $userTable = TableRegistry::get('SysUser');
+        $userTable = TableRegistry::get('Users');
         $query = $userTable->find('all')
                 ->where($where)
                 ->limit($limit);
@@ -323,7 +323,7 @@ class CmsContentController extends AppController {
      * @return type
      */
     public function getListOfRole($where = array(), $limit = 1000) {
-        $roleTable = TableRegistry::get('SysRole');
+        $roleTable = TableRegistry::get('Roles');
         $query = $roleTable->find('all')
                 ->where($where)
                 ->limit($limit);
