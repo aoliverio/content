@@ -10,3 +10,20 @@ You can install Content into your project using [Composer](http://getcomposer.or
 ``` bash
 $ composer require aoliverio/content
 ```
+
+Load plugin in your application:
+```
+bin/cake plugin load -r Content
+```
+
+## Docs
+
+For more informations about installation and configuration options, see the [wiki](https://github.com/aoliverio/content/wiki).
+
+## Bugs & Feedback
+
+[https://github.com/aoliverio/content/issues](https://github.com/aoliverio/content/issues).
+
+## License
+
+Copyright (c) 2015 Antonio Oliverio and licensed under [MIT License](http://opensource.org/licenses/mit-license.php).
