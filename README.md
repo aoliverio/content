@@ -41,6 +41,15 @@ Load plugin in your application:
 bin/cake plugin load -r Content
 ```
 
+### For new application only
+
+If you want to install the plugin in a new application, you can use the app skeleton with the following command:
+```
+composer create-project --prefer-dist aoliverio/content-app [app-name]
+```
+
+After installation, read and edit config/app.php and setup the 'Datasources' and any other configuration relevant for your application.
+
 ## Docs
 
 For more informations about installation and configuration options, see the [WIKI](https://github.com/aoliverio/content/wiki).
