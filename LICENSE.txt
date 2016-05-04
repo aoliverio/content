@@ -1,5 +1,6 @@
 The MIT License (MIT)
 
+Content Project (tm) the CMS core plugin (http://www.getcontent.org)
 Copyright (c) 2016, Antonio Oliverio (http://www.aoliverio.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
