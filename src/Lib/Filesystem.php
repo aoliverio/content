@@ -17,8 +17,8 @@
 namespace Content\Lib;
 
 /**
- * Content function collection
+ * Filesystem function collection
  */
-Class Content {
+Class Filesystem {
     
 }

@@ -17,8 +17,8 @@
 namespace Content\Lib;
 
 /**
- * Content function collection
+ * Website function collection
  */
-Class Content {
+class Website {
     
 }

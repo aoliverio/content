@@ -17,8 +17,8 @@
 namespace Content\Lib;
 
 /**
- * Content function collection
+ * Term function collection
  */
-Class Content {
+Class Term {
     
 }
