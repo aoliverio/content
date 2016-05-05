@@ -461,6 +461,34 @@ CREATE TABLE IF NOT EXISTS `cms_content_roles` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+--
+-- Dump dei dati per la tabella `cms_content_statues`
+--
+
+INSERT INTO `cms_content_statues` (`id`, `name`, `title`, `description`, `params`) VALUES
+(1, 'draft', 'Draft', '', ''),
+(2, 'publish', 'Publish', '', ''),
+(3, 'inherit', 'Inherit', '', ''),
+(4, 'revision', 'Revision', '', '');
+
+--
+-- Dump dei dati per la tabella `cms_content_types`
+--
+
+INSERT INTO `cms_content_types` (`id`, `name`, `title`, `description`, `params`) VALUES
+(1, 'page', 'Page', '', ''),
+(2, 'news', 'News', '', ''),
+(3, 'attached', 'Attached', '', ''),
+(4, 'image', 'Image', '', '');
+
+--
+-- Dump dei dati per la tabella `cms_sites`
+--
+
+INSERT INTO `cms_sites` (`id`, `name`, `domain`) VALUES
+(1, 'default', 'default');
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
