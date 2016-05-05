@@ -38,10 +38,10 @@ $this->assign('title', __('Dashboard'));
             <div class="alert alert-info">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2><i class="fa fa-globe fa-fw"></i> <?= __('Site'); ?></h2>
+                        <h2><i class="fa fa-globe fa-fw"></i> <?= __('Sites'); ?></h2>
                     </div>
                     <div class="col-md-6">
-                        <label><?= __('Current Site:'); ?></label>
+                        <label><?= __('Current website:'); ?></label>
                         <?= $this->Form->create(); ?>
                         <select name="current_site_id" class="form-control" onchange="this.form.submit()">
                             <?php foreach ($site_selector as $key => $value) : ?>
