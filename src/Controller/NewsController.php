@@ -2,7 +2,7 @@
 
 namespace Content\Controller;
 
-use Content\Controller\CmsContentController;
+use Content\Controller\CmsContentsController;
 use Cake\ORM\TableRegistry;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Utility\Inflector;
@@ -10,19 +10,19 @@ use Cake\Utility\Inflector;
 /**
  * 
  */
-class NewsController extends CmsContentController {
+class NewsController extends CmsContentsController {
 
     /**
      * Index method
      */
     public function index() {
-        $this->set('data', $this->getItemsByContentType('news'));
+        $this->CmsContents = TableRegistry::get('Content.CmsContents');
+        $query = $this->CmsContents->find('all');
+        $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
+        $query->where(['CmsContents.cms_content_type_id' => 2]);
+        $query->limit(1000);
+        $this->set('data', $query->toArray());
         $this->set('_serialize', ['data']);
-
-        /**
-         * Set taxonomy_list
-         */
-        $this->set('taxonomy_list', '');
     }
 
     /**

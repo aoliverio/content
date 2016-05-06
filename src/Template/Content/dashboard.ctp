@@ -58,7 +58,7 @@ $this->assign('title', __('Dashboard'));
                 <div class="col-md-4">
                     <div class="well">
                         <h3 class="pull-right"><span class="label label-default"><?= $_number_of_page ?></span></h3>
-                        <h2><i class="fa fa-file-text fa-fw"></i> <a href="<?= $this->Url->build(['controller' => 'page']) ?>"><?= __('Pages') ?></a></h2>
+                        <h2><i class="fa fa-file-text-o fa-fw"></i> <a href="<?= $this->Url->build(['controller' => 'page']) ?>"><?= __('Pages') ?></a></h2>
                     </div>
                 </div>
                 <div class="col-md-4">

@@ -2,6 +2,7 @@
 
 namespace Content\Controller;
 
+use Content\Lib\Content;
 use Content\Controller\CmsContentsController;
 use Cake\ORM\TableRegistry;
 use Cake\Controller\Component\AuthComponent;
@@ -13,26 +14,27 @@ use Cake\Utility\Inflector;
 class PageController extends CmsContentsController {
 
     /**
-     * Index method
+     * List of Pages
      */
     public function index() {
-        $this->set('data', $this->getItemsByContentType('page'));
+        $this->CmsContents = TableRegistry::get('Content.CmsContents');
+        $query = $this->CmsContents->find('all');
+        $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
+        $query->where(['CmsContents.cms_content_type_id' => 1]);
+        $query->limit(1000);
+        $this->set('data', $query->toArray());
         $this->set('_serialize', ['data']);
-
-        /**
-         * Set taxonomy_list
-         */
-        $this->set('taxonomy_list', '');
     }
 
     /**
-     * Add method - Create blank content and redirect to edit
-     * 
-     * @param type $parent
+     * Create new Page and redirect to Edit template.
      */
     public function add($parent = NULL) {
-        $content_id = parent::_createNewContent(['content_type' => 'page']);
-        $this->redirect(['action' => 'edit', $content_id]);
+        $Content = new Content();
+        if (intval($Content->id) > 0)
+            $this->redirect(['action' => 'edit', $Content->id]);
+        else
+            exit(__('Error! Unable to create the content.'));
     }
 
     /**
@@ -224,8 +226,8 @@ class PageController extends CmsContentsController {
     protected function _getParentPagesList($content_id) {
         $data = array();
         $query = $this->CmsContent->find('all', ['conditions' => ['id <>' => $content_id, 'content_type' => 'page']]);
-        foreach($query->toArray() as $row):
-            $data[$row->id] =  '['.$row->id.'] ' . $row->name;
+        foreach ($query->toArray() as $row):
+            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
         endforeach;
         return $data;
     }
