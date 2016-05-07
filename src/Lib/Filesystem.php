@@ -21,5 +21,26 @@ namespace Content\Lib;
  * Filesystem function collection
  */
 Class Filesystem {
-    
+
+    /**
+     * Folder name
+     *
+     * @var type 
+     */
+    public $folder = null;
+
+    /**
+     * File name
+     *
+     * @var type 
+     */
+    public $file = null;
+
+    /**
+     * 
+     */
+    public function __construct() {
+        
+    }
+
 }
