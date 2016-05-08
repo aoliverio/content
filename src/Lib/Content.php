@@ -25,16 +25,39 @@ use Cake\ORM\TableRegistry;
 Class Content {
 
     /**
+     * Using table
      *
      * @var type 
      */
     protected $ContentTable = 'CmsContents';
 
     /**
+     * Contend unique id
      *
      * @var type 
      */
     public $id = null;
+    
+    /**
+     * Default type 
+     *
+     * @var type 
+     */
+    public $type_id = 1;
+    
+    /**
+     * Default type
+     *
+     * @var type 
+     */
+    public $status_id = 1;
+    
+    /**
+     * Content options
+     *
+     * @var type 
+     */
+    public $options = [];
 
     /**
      * Create new Content in CmsContents table.
