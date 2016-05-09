@@ -21,5 +21,24 @@ namespace Content\Lib;
  * Website function collection
  */
 class Website {
-    
+
+    /**
+     *
+     * @var type 
+     */
+    public $name = 'default';
+
+    /**
+     *
+     * @var type 
+     */
+    public $options = [];
+
+    /**
+     * 
+     */
+    public function __construct() {
+        
+    }
+
 }
