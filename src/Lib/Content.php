@@ -39,14 +39,14 @@ Class Content {
     public $id = null;
     
     /**
-     * Default type 
+     * Default type = page
      *
      * @var type 
      */
     public $type_id = 1;
     
     /**
-     * Default type
+     * Default type = draft
      *
      * @var type 
      */

@@ -18,23 +18,23 @@
 namespace Content\Lib;
 
 /**
- * Filesystem function collection
+ * File class
  */
-Class Filesystem {
-
-    /**
-     * Folder name
-     *
-     * @var type 
-     */
-    public $folder = null;
+Class File {
 
     /**
      * File name
      *
      * @var type 
      */
-    public $file = null;
+    public $name = null;
+    
+    /**
+     * File path
+     *
+     * @var type 
+     */
+    public $path = null;
 
     /**
      * 

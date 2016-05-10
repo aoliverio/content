@@ -22,4 +22,10 @@ namespace Content\Lib;
  */
 Class Term {
     
+    /**
+     *
+     * @var type 
+     */
+    public $name = null;
+    
 }
