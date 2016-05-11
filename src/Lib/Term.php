@@ -28,4 +28,10 @@ Class Term {
      */
     public $name = null;
     
+    /**
+     * 
+     */
+    public function __construct() {
+    }
+    
 }
