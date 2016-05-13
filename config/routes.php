@@ -9,9 +9,9 @@ Router::plugin('Content', function ($routes) {
 });
 
 /**
- * 
+ * Display Dashboard/index by default 
  */
 Router::scope('/', function ($routes) {
-    $routes->connect('/content', ['plugin' => 'Content', 'controller' => 'Content', 'action' => 'index']);
-    $routes->connect('/Content', ['plugin' => 'Content', 'controller' => 'Content', 'action' => 'index']);
+    $routes->connect('/content', ['plugin' => 'Content', 'controller' => 'Dashboard', 'action' => 'index']);
+    $routes->connect('/Content', ['plugin' => 'Content', 'controller' => 'Dashboard', 'action' => 'index']);
 });
