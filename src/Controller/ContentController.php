@@ -14,38 +14,6 @@ class ContentController extends AppController {
 
     /**
      * 
-     */
-    public $contentTypes = [
-        'page' => '1',
-        'news' => '2',
-        'attachment' => '3',
-        'image' => '4'
-    ];
-
-    /**
-     * 
-     */
-    public $contentStatues = [
-        'draft' => '1',
-        'publish' => '2',
-        'revision' => '3'
-    ];
-
-    /**
-     * Index method
-     *
-     * @return void
-     */
-    public function index() {
-
-        /**
-         * Set view
-         */
-        $this->viewBuilder()->template('dashboard');
-    }
-
-    /**
-     * 
      * 
      * ???????????????????????
      * 
@@ -53,13 +21,7 @@ class ContentController extends AppController {
      * @param type $content_id
      * @param type $params
      */
-    public function getImagesById($content_id, $params = array()) {
-        $this->CmsContent = TableRegistry::get('CmsContents');
-        $query = $this->CmsContent->find('all')
-                ->where(['parent' => $content_id, 'content_type' => 'image'])
-                ->order('menu_order');
-        return $query->toArray();
-    }
+
 
     /**
      * This function is used to create a new blanck Content
@@ -129,20 +91,7 @@ class ContentController extends AppController {
         endwhile;
     }
 
-    /**
-     * Get random string 
-     * 
-     * @param type $number
-     * @return string
-     */
-    protected function _randomString($number = 32) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randstring = '';
-        for ($i = 0; $i < $number; $i++) :
-            $randstring = $characters[rand(0, strlen($characters - 1))];
-        endfor;
-        return $randstring;
-    }
+
 
     /**
      * This function is invoked in AJAX to save the ordering of the elements related
@@ -617,115 +566,6 @@ class ContentController extends AppController {
         $this->CmsContentMeta = TableRegistry::get('CmsContentMeta');
         $meta = $this->CmsContentMeta->get($id);
         return $this->CmsContentMeta->delete($meta);
-    }
-
-    /**
-     * 
-     * FILE FUNCTIONS - used for content_type: [ attached | image ]
-     * 
-     */
-
-    /**
-     * Uplodad file in /uploads/YEAR/MONTH directory and create Content record
-     * 
-     * @param type $inputfile
-     * @param string $destfile
-     * @return boolean
-     */
-    public function _uploadFile($inputfile, $destfile = NULL) {
-
-        /**
-         * 
-         */
-        if (strlen(trim($inputfile['name'])) === 0)
-            return FALSE;
-
-        /**
-         * 
-         */
-        $filename = strtolower($inputfile['name']);
-        $sourcefile = $inputfile['tmp_name'];
-        $file = new File($sourcefile, true, 0775);
-
-        /**
-         * 
-         */
-        $CONTENT_YEAR = date('Y');
-        $CONTENT_MONTH = date('m');
-        $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : WWW_ROOT . 'uploads');
-        $folder_dest = new Folder($UPLOAD_DIR);
-
-        if (!$folder_dest->inCakePath($folder_dest->pwd() . DS . $CONTENT_YEAR))
-            $folder_dest->create($folder_dest->pwd() . DS . $CONTENT_YEAR);
-        $folder_dest->cd($CONTENT_YEAR);
-
-        if (!$folder_dest->inCakePath($folder_dest->pwd() . DS . $CONTENT_MONTH))
-            $folder_dest->create($folder_dest->pwd() . DS . $CONTENT_MONTH);
-        $folder_dest->cd($CONTENT_MONTH);
-
-        $path = DS . $CONTENT_YEAR . DS . $CONTENT_MONTH . DS;
-        $permittedFilename = $this->_permittedFileName($UPLOAD_DIR . $path, $filename);
-        $destfile = $folder_dest->pwd() . DS . $permittedFilename;
-
-        /**
-         * Save file in filesystem
-         */
-        if ($file->copy($destfile, true))
-            return $path . $permittedFilename;
-        else
-            return FALSE;
-    }
-
-    /**
-     * Remove file
-     * 
-     * @param type $content_path
-     * @return boolean
-     */
-    protected function _removeFile($content_path) {
-        $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : WWW_ROOT . 'uploads');
-        $file = new File($UPLOAD_DIR . $content_path);
-        return $file->delete();
-    }
-
-    /**
-     * Function getPermittedFileName
-     * 
-     * @param string $path
-     * @return string
-     */
-    private function _permittedFileName($directory, $filename) {
-
-        /**
-         * Get $pathInfo from $filename
-         */
-        $pathInfo = pathinfo($filename);
-
-        /**
-         * Max limit permitted $filename
-         */
-        $pathInfo['filename'] = substr(Inflector::slug($pathInfo['filename']), 0, 100);
-
-        /**
-         * Min limit permitted $filename
-         */
-        if (strlen($pathInfo['filename']) < 3)
-            $pathInfo['filename'] = $this->_randomString();
-
-        /**
-         * 
-         */
-        $dir = new Folder($directory);
-        $iter = 0;
-        do {
-            if ($iter == 0)
-                $slugFileName = $pathInfo['filename'] . '.' . $pathInfo['extension'];
-            else
-                $slugFileName = $pathInfo['filename'] . '-' . $iter . '.' . $pathInfo['extension'];
-            $data = $dir->find($slugFileName, true);
-            $iter++;
-        } while (count($data) > 0);
-        return $slugFileName;
     }
 
 }
