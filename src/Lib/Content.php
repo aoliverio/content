@@ -20,7 +20,7 @@ namespace Content\Lib;
 use Cake\ORM\TableRegistry;
 
 /**
- * Content function collection
+ * Content class.
  */
 Class Content {
 
