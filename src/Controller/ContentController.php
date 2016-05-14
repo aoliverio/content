@@ -23,49 +23,7 @@ class ContentController extends AppController {
      */
 
 
-    /**
-     * This function is used to create a new blanck Content
-     * 
-     * @param type $options
-     * @return type
-     */
-    protected function _createNewContent($options = array()) {
-
-        // Import variables into the current symbol table from an array
-        extract($options);
-
-        // Create new entity
-        $contentTable = TableRegistry::get('CmsContent');
-        $content = $contentTable->newEntity();
-        $content->parent = isset($parent) ? intval($parent) : 0;
-        $content->name = $this->_randomString();
-        $content->content_title = isset($content_title) ? h($content_title) : '';
-        $content->content_description = isset($content_description) ? h($content_description) : '';
-        $content->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
-        $content->cms_content_status_id = isset($cms_content_status_id) ? intval($cms_content_status_id) : 1;
-        $content->cms_content_types_id = isset($cms_content_types_id) ? intval($cms_content_types_id) : 1;
-        $content->content_path = isset($content_path) ? trim($content_path) : '';
-        $content->menu_order = isset($menu_order) ? trim($menu_order) : 0;
-        $content->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
-        $content->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
-        $content->cms_site_id = isset($cms_site_id) ? intval($cms_site_id) : 1;
-        $content->author_id = isset($author_id) ? intval($author_id) : 1;
-        $content->created = date('Y-m-d H:i:s');
-        $content->created_user = isset($created_user) ? intval($created_user) : 1;
-        $content->modified = date('Y-m-d H:i:s');
-        $content->modified_user = isset($modified_user) ? intval($modified_user) : 1;
-
-        // Save and set name of Content
-        if ($contentTable->save($content)) :
-            $content->name = (!isset($name)) ? $content->id : $this->_permittedContentName($content->id, $name);
-            if ($contentTable->save($content))
-                return $content->id;
-        endif;
-
-        // Return false if Content is not created
-        return false;
-    }
-
+    
     /**
      * Get permitted content_name for Content
      * 
@@ -92,25 +50,6 @@ class ContentController extends AppController {
     }
 
 
-
-    /**
-     * This function is invoked in AJAX to save the ordering of the elements related
-     * 
-     * @return boolean
-     */
-    public function saveMenuOrder() {
-        $ITER = 1;
-        $contentTable = TableRegistry::get('CmsContent');
-        if ($this->request->is('post')) :
-            $items = explode(',', $this->request->data['order']);
-            foreach ($items as $id) :
-                $content = $contentTable->get($id);
-                $content->menu_order = $ITER++;
-                $contentTable->save($content);
-            endforeach;
-        endif;
-        exit('ok');
-    }
 
     /**
      * 

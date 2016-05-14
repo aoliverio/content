@@ -98,7 +98,29 @@ Class Content {
      * @return string
      */
     protected function permittedName($text = null) {
-        return '1234';
+
+        if (!isset($name))
+            return $this->_randomString();
+
+        if (trim($name) == '')
+            return $content_id;
+
+        $slugContentName = $slugTarget = strtolower(Inflector::slug($name));
+        $iter = 0;
+
+        while (true):
+            if ($iter > 0)
+                $slugTarget = $slugContentName . '-' . $iter;
+
+            $Table = TableRegistry::get('CmsContents');
+            $query = $Table->find('all');
+            $query->where(['conditions' => ['id <>' => $content_id, 'name' => $slugTarget]]);
+
+            if ($query->count() == 0)
+                return $slugTarget;
+
+            $iter++;
+        endwhile;
     }
 
     /**
