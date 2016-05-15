@@ -249,4 +249,24 @@ Class Content {
         return $slugFileName;
     }
 
+    /**
+     * 
+     * 
+     * @param type $parent
+     * @param type $content_type
+     * @return int
+     */
+    protected function getNextMenuOrder($parent, $content_type) {
+        $contentTable = TableRegistry::get('CmsContent');
+        $query = $contentTable->find('all', [
+            'conditions' => ['parent' => $parent, 'content_type' => $content_type],
+            'order' => ['menu_order' => 'DESC']
+        ]);
+        $row = $query->first();
+        if ($row)
+            return intval($row->menu_order) + 1;
+        else
+            return 1;
+    }
+
 }
