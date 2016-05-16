@@ -25,32 +25,25 @@ use Cake\ORM\TableRegistry;
 Class Content {
 
     /**
-     * Using table
-     *
-     * @var type 
-     */
-    protected $ContentTable = 'CmsContents';
-
-    /**
-     * Contend unique id
+     * Contend id
      *
      * @var type 
      */
     public $id = null;
 
     /**
-     * Default type = page
+     * Content type
      *
      * @var type 
      */
-    public $type_id = 1;
+    public $type = null;
 
     /**
-     * Default type = draft
+     * Content status
      *
      * @var type 
      */
-    public $status_id = 1;
+    public $status = null;
 
     /**
      * Content options
@@ -60,35 +53,177 @@ Class Content {
     public $options = [];
 
     /**
+     *
+     * @var type 
+     */
+    public $Site = null;
+
+    /**
+     * Define permitted Content type.
+     *
+     * @var type 
+     */
+    public $permittedTypes = [
+        1 => 'page',
+        2 => 'news',
+        3 => 'attached',
+        4 => 'image'
+    ];
+
+    /**
+     * Define permitted Content status.
+     *
+     * @var type 
+     */
+    public $permittedStatues = [
+        1 => 'draft',
+        2 => 'publish',
+        3 => 'review'
+    ];
+
+    /**
+     * Define $default array.
+     *
+     * @var type 
+     */
+    public $default = [
+        'cms_content_status_id' => 1,
+        'cms_content_type_id' => 1,
+        'author_id' => 1,
+        'user_id' => 1,
+        'limit' => 1000
+    ];
+
+    /**
+     *
+     * @var type 
+     */
+    public $Plugin = 'Content';
+
+    /**
+     * Define TableRegistry object using Cake\ORM\TableRegistry
+     *
+     * @var type 
+     */
+    public $Table = null;
+
+    /**
+     * Define TableName for use Cake\ORM\TableRegistry
+     *
+     * @var type 
+     */
+    public $TableName = 'CmsContents';
+
+    /**
      * Create new Content in CmsContents table.
      * 
      * @param type $config
      */
     public function __construct($options = null) {
 
-        if (isset($options))
-            extract($options);
+        $fullTableName = $this->Plugin . '.' . $this->TableName;
+        $this->Table = TableRegistry::get($fullTableName);
+    }
 
-        $Table = TableRegistry::get('CmsContents');
-        $Content = $Table->newEntity();
-        $Content->parent = isset($parent) ? intval($parent) : 0;
-        $Content->name = $this->permittedName();
-        $Content->content_title = isset($content_title) ? h($content_title) : '';
-        $Content->content_description = isset($content_description) ? h($content_description) : '';
-        $Content->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
-        $Content->content_status_id = isset($content_status) ? trim($content_status) : 1;
-        $Content->content_type_id = isset($content_type) ? trim($content_type) : 1;
-        $Content->content_path = isset($content_path) ? trim($content_path) : '';
-        $Content->menu_order = isset($menu_order) ? trim($menu_order) : 0;
-        $Content->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
-        $Content->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
-        $Content->author_id = isset($author_id) ? intval($author_id) : 1;
-        $Content->created = date('Y-m-d H:i:s');
-        $Content->created_user = isset($created_user) ? intval($created_user) : 1;
-        $Content->modified = date('Y-m-d H:i:s');
-        $Content->modified_user = isset($modified_user) ? intval($modified_user) : 1;
-        if ($Table->save($Content))
-            $this->id = $Content->id;
+    /**
+     * Get Content by $id
+     * 
+     * @param type $id
+     */
+    public function get($id) {
+
+        $content = $this->Table->get($id, ['contain' => ['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']]);
+        return $content;
+    }
+
+    /**
+     * Find list of Content filtered by $params
+     * 
+     * @param type $params
+     */
+    public function find($params = []) {
+
+        extract($params);
+
+        if (!isset($type_id))
+            $type_id = $default['cms_content_type_id'];
+        if (!isset($limit))
+            $limit = $default['limit'];
+
+        $query = $this->Table->find('all');
+        $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
+        $query->where([$this->TableName . '.cms_content_type_id' => $type_id]);
+        $query->limit($limit);
+
+        return $query->toArray();
+    }
+
+    /**
+     * Create new Content item
+     * 
+     * @param type $data
+     */
+    public function create($data = []) {
+
+        extract($data);
+
+        $item = $this->Table->newEntity();
+        $item->parent_id = isset($parent_id) ? intval($parent_id) : 0;
+        $item->name = $this->_getPermittedName();
+        $item->content_title = isset($content_title) ? h($content_title) : '';
+        $item->content_description = isset($content_description) ? h($content_description) : '';
+        $item->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
+        $item->cms_content_status_id = isset($content_status) ? trim($content_status) : $this->default['cms_content_status_id'];
+        $item->cms_content_type_id = isset($content_type) ? trim($content_type) : $this->default['cms_content_type_id'];
+        $item->content_path = isset($content_path) ? trim($content_path) : '';
+        $item->menu_order = isset($menu_order) ? trim($menu_order) : 0;
+        $item->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
+        $item->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
+        $item->author_id = isset($author_id) ? intval($author_id) : $this->default['author_id'];
+        $item->created = date('Y-m-d H:i:s');
+        $item->created_user = isset($created_user) ? intval($created_user) : $this->default['user_id'];
+        $item->modified = date('Y-m-d H:i:s');
+        $item->modified_user = isset($modified_user) ? intval($modified_user) : $this->default['user_id'];
+
+        if ($Table->save($item))
+            $this->id = $item->id;
+    }
+
+    /**
+     * Save the Content item
+     * 
+     * @param type $data
+     */
+    public function save($data = []) {
+        
+    }
+
+    /**
+     * Find related Content records.
+     * 
+     * @param type $content_id
+     * @param type $params
+     * @return type
+     */
+    public function getRelated($content_id, $params = []) {
+
+        extract($params);
+
+        $query = $this->Table->find('all');
+        $query->where(['parent' => $content_id]);
+
+        if (isset($type) && in_array($type, $this->permittedType)) {
+            $query->where(['content_type' => trim($type)]);
+        }
+
+        if (isset($status) && in_array($status, $this->permittedStatus)) {
+            $query->where(['content_status' => trim($status)]);
+        } else {
+            $query->where(['content_status' => $this->defaultStatus]);
+        }
+
+        $query->order('menu_order');
+        return $query->toArray();
     }
 
     /**
@@ -97,7 +232,7 @@ Class Content {
      * @param type $text
      * @return string
      */
-    protected function permittedName($text = null) {
+    protected function _getPermittedName($text = null) {
 
         if (!isset($name))
             return $this->_randomString();
@@ -124,34 +259,6 @@ Class Content {
     }
 
     /**
-     * Find related Content records.
-     *
-     * 
-     * @param type $content_id
-     * @param type $params
-     * @return type
-     */
-    public function getRelated($content_id, $params = []) {
-
-        extract($params);
-
-        $this->CmsContent = TableRegistry::get('CmsContents');
-        $query = $this->CmsContent->find('all');
-        $query->where(['parent' => $content_id]);
-
-        if (isset($type_id))
-            $query->where(['cms_content_type_id' => intval($type_id)]);
-
-        if (isset($status_id))
-            $query->where(['cms_content_status_id' => intval($status_id)]);
-        else
-            $query->where(['cms_content_status_id' => 1]);
-
-        $query->order('menu_order');
-        return $query->toArray();
-    }
-
-    /**
      * This function provides a random string.
      * By defualt the string is long 32 characters.
      * 
@@ -165,6 +272,22 @@ Class Content {
             $randstring = $characters[rand(0, strlen($characters - 1))];
         endfor;
         return $randstring;
+    }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    protected function _getParentPagesList($content_id) {
+
+        $data = array();
+        $query = $this->CmsContent->find('all', ['conditions' => ['id <>' => $content_id, 'content_type' => 'page']]);
+        foreach ($query->toArray() as $row):
+            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
+        endforeach;
+        return $data;
     }
 
     /**
