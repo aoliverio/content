@@ -3,6 +3,7 @@
 namespace Content\Controller;
 
 use Content\Lib\Content;
+use Content\Controller\AppController;
 use Content\Controller\CmsContentsController;
 use Cake\ORM\TableRegistry;
 use Cake\Controller\Component\AuthComponent;
@@ -11,81 +12,79 @@ use Cake\Utility\Inflector;
 /**
  * 
  */
-class PageController extends CmsContentsController {
+class PageController extends AppController {
 
     /**
-     * List of Pages
+     * Use Content\Lib\Content.
+     *
+     * @var type 
+     */
+    public $Content = null;
+
+    /**
+     * Define Content type_id.
+     *
+     * @var type 
+     */
+    public $type_id = 1;
+
+    /**
+     * Define Content limit.
+     *
+     * @var type 
+     */
+    public $limit = 1000;
+
+    /**
+     * Initilize
+     */
+    public function initialize() {
+        parent::initialize();
+        $this->Content = new Content();
+    }
+
+    /**
+     * Retrieve the list of Content, and loads the template for the view in list.
      */
     public function index() {
-        $this->CmsContents = TableRegistry::get('Content.CmsContents');
-        $query = $this->CmsContents->find('all');
-        $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
-        $query->where(['CmsContents.cms_content_type_id' => 1]);
-        $query->limit(1000);
-        $this->set('data', $query->toArray());
+        $this->set('data', $this->Content->find(['type_id' => $this->type_id, 'limit' => $this->limit]));
         $this->set('_serialize', ['data']);
     }
 
     /**
-     * Create new Page and redirect to Edit template.
+     * Create new Content and redirect to edit controller.
+     * 
+     * @param type $parent
      */
-    public function add($parent = NULL) {
-        $Content = new Content();
-        if (intval($Content->id) > 0)
-            $this->redirect(['action' => 'edit', $Content->id]);
+    public function add($parent = null) {
+        $content = $this->Content->create(['content_type' => $this->type]);
+        if (intval($content->id) > 0)
+            $this->redirect(['action' => 'edit', $content->id]);
         else
             exit(__('Error! Unable to create the content.'));
     }
 
     /**
-     * Edit method
+     * Edit and save a specific type 'page' Content.
      *
      * @param string|null $id Cms Content id.
      * @return void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null) {
-        $this->loadModel('CmsContent');
-        $cmsContent = $this->CmsContent->get($id, [
-            'contain' => []
-        ]);
 
-        /**
-         * 
-         */
-        if ($cmsContent->content_type != 'page') :
-            $this->Flash->error('The cms content is not PAGE object');
-            return $this->redirect(['action' => 'index']);
-        endif;
+        if ($id) {
+            $cmsContent = $this->Content->get($id, ['contain' => []]);
+            if ($cmsContent->cms_content_type_id != $this->type_id) {
+                $this->Flash->error(__('The Content type is not page'));
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+        
+        exit('ok');
 
-        /**
-         * 
-         */
         if ($this->request->is(['patch', 'post', 'put'])) {
-
-            /**
-             * Before save the Content
-             */
-            $cmsContent->parent = (intval($this->request->data['parent']) > 0) ? intval($this->request->data['parent']) : 0;
-            $cmsContent->name = parent::_permittedContentName($id, trim($this->request->data['name']));
-            $cmsContent->content_title = $this->request->data['content_title'];
-            $cmsContent->content_description = $this->request->data['content_description'];
-            $cmsContent->content_excerpt = '';
-            $cmsContent->content_deadline = $this->request->data['content_deadline'];
-            $cmsContent->password = $this->request->data['content_password'];
-            $cmsContent->content_status = $this->request->data['content_status'];
-            $cmsContent->publish_start = $this->request->data['publish_start'];
-            $cmsContent->publish_end = $this->request->data['publish_end'];
-            $cmsContent->author = '';
-            $cmsContent->modified = date('Y-m-d H:i:s');
-
-            /**
-             * Default button_publish_action
-             */
-            if (isset($this->request->data['button_publish_action']))
-                $cmsContent->content_status = 'publish';
-
-            if ($this->CmsContent->save($cmsContent)) {
+            if ($this->_saveContent($cmsContent)) {
 
                 /**
                  * Save all related elements
@@ -96,6 +95,7 @@ class PageController extends CmsContentsController {
                     parent::saveRelatedAttached($id, $this->request->data['related']['attached']);
                 if (isset($this->request->data['related']['image']) && count($this->request->data['related']['image']))
                     parent::saveRelatedImage($id, $this->request->data['related']['image']);
+
                 if (isset($this->request->data['related']['meta']) && count($this->request->data['related']['meta']))
                     parent::saveRelatedMeta($id, $this->request->data['related']['meta']);
 
@@ -210,26 +210,9 @@ class PageController extends CmsContentsController {
         $where = ['cms_content_id' => $id];
         $cmsContent['related']['meta'] = parent::getListOfMeta($where);
 
-        /**
-         * 
-         */
+
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
-    }
-
-    /**
-     * 
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    protected function _getParentPagesList($content_id) {
-        $data = array();
-        $query = $this->CmsContent->find('all', ['conditions' => ['id <>' => $content_id, 'content_type' => 'page']]);
-        foreach ($query->toArray() as $row):
-            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
-        endforeach;
-        return $data;
     }
 
 }
