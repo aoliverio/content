@@ -259,22 +259,6 @@ Class Content {
     }
 
     /**
-     * This function provides a random string.
-     * By defualt the string is long 32 characters.
-     * 
-     * @param type $number
-     * @return string
-     */
-    protected function _randomString($number = 32) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randstring = '';
-        for ($i = 0; $i < $number; $i++) :
-            $randstring = $characters[rand(0, strlen($characters - 1))];
-        endfor;
-        return $randstring;
-    }
-
-    /**
      * 
      * 
      * @param type $content_id
