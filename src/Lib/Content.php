@@ -53,6 +53,48 @@ Class Content {
     public $options = [];
 
     /**
+     * It is the user who is accessing the Content
+     *
+     * @var type 
+     */
+    public $user = null;
+
+    /**
+     * External Users table, Users by default
+     *
+     * @var type 
+     */
+    public $userTable = 'Users';
+
+    /**
+     *  List of users authorized to access the Content
+     *
+     * @var type 
+     */
+    public $authorizedUsers = [];
+
+    /**
+     * Are the roles that are accessing the Content
+     *
+     * @var type 
+     */
+    public $roles = [];
+
+    /**
+     * External Roles table, Roles by default
+     *
+     * @var type 
+     */
+    public $rolesTable = 'Roles';
+
+    /**
+     * List of roles authorized to access the Content
+     *
+     * @var type 
+     */
+    public $authorizedRoles = [];
+
+    /**
      *
      * @var type 
      */
@@ -126,40 +168,7 @@ Class Content {
     }
 
     /**
-     * Get Content by $id
-     * 
-     * @param type $id
-     */
-    public function get($id) {
-
-        $content = $this->Table->get($id, ['contain' => ['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']]);
-        return $content;
-    }
-
-    /**
-     * Find list of Content filtered by $params
-     * 
-     * @param type $params
-     */
-    public function find($params = []) {
-
-        extract($params);
-
-        if (!isset($type_id))
-            $type_id = $default['cms_content_type_id'];
-        if (!isset($limit))
-            $limit = $default['limit'];
-
-        $query = $this->Table->find('all');
-        $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
-        $query->where([$this->TableName . '.cms_content_type_id' => $type_id]);
-        $query->limit($limit);
-
-        return $query->toArray();
-    }
-
-    /**
-     * Create new Content item
+     * Create new Content item and store in database.
      * 
      * @param type $data
      */
@@ -190,12 +199,56 @@ Class Content {
     }
 
     /**
+     * Get Content by $id params
+     * 
+     * @param type $id
+     */
+    public function get($id) {
+
+        if (!$this->_isAuthorizedUser($user))
+            if (!$this->_isAuthorizedRoles($roles))
+                return false;
+
+        $content = $this->Table->get($id, ['contain' => ['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']]);
+        return $content;
+    }
+
+    /**
+     * Find list of Content filtered by $params
+     * 
+     * @param type $params
+     */
+    public function find($params = []) {
+
+        if (!$this->_isAuthorizedUser($user))
+            if (!$this->_isAuthorizedRoles($roles))
+                return false;
+
+        extract($params);
+
+        if (!isset($type_id))
+            $type_id = $default['cms_content_type_id'];
+        if (!isset($limit))
+            $limit = $default['limit'];
+
+        $query = $this->Table->find('all');
+        $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
+        $query->where([$this->TableName . '.cms_content_type_id' => $type_id]);
+        $query->limit($limit);
+
+        return $query->toArray();
+    }
+
+    /**
      * Save the Content item
      * 
      * @param type $data
      */
     public function save($data = []) {
-        
+
+        if (!$this->_isAuthorizedUser($user))
+            if (!$this->_isAuthorizedRoles($roles))
+                return false;
     }
 
     /**
@@ -224,6 +277,28 @@ Class Content {
 
         $query->order('menu_order');
         return $query->toArray();
+    }
+
+    /**
+     * This function can be used to check if $user is authorized to access Content.
+     * 
+     * @param type $user
+     * @return boolean
+     */
+    protected function _isAuthorizedUser($user) {
+
+        return true;
+    }
+
+    /**
+     * This function can be used to check if $roles is authorized to access Content.
+     * 
+     * @param type $roles
+     * @return boolean
+     */
+    protected function _isAuthorizedRoles($roles) {
+
+        return true;
     }
 
     /**
@@ -259,12 +334,13 @@ Class Content {
     }
 
     /**
+     * This function provides the {key, value} of the Page
      * 
      * 
      * @param type $content_id
      * @return type
      */
-    protected function _getParentPagesList($content_id) {
+    protected function _getPagesList($content_id) {
 
         $data = array();
         $query = $this->CmsContent->find('all', ['conditions' => ['id <>' => $content_id, 'content_type' => 'page']]);
@@ -272,88 +348,6 @@ Class Content {
             $data[$row->id] = '[' . $row->id . '] ' . $row->name;
         endforeach;
         return $data;
-    }
-
-    /**
-     * This function is used to uplodad file in /uploads/YEAR/MONTH directory 
-     * and to create Content record contextually.
-     * 
-     * 
-     * @param type $inputfile
-     * @param string $destfile
-     * @return boolean
-     */
-    public function uploadFile($inputfile, $destfile = null) {
-
-        if (strlen(trim($inputfile['name'])) === 0)
-            return FALSE;
-
-        $filename = strtolower($inputfile['name']);
-        $sourcefile = $inputfile['tmp_name'];
-        $file = new File($sourcefile, true, 0775);
-
-        $CONTENT_YEAR = date('Y');
-        $CONTENT_MONTH = date('m');
-        $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : WWW_ROOT . 'uploads');
-        $folder_dest = new Folder($UPLOAD_DIR);
-
-        if (!$folder_dest->inCakePath($folder_dest->pwd() . DS . $CONTENT_YEAR))
-            $folder_dest->create($folder_dest->pwd() . DS . $CONTENT_YEAR);
-        $folder_dest->cd($CONTENT_YEAR);
-
-        if (!$folder_dest->inCakePath($folder_dest->pwd() . DS . $CONTENT_MONTH))
-            $folder_dest->create($folder_dest->pwd() . DS . $CONTENT_MONTH);
-        $folder_dest->cd($CONTENT_MONTH);
-
-        $path = DS . $CONTENT_YEAR . DS . $CONTENT_MONTH . DS;
-        $permittedFilename = $this->_permittedFileName($UPLOAD_DIR . $path, $filename);
-        $destfile = $folder_dest->pwd() . DS . $permittedFilename;
-
-        if ($file->copy($destfile, true))
-            return $path . $permittedFilename;
-        else
-            return FALSE;
-    }
-
-    /**
-     * This function is used to remove a specific $path from file system.
-     * 
-     * @param type $content_path
-     * @return boolean
-     */
-    public function removeFile($path) {
-        $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : WWW_ROOT . 'uploads');
-        $file = new File($UPLOAD_DIR . $path);
-        return $file->delete();
-    }
-
-    /**
-     * This function provides the correct filename for the creation of file systems. 
-     * 
-     * @param type $directory
-     * @param type $filename
-     * @return string
-     */
-    public function getPermittedFilename($directory, $filename) {
-
-        $pathInfo = pathinfo($filename);
-
-        $pathInfo['filename'] = substr(Inflector::slug($pathInfo['filename']), 0, 100);
-
-        if (strlen($pathInfo['filename']) < 3)
-            $pathInfo['filename'] = $this->_randomString();
-
-        $dir = new Folder($directory);
-        $iter = 0;
-        do {
-            if ($iter == 0)
-                $slugFileName = $pathInfo['filename'] . '.' . $pathInfo['extension'];
-            else
-                $slugFileName = $pathInfo['filename'] . '-' . $iter . '.' . $pathInfo['extension'];
-            $data = $dir->find($slugFileName, true);
-            $iter++;
-        } while (count($data) > 0);
-        return $slugFileName;
     }
 
     /**
