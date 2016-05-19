@@ -67,28 +67,30 @@ Class Content {
     public $userTable = 'Users';
 
     /**
-     *  List of users authorized to access the Content
+     * List of users authorized to access the Content.
+     * If empty all Users are authorized to access.
      *
      * @var type 
      */
     public $authorizedUsers = [];
 
     /**
-     * Are the roles that are accessing the Content
+     * It is the role who is accessing the Content
      *
      * @var type 
      */
-    public $roles = [];
+    public $role = null;
 
     /**
      * External Roles table, Roles by default
      *
      * @var type 
      */
-    public $rolesTable = 'Roles';
+    public $roleTable = 'Roles';
 
     /**
-     * List of roles authorized to access the Content
+     * List of roles authorized to access the Content.
+     * If empty all Roles are authorized to access.
      *
      * @var type 
      */
@@ -165,6 +167,9 @@ Class Content {
 
         $fullTableName = $this->Plugin . '.' . $this->TableName;
         $this->Table = TableRegistry::get($fullTableName);
+        
+        $this->user = 1;
+        $this->role = 1;
     }
 
     /**
@@ -206,7 +211,7 @@ Class Content {
     public function get($id) {
 
         if (!$this->_isAuthorizedUser($user))
-            if (!$this->_isAuthorizedRoles($roles))
+            if (!$this->_isAuthorizedRoles($role))
                 return false;
 
         $content = $this->Table->get($id, ['contain' => ['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']]);
@@ -221,7 +226,7 @@ Class Content {
     public function find($params = []) {
 
         if (!$this->_isAuthorizedUser($user))
-            if (!$this->_isAuthorizedRoles($roles))
+            if (!$this->_isAuthorizedRole($role))
                 return false;
 
         extract($params);
@@ -247,7 +252,7 @@ Class Content {
     public function save($data = []) {
 
         if (!$this->_isAuthorizedUser($user))
-            if (!$this->_isAuthorizedRoles($roles))
+            if (!$this->_isAuthorizedRole($role))
                 return false;
     }
 
@@ -282,22 +287,34 @@ Class Content {
     /**
      * This function can be used to check if $user is authorized to access Content.
      * 
-     * @param type $user
      * @return boolean
      */
-    protected function _isAuthorizedUser($user) {
+    protected function _isAuthorizedUser() {
 
+        if (count($this->authorizedUsers) > 0) {
+            foreach ($this->authorizedUsers as $authorizedUsers) {
+                if ($authorizedUsers->user_id == $this->user)
+                    return true;
+            }
+            return false;
+        }
         return true;
     }
 
     /**
-     * This function can be used to check if $roles is authorized to access Content.
+     * This function can be used to check if $role is authorized to access Content.
      * 
-     * @param type $roles
      * @return boolean
      */
-    protected function _isAuthorizedRoles($roles) {
+    protected function _isAuthorizedRole() {
 
+        if (count($this->authorizedRoles) > 0) {
+            foreach ($this->authorizedRoles as $authorizedRole){
+                if ($authorizedRole->role_id == $this->role)
+                    return true;
+            }
+            return false;
+        }
         return true;
     }
 
@@ -348,6 +365,28 @@ Class Content {
             $data[$row->id] = '[' . $row->id . '] ' . $row->name;
         endforeach;
         return $data;
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     */
+    protected function _setAuthorizedUsers($content_id) {
+        $this->authorizedUsers = TableRegistry::get('cms_content_users')
+                ->find('all')
+                ->where(['cms_contents_id' => $content_id])
+                ->toArray();
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     */
+    protected function _setAuthorizedRoles($content_id) {
+        $this->authorizedRoles = TableRegistry::get('cms_content_roles')
+                ->find('all')
+                ->where(['cms_contents_id' => $content_id])
+                ->toArray();
     }
 
     /**
