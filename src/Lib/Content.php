@@ -150,7 +150,7 @@ Class Content {
      *
      * @var type 
      */
-    public $TableName = 'CmsContents';
+    public $TableName = 'cms_contents';
 
     /**
      *
@@ -185,9 +185,11 @@ Class Content {
      * Create new empty Content item and store in database.
      * 
      * @param type $data
+     * @return boolean
      */
     public function create($data = []) {
 
+        $this->Table = TableRegistry::get($this->TableName);
         extract($data);
 
         $item = $this->Table->newEntity();
@@ -208,8 +210,10 @@ Class Content {
         $item->modified = date('Y-m-d H:i:s');
         $item->modified_user = $this->user;
 
-        if ($Table->save($item))
-            $this->id = $item->id;
+        if ($this->Table->save($item))
+            return $item->id;
+
+        return false;
     }
 
     /**
@@ -219,8 +223,8 @@ Class Content {
      */
     public function get($id) {
 
-        if (!$this->_isAuthorizedUser($user))
-            if (!$this->_isAuthorizedRoles($role))
+        if (!$this->_isAuthorizedUser())
+            if (!$this->_isAuthorizedRoles())
                 return false;
 
         $content = $this->Table->get($id, ['contain' => ['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']]);
@@ -234,8 +238,8 @@ Class Content {
      */
     public function find($params = []) {
 
-        if (!$this->_isAuthorizedUser($user))
-            if (!$this->_isAuthorizedRole($role))
+        if (!$this->_isAuthorizedUser())
+            if (!$this->_isAuthorizedRole())
                 return false;
 
         extract($params);
@@ -260,8 +264,8 @@ Class Content {
      */
     public function save($data = []) {
 
-        if (!$this->_isAuthorizedUser($user))
-            if (!$this->_isAuthorizedRole($role))
+        if (!$this->_isAuthorizedUser())
+            if (!$this->_isAuthorizedRole())
                 return false;
     }
 
@@ -376,23 +380,6 @@ Class Content {
 
             $iter++;
         endwhile;
-    }
-
-    /**
-     * This function provides the {key, value} of the 'page' Content type.
-     * 
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    protected function _getPagesList($content_id) {
-
-        $data = array();
-        $query = $this->CmsContent->find('all', ['conditions' => ['id <>' => $content_id, 'content_type' => 'page']]);
-        foreach ($query->toArray() as $row):
-            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
-        endforeach;
-        return $data;
     }
 
     /**
