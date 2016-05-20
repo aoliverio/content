@@ -17,6 +17,8 @@
 
 namespace Content\Lib;
 
+use Content\Lib\Utility;
+use Cake\Utility\Inflector;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -60,7 +62,7 @@ Class Content {
     public $user = null;
 
     /**
-     * External Users table, Users by default
+     * External Users table, set Users by default
      *
      * @var type 
      */
@@ -82,7 +84,7 @@ Class Content {
     public $role = null;
 
     /**
-     * External Roles table, Roles by default
+     * External Roles table, set Roles by default
      *
      * @var type 
      */
@@ -95,12 +97,6 @@ Class Content {
      * @var type 
      */
     public $authorizedRoles = [];
-
-    /**
-     *
-     * @var type 
-     */
-    public $Site = null;
 
     /**
      * Define permitted Content type.
@@ -133,8 +129,6 @@ Class Content {
     public $default = [
         'cms_content_status_id' => 1,
         'cms_content_type_id' => 1,
-        'author_id' => 1,
-        'user_id' => 1,
         'limit' => 1000
     ];
 
@@ -142,7 +136,7 @@ Class Content {
      *
      * @var type 
      */
-    public $Plugin = 'Content';
+    public $PluginName = 'Content';
 
     /**
      * Define TableRegistry object using Cake\ORM\TableRegistry
@@ -159,21 +153,36 @@ Class Content {
     public $TableName = 'CmsContents';
 
     /**
+     *
+     * @var type 
+     */
+    public $Site = null;
+
+    /**
+     *
+     * @var type 
+     */
+    public $Term = null;
+
+    /**
      * Create new Content in CmsContents table.
      * 
      * @param type $config
      */
     public function __construct($options = null) {
 
-        $fullTableName = $this->Plugin . '.' . $this->TableName;
+        $fullTableName = $this->PluginName . '.' . $this->TableName;
         $this->Table = TableRegistry::get($fullTableName);
-        
+
+        // set user from session
         $this->user = 1;
+
+        // set role from session
         $this->role = 1;
     }
 
     /**
-     * Create new Content item and store in database.
+     * Create new empty Content item and store in database.
      * 
      * @param type $data
      */
@@ -193,11 +202,11 @@ Class Content {
         $item->menu_order = isset($menu_order) ? trim($menu_order) : 0;
         $item->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
         $item->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
-        $item->author_id = isset($author_id) ? intval($author_id) : $this->default['author_id'];
+        $item->author_id = isset($author_id) ? intval($author_id) : $this->user;
         $item->created = date('Y-m-d H:i:s');
-        $item->created_user = isset($created_user) ? intval($created_user) : $this->default['user_id'];
+        $item->created_user = $this->user;
         $item->modified = date('Y-m-d H:i:s');
-        $item->modified_user = isset($modified_user) ? intval($modified_user) : $this->default['user_id'];
+        $item->modified_user = $this->user;
 
         if ($Table->save($item))
             $this->id = $item->id;
@@ -270,15 +279,13 @@ Class Content {
         $query = $this->Table->find('all');
         $query->where(['parent' => $content_id]);
 
-        if (isset($type) && in_array($type, $this->permittedType)) {
+        if (isset($type) && in_array($type, $this->permittedType))
             $query->where(['content_type' => trim($type)]);
-        }
 
-        if (isset($status) && in_array($status, $this->permittedStatus)) {
+        if (isset($status) && in_array($status, $this->permittedStatus))
             $query->where(['content_status' => trim($status)]);
-        } else {
+        else
             $query->where(['content_status' => $this->defaultStatus]);
-        }
 
         $query->order('menu_order');
         return $query->toArray();
@@ -309,62 +316,13 @@ Class Content {
     protected function _isAuthorizedRole() {
 
         if (count($this->authorizedRoles) > 0) {
-            foreach ($this->authorizedRoles as $authorizedRole){
+            foreach ($this->authorizedRoles as $authorizedRole) {
                 if ($authorizedRole->role_id == $this->role)
                     return true;
             }
             return false;
         }
         return true;
-    }
-
-    /**
-     * Content permittedName
-     * 
-     * @param type $text
-     * @return string
-     */
-    protected function _getPermittedName($text = null) {
-
-        if (!isset($name))
-            return $this->_randomString();
-
-        if (trim($name) == '')
-            return $content_id;
-
-        $slugContentName = $slugTarget = strtolower(Inflector::slug($name));
-        $iter = 0;
-
-        while (true):
-            if ($iter > 0)
-                $slugTarget = $slugContentName . '-' . $iter;
-
-            $Table = TableRegistry::get('CmsContents');
-            $query = $Table->find('all');
-            $query->where(['conditions' => ['id <>' => $content_id, 'name' => $slugTarget]]);
-
-            if ($query->count() == 0)
-                return $slugTarget;
-
-            $iter++;
-        endwhile;
-    }
-
-    /**
-     * This function provides the {key, value} of the Page
-     * 
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    protected function _getPagesList($content_id) {
-
-        $data = array();
-        $query = $this->CmsContent->find('all', ['conditions' => ['id <>' => $content_id, 'content_type' => 'page']]);
-        foreach ($query->toArray() as $row):
-            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
-        endforeach;
-        return $data;
     }
 
     /**
@@ -390,13 +348,61 @@ Class Content {
     }
 
     /**
+     * Provide permitted name for Content by passed text
      * 
+     * @param type $text
+     * @return string
+     */
+    protected function _getPermittedName($text = null) {
+
+        if (!isset($name))
+            return Utility::randomString();
+
+        if (trim($name) == '')
+            return $content_id;
+
+        $slugContentName = $slugTarget = strtolower(Inflector::slug($name));
+        $iter = 0;
+
+        while (true):
+            if ($iter > 0)
+                $slugTarget = $slugContentName . '-' . $iter;
+
+            $query = $this->Table->find('all');
+            $query->where(['conditions' => ['id <>' => $content_id, 'name' => $slugTarget]]);
+
+            if ($query->count() == 0)
+                return $slugTarget;
+
+            $iter++;
+        endwhile;
+    }
+
+    /**
+     * This function provides the {key, value} of the 'page' Content type.
+     * 
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    protected function _getPagesList($content_id) {
+
+        $data = array();
+        $query = $this->CmsContent->find('all', ['conditions' => ['id <>' => $content_id, 'content_type' => 'page']]);
+        foreach ($query->toArray() as $row):
+            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
+        endforeach;
+        return $data;
+    }
+
+    /**
+     * This function provide the next menu order value for related Content.
      * 
      * @param type $parent
      * @param type $content_type
      * @return int
      */
-    protected function getNextMenuOrder($parent, $content_type) {
+    protected function _getNextMenuOrder($parent, $content_type) {
         $contentTable = TableRegistry::get('CmsContent');
         $query = $contentTable->find('all', [
             'conditions' => ['parent' => $parent, 'content_type' => $content_type],
