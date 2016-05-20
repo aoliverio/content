@@ -57,9 +57,9 @@ class PageController extends AppController {
      * @param type $parent
      */
     public function add($parent = null) {
-        $content = $this->Content->create(['content_type' => $this->type]);
-        if (intval($content->id) > 0)
-            $this->redirect(['action' => 'edit', $content->id]);
+        $content_id = $this->Content->create(['content_type' => $this->type_id]);
+        if (intval($content_id) > 0)
+            $this->redirect(['action' => 'edit', $content_id]);
         else
             exit(__('Error! Unable to create the content.'));
     }
@@ -80,8 +80,6 @@ class PageController extends AppController {
                 return $this->redirect(['action' => 'index']);
             }
         }
-        
-        exit('ok');
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($this->_saveContent($cmsContent)) {
@@ -131,88 +129,40 @@ class PageController extends AppController {
         /**
          * Set parent_page_list
          */
-        $cmsContent['parent_page_list'] = $this->_getParentPagesList($id);
+        $cmsContent['parent_page_list'] = $this->_getPagesList($id);
 
         /**
          * Set content_status_list
          */
-        $cmsContent['content_status_list'] = ['draft' => 'Draft', 'publish' => 'Publish'];
-
-        /**
-         * Set list of taxonomy
-         */
-        $where = ['taxonomy' => 'page'];
-        $cmsContent['list_of_taxonomy'] = parent::getListOfTaxonomy($where);
-
-        /**
-         * Set list of taxonomy checked
-         */
-        $relationTable = TableRegistry::get('CmsTermRelation');
-        $query = $relationTable->find()
-                ->select(['cms_term_taxonomy_id'])
-                ->where(['cms_content_id' => $id]);
-        $cmsContent['list_of_taxonomy_checked'] = $query->all();
-
-        /**
-         * Set list of user
-         */
-        $cmsContent['list_of_user'] = parent::getListOfUser();
-
-        /**
-         * Set list of user checked
-         */
-        $cmsPermissionTable = TableRegistry::get('CmsPermission');
-        $query = $cmsPermissionTable->find()
-                ->select(['sys_user_id'])
-                ->where(['cms_content_id' => $id]);
-        $cmsContent['list_of_user_checked'] = $query->all();
-
-        /**
-         * Set list of role
-         */
-        $cmsContent['list_of_role'] = parent::getListOfRole();
-
-        /**
-         * Set list of role checked
-         */
-        $cmsPermissionTable = TableRegistry::get('CmsPermission');
-        $query = $cmsPermissionTable->find()
-                ->select(['sys_role_id'])
-                ->where(['cms_content_id' => $id]);
-        $cmsContent['list_of_role_checked'] = $query->all();
-
-        /**
-         * Create related array
-         */
-        $cmsContent['related'] = array();
-
-        /**
-         * Set related page
-         */
-        $where = ['parent' => $id, 'content_type' => 'page'];
-        $cmsContent['related']['page'] = parent::getListOfContent($where);
-
-        /**
-         * Set related image
-         */
-        $where = ['parent' => $id, 'content_type' => 'image'];
-        $cmsContent['related']['image'] = parent::getListOfContent($where);
-
-        /**
-         * Set related attached
-         */
-        $where = ['parent' => $id, 'content_type' => 'attached'];
-        $cmsContent['related']['attached'] = parent::getListOfContent($where);
-
-        /**
-         * Set related meta
-         */
-        $where = ['cms_content_id' => $id];
-        $cmsContent['related']['meta'] = parent::getListOfMeta($where);
-
+        $cmsContent['content_status_list'] = [
+            '1' => 'Draft',
+            '2' => 'Publish'
+        ];
 
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
+    }
+
+    /**
+     * This function provides the {key, value} of the 'page' Content type.
+     * 
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    protected function _getPagesList($id) {
+
+        $data = [];
+        
+        $Table = TableRegistry::get('CmsContents');
+        $query = $Table->find('all')
+                ->where(['id <>' => $id, 'cms_content_type_id' => $this->type_id]);
+        
+        foreach ($query->toArray() as $row):
+            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
+        endforeach;
+        
+        return $data;
     }
 
 }
