@@ -7,12 +7,6 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema cake3_demoapp
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- Table `cms_content_statues`
@@ -233,37 +227,6 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `roles`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `created` TIMESTAMP NULL DEFAULT NULL,
-  `modified` DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `tasks`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tasks` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `route` VARCHAR(255) NOT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `created` TIMESTAMP NULL DEFAULT NULL,
-  `modified` DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
 -- Table `roles_tasks`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roles_tasks` (
@@ -284,15 +247,6 @@ CREATE TABLE IF NOT EXISTS `roles_tasks` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `users`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
