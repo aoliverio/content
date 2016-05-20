@@ -347,19 +347,19 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cms_term_roles` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `cms_terms_id` INT(11) NOT NULL,
-  `roles_id` INT(11) NOT NULL,
+  `cms_term_id` INT(11) NOT NULL,
+  `role_id` INT(11) NOT NULL,
   `params` LONGTEXT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_cms_term_roles_cms_terms1_idx` (`cms_terms_id` ASC),
-  INDEX `fk_cms_term_roles_roles1_idx` (`roles_id` ASC),
+  INDEX `fk_cms_term_roles_cms_terms1_idx` (`cms_term_id` ASC),
+  INDEX `fk_cms_term_roles_roles1_idx` (`role_id` ASC),
   CONSTRAINT `fk_cms_term_roles_cms_terms1`
-    FOREIGN KEY (`cms_terms_id`)
+    FOREIGN KEY (`cms_term_id`)
     REFERENCES `cms_terms` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cms_term_roles_roles1`
-    FOREIGN KEY (`roles_id`)
+    FOREIGN KEY (`role_id`)
     REFERENCES `roles` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -399,8 +399,8 @@ CREATE TABLE IF NOT EXISTS `cms_site_roles` (
   `role_id` INT(11) NOT NULL,
   `params` LONGTEXT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_cms_site_roles_cms_sites1_idx` (`cms_sites_id` ASC),
-  INDEX `fk_cms_site_roles_roles1_idx` (`roles_id` ASC),
+  INDEX `fk_cms_site_roles_cms_sites1_idx` (`cms_site_id` ASC),
+  INDEX `fk_cms_site_roles_roles1_idx` (`role_id` ASC),
   CONSTRAINT `fk_cms_site_roles_cms_sites1`
     FOREIGN KEY (`cms_site_id`)
     REFERENCES `cms_sites` (`id`)
@@ -423,8 +423,8 @@ CREATE TABLE IF NOT EXISTS `cms_content_users` (
   `user_id` INT(11) NOT NULL,
   `params` LONGTEXT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_cms_content_users_cms_contents1_idx` (`cms_contents_id` ASC),
-  INDEX `fk_cms_content_users_users1_idx` (`users_id` ASC),
+  INDEX `fk_cms_content_users_cms_contents1_idx` (`cms_content_id` ASC),
+  INDEX `fk_cms_content_users_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_cms_content_users_cms_contents1`
     FOREIGN KEY (`cms_content_id`)
     REFERENCES `cms_contents` (`id`)
@@ -447,8 +447,8 @@ CREATE TABLE IF NOT EXISTS `cms_content_roles` (
   `role_id` INT(11) NOT NULL,
   `params` LONGTEXT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_cms_content_roles_cms_contents1_idx` (`cms_contents_id` ASC),
-  INDEX `fk_cms_content_roles_roles1_idx` (`roles_id` ASC),
+  INDEX `fk_cms_content_roles_cms_contents1_idx` (`cms_content_id` ASC),
+  INDEX `fk_cms_content_roles_roles1_idx` (`role_id` ASC),
   CONSTRAINT `fk_cms_content_roles_cms_contents1`
     FOREIGN KEY (`cms_content_id`)
     REFERENCES `cms_contents` (`id`)
