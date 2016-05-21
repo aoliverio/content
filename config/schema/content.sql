@@ -421,9 +421,9 @@ ENGINE = InnoDB;
 
 INSERT INTO `cms_content_statues` (`id`, `name`, `title`, `description`, `params`) VALUES
 (1, 'draft', 'Draft', '', ''),
-(2, 'publish', 'Publish', '', ''),
-(3, 'inherit', 'Inherit', '', ''),
-(4, 'revision', 'Revision', '', '');
+(2, 'published', 'Published', '', ''),
+(3, 'inherited', 'Inherited', '', ''),
+(4, 'review', 'Review', '', '');
 
 --
 -- Dump dei dati per la tabella `cms_content_types`
