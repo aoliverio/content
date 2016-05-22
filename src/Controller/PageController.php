@@ -81,20 +81,18 @@ class PageController extends AppController {
             }
         }
 
-        exit('ok');
-
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($this->_saveContent($cmsContent)) {
 
                 if (isset($this->request->data['related']['page']) && count($this->request->data['related']['page']))
-                    $this->_saveRelatedPages($id, $this->request->data['related']['page']);
+                    $this->Content->_saveRelatedItems($id, $this->request->data['related']['page']);
                 if (isset($this->request->data['related']['attached']) && count($this->request->data['related']['attached']))
-                    $this->_saveRelatedAttachments($id, $this->request->data['related']['attached']);
+                    $this->Content->_saveRelatedItems($id, $this->request->data['related']['attached']);
                 if (isset($this->request->data['related']['image']) && count($this->request->data['related']['image']))
-                    $this->_saveRelatedImages($id, $this->request->data['related']['image']);
+                    $this->Content->_saveRelatedItems($id, $this->request->data['related']['image']);
 
                 if (isset($this->request->data['related']['meta']) && count($this->request->data['related']['meta']))
-                    $this->Content->saveOptions($id, $this->request->data['related']['meta']);
+                    $this->Content->saveRelatedOptions($id, $this->request->data['related']['meta']);
 
                 if (isset($this->request->data['delete_ck']['content_id'])) {
                     foreach ($this->request->data['delete_ck']['content_id'] as $key => $val) :
@@ -208,85 +206,6 @@ class PageController extends AppController {
 
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
-    }
-
-    /*
-     * Manage related Content with protected functions
-     * 
-     */
-
-    /**
-     * This function is used to save related pages of Content.
-     * 
-     * @param type $parent
-     * @param type $items
-     */
-    protected function _saveRelatedPages($parent_id, $items) {
-
-        $type_id = 1;   // Page
-        $status_id = 1; // Draft
-
-        foreach ($items as $row) :
-            if ($row['content_title'] != '') :
-                $row['parent_id'] = $parent_id;
-                $row['cms_content_type_id'] = $type_id;
-                $row['cms_content_status_id'] = $status_id;
-                $row['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
-                $this->Content->create($row);
-            endif;
-        endforeach;
-    }
-
-    /**
-     * This function is used to save attachments of Content.
-     *  
-     * @param type $parent
-     * @param type $items
-     */
-    protected function _saveRelatedAttachments($parent_id, $items) {
-
-        $type_id = 3;   // Attached
-        $status_id = 3; // Inherithed
-
-        foreach ($items as $row) :
-            $CONTENT_PATH = $this->_uploadFile($row['content_path']);
-            if ($CONTENT_PATH) :
-                $PATHINFO = pathinfo($CONTENT_PATH);
-                $row['content_title'] = (trim($row['content_title']) == '') ? Inflector::humanize($PATHINFO['filename']) : trim($row['content_title']);
-                $row['parent_id'] = $parent_id;
-                $row['cms_content_type_id'] = $type_id;
-                $row['cms_content_status_id'] = $status_id;
-                $row['content_path'] = $CONTENT_PATH;
-                $row['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
-                $this->Content->create($row);
-            endif;
-        endforeach;
-    }
-
-    /**
-     * This function is used to save images of Content.
-     * 
-     * @param type $parent
-     * @param type $items
-     */
-    protected function _saveRelatedImages($parent_id, $items) {
-
-        $type_id = 4;   // Image
-        $status_id = 3; // Inherited
-
-        foreach ($items as $item) :
-            $CONTENT_PATH = $this->_uploadFile($row['content_path']);
-            if ($CONTENT_PATH) :
-                $PATHINFO = pathinfo($CONTENT_PATH);
-                $item['content_title'] = (trim($row['content_title']) == '') ? Inflector::humanize($PATHINFO['filename']) : trim($row['content_title']);
-                $item['parent_id'] = $parent_id;
-                $item['cms_content_type_id'] = $type_id;
-                $item['cms_content_status_id'] = $status_id;
-                $item['content_path'] = $CONTENT_PATH;
-                $item['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
-                $this->Content->create($item);
-            endif;
-        endforeach;
     }
 
     /**
