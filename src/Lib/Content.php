@@ -262,21 +262,59 @@ Class Content {
      * 
      * @param type $data
      */
-    public function save($data = []) {
+    public function save($item) {
 
         if (!$this->_isAuthorizedUser())
             if (!$this->_isAuthorizedRole())
                 return false;
+
+        $parent_id = (isset($item['parent_id'])) ? intval($item['parent_id']) : 0;
+        $type_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
+        $status_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
+
+        $CONTENT_PATH = $this->_uploadFile($item['content_path']);
+        if ($CONTENT_PATH) :
+            $PATHINFO = pathinfo($CONTENT_PATH);
+            $item['content_title'] = (trim($item['content_title']) == '') ? Inflector::humanize($PATHINFO['filename']) : trim($item['content_title']);
+            $item['parent_id'] = $parent_id;
+            $item['cms_content_type_id'] = $type_id;
+            $item['cms_content_status_id'] = $status_id;
+            $item['content_path'] = $CONTENT_PATH;
+            $item['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
+            $this->Content->create($item);
+        endif;
     }
 
     /**
-     * Find related Content records.
+     * 
+     * @param type $parent_id
+     * @param type $items
+     */
+    public function saveRelatedItems($parent_id, $items) {
+        foreach ($items as $item) :
+
+        endforeach;
+    }
+
+    /**
+     * 
+     * @param type $parent_id
+     * @param type $items
+     */
+    public function saveRelatedOptions($parent_id, $items) {
+        foreach ($items as $item) :
+
+        endforeach;
+    }
+
+    /**
+     * Provide the related Content records for a $content_id filtered by $params.
      * 
      * @param type $content_id
      * @param type $params
      * @return type
      */
-    public function getRelated($content_id, $params = []) {
+    public function getRelatedItems($content_id, $params = []) {
 
         extract($params);
 
@@ -293,6 +331,21 @@ Class Content {
 
         $query->order('menu_order');
         return $query->toArray();
+    }
+
+    /**
+     * Provide the Content options for a $content_id.
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    public function getRelatedOptions($content_id) {
+
+        return TableRegistry::get('CmsContentOptions')
+                        ->find('all')
+                        ->where(['cms_parent_id' => $content_id])
+                        ->order(['menu_order'])
+                        ->toArray();
     }
 
     /**
