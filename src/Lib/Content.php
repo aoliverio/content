@@ -286,25 +286,68 @@ Class Content {
     }
 
     /**
+     * This function is used to save related items.
      * 
      * @param type $parent_id
      * @param type $items
      */
-    public function saveRelatedItems($parent_id, $items) {
+    public function saveRelatedItems($parent_id, $items, $params = null) {
         foreach ($items as $item) :
+            if ($params)
+                array_merge($item, $params);
+            $this->save($item);
+        endforeach;
+    }
 
+    /**
+     * This function is used to save related options.
+     * 
+     * @param type $parent_id
+     * @param type $items
+     */
+    public function saveRelatedOptions($parent_id, $items, $params = null) {
+        foreach ($items as $item) :
+            if ($params)
+                array_merge($item, $params);
+
+            if (trim($row['meta_key']) != '' && trim($row['meta_value']) != '') :
+                $metaTable = TableRegistry::get('CmsContentMeta');
+                $meta = $metaTable->newEntity();
+                $meta->cms_content_id = $content_id;
+                $meta->meta_key = $row['meta_key'];
+                $meta->meta_value = $row['meta_value'];
+                $metaTable->save($meta);
+            endif;
         endforeach;
     }
 
     /**
      * 
-     * @param type $parent_id
-     * @param type $items
+     * @param type $id
+     * @return boolean
      */
-    public function saveRelatedOptions($parent_id, $items) {
-        foreach ($items as $item) :
+    public function delete($id) {
+        return true;
+    }
 
-        endforeach;
+    /**
+     * 
+     * @param type $parent_id
+     * @param type $where
+     * @return boolean
+     */
+    public function deleteRelatedItems($parent_id, $where = null) {
+        return true;
+    }
+
+    /**
+     * 
+     * @param type $parent_id
+     * @param type $where
+     * @return boolean
+     */
+    public function deleteRelatedOptions($parent_id, $where = null) {
+        return true;
     }
 
     /**
