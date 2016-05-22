@@ -423,7 +423,7 @@ INSERT INTO `cms_content_statues` (`id`, `name`, `title`, `description`, `params
 (1, 'draft', 'Draft', '', ''),
 (2, 'published', 'Published', '', ''),
 (3, 'inherited', 'Inherited', '', ''),
-(4, 'review', 'Review', '', '');
+(4, 'reviewed', 'Reviewed', '', '');
 
 --
 -- Dump dei dati per la tabella `cms_content_types`
