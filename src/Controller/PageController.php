@@ -84,15 +84,27 @@ class PageController extends AppController {
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($this->_saveContent($cmsContent)) {
 
-                if (isset($this->request->data['related']['page']) && count($this->request->data['related']['page']))
-                    $this->Content->_saveRelatedItems($id, $this->request->data['related']['page']);
-                if (isset($this->request->data['related']['attached']) && count($this->request->data['related']['attached']))
-                    $this->Content->_saveRelatedItems($id, $this->request->data['related']['attached']);
-                if (isset($this->request->data['related']['image']) && count($this->request->data['related']['image']))
-                    $this->Content->_saveRelatedItems($id, $this->request->data['related']['image']);
+                if (isset($this->request->data['related']['page']) && count($this->request->data['related']['page'])) {
+                    $items = $this->request->data['related']['page'];
+                    $params = ['cms_content_type_id' => 1, 'cms_content_status_id' => 1];
+                    $this->Content->saveRelatedItems($id, $data, $params);
+                }
 
-                if (isset($this->request->data['related']['meta']) && count($this->request->data['related']['meta']))
+                if (isset($this->request->data['related']['attached']) && count($this->request->data['related']['attached'])) {
+                    $items = $this->request->data['related']['attached'];
+                    $params = ['cms_content_type_id' => 3, 'cms_content_status_id' => 3];
+                    $this->Content->saveRelatedItems($id, $data, $params);
+                }
+
+                if (isset($this->request->data['related']['image']) && count($this->request->data['related']['image'])) {
+                    $items = $this->request->data['related']['image'];
+                    $params = ['cms_content_type_id' => 4, 'cms_content_status_id' => 3];
+                    $this->Content->saveRelatedItems($id, $data, $params);
+                }
+
+                if (isset($this->request->data['related']['meta']) && count($this->request->data['related']['meta'])) {
                     $this->Content->saveRelatedOptions($id, $this->request->data['related']['meta']);
+                }
 
                 if (isset($this->request->data['delete_ck']['content_id'])) {
                     foreach ($this->request->data['delete_ck']['content_id'] as $key => $val) :
@@ -102,7 +114,7 @@ class PageController extends AppController {
 
                 if (isset($this->request->data['delete_ck']['meta_id'])) {
                     foreach ($this->request->data['delete_ck']['meta_id'] as $key => $val) :
-                        $this->Content->deleteOption($key);
+                        $this->Content->deleteRelatedOption($key);
                     endforeach;
                 }
 
@@ -206,31 +218,6 @@ class PageController extends AppController {
 
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
-    }
-
-    /**
-     * 
-     * Manage Content options
-     * 
-     */
-
-    /**
-     * Controller function
-     * 
-     * @param type $content_id
-     * @param type $items
-     */
-    protected function _saveRelatedOption($content_id, $items) {
-        foreach ($items as $row) :
-            if (trim($row['meta_key']) != '' && trim($row['meta_value']) != '') :
-                $metaTable = TableRegistry::get('CmsContentMeta');
-                $meta = $metaTable->newEntity();
-                $meta->cms_content_id = $content_id;
-                $meta->meta_key = $row['meta_key'];
-                $meta->meta_value = $row['meta_value'];
-                $metaTable->save($meta);
-            endif;
-        endforeach;
     }
 
     /**
@@ -387,11 +374,17 @@ class PageController extends AppController {
         exit('ok');
     }
 
+
+    
     /**
      * 
      * 
+     * Funzioni da spostare in Lib\Content
+     * 
      * 
      */
+    
+    
 
     /**
      * 
