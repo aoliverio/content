@@ -343,7 +343,8 @@ $this->append('script');
         <li role="presentation"><a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab"><?= __('Attachments'); ?> <span class="badge"><?= count($data['related']['attached']); ?></span></a></li>
         <li role="presentation"><a href="#tab5" aria-controls="tab5" role="tab" data-toggle="tab"><?= __('Images'); ?> <span class="badge"><?= count($data['related']['image']); ?></span></a></li>
         <li role="presentation"><a href="#tab6" aria-controls="tab6" role="tab" data-toggle="tab"><?= __('Meta Key'); ?> <span class="badge"><?= count($data['related']['meta']); ?></span></a></li>
-        <li role="presentation"><a href="#tab7" aria-controls="tab7" role="tab" data-toggle="tab"><?= __('Permits'); ?></a></li>
+        <li role="presentation"><a href="#tab7" aria-controls="tab7" role="tab" data-toggle="tab"><?= __('Roles Permits'); ?></a></li>
+        <li role="presentation"><a href="#tab8" aria-controls="tab8" role="tab" data-toggle="tab"><?= __('Users Permits'); ?></a></li>
     </ul>
     <br/>
     <!-- Tab panes -->
@@ -419,323 +420,32 @@ $this->append('script');
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="tab2">
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="alert alert-danger">
-                        <small><?= __('Change the Parent for this Page'); ?>:</small>
-                        <?= $this->Form->select('parent', $data['parent_page_list'], ['default' => $data['parent'], 'empty' => __('Root Page'), 'class' => 'form-control input-sm']); ?>
-                    </div>
-                    <h4 class="page-header"><?= __('List of Related Page'); ?></h4>
-                    <?php if (count($data['related']['page']) > 0) { ?>
-                        <ul id="sortable-pages" class="sortable" >
-                            <?php foreach ($data['related']['page'] as $row) : ?>
-                                <li id="<?= $row['id'] ?>" class="well well-sm">
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <i class="fa fa-arrows-v"></i> <?= $row->menu_order ?>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input class="input-sm form-control text-center" value="<?= $row->id ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-5">
-                                            <input id="related_content_title_<?= $row->id ?>" class="input-sm form-control" value="<?= $row->content_title ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label class="text-danger">
-                                                <input type="checkbox" name="delete_ck[content_id][<?= $row->id ?>]" value="1" /> <i class="fa fa-trash-o"></i> <?= __('Delete'); ?>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-2 text-right">
-                                            <a class="btn btn-sm btn-warning" href="<?= $this->Url->Build('/content/page/edit/' . $row->id) ?>"><i class="fa fa-link"></i></a>
-                                            <a class="btn btn-sm btn-primary related-page-edit-button" content_id="<?= $row->id ?>"><i class="fa fa-pencil"></i></a>
-                                        </div>
-                                    </div>
-                                </li>                    
-                            <?php endforeach; ?>                        
-                        </ul>
-                    <?php } else { ?>
-                        <p class="text-center"><?= __('Empty') ?></p>
-                    <?php } ?>
-                    <h4 class="page-header"><?= __('Add Related Page'); ?></h4>
-                    <div id="block-page"></div>
-                    <div class="text-right">
-                        <a id="add-page-button" class="btn btn-sm btn-success">+</a>
-                        <a id="remove-page-button" class="btn btn-sm btn-danger">-</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="related-page-edit">
-                        <div class="text-center">
-                            <h4><?= __('Edit Related Page'); ?></h4>
-                            <p><?= __('Use the related edit button to change the content and settings'); ?></p>
-                            <i class="fa fa-3x fa-pencil"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- related pages -->
+            <?= $this->extend('/Page/related_pages'); ?> 
         </div>
         <div role="tabpanel" class="tab-pane" id="tab3">
-            <div class="row">
-                <div class="col-md-9">
-                    <h4 class="page-header"><?= __('Content Taxonomy'); ?></h4>
-                    <div class="thumbnail">
-                        <?php
-                        $TAXONOMY_CHECKED = array();
-                        foreach ($data['list_of_taxonomy_checked'] as $row):
-                            $TAXONOMY_CHECKED[$row['cms_term_taxonomy_id']] = 1;
-                        endforeach;
-                        ?>
-                        <div id="asd">
-                            <table id="content-category-table" class="table table-striped table-hover dataTable">
-                                <thead>
-                                    <tr>
-                                        <th>Categoria</th>
-                                        <th>Descrizione</th>
-                                        <th class="no-sorting"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($data['list_of_taxonomy'] as $row): ?>
-                                        <tr>
-                                            <td><?= $row['title']; ?></td>
-                                            <td><?= $row['description']; ?></td>
-                                            <?php $CHECKED = array_key_exists($row['id'], $TAXONOMY_CHECKED) ? ' checked' : '' ?>
-                                            <td class="text-right"><input type="checkbox" class="checkbox-content-taxonomy" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="well well-sm">
-                        <h4><?= __('Info'); ?></h4>
-                    </div>
-                </div>
-            </div>
+            <!-- related attachments -->
+            <?= $this->extend('/Page/related_taxonomy'); ?>             
         </div>
         <div role="tabpanel" class="tab-pane" id="tab4">
-            <div class="row">
-                <div class="col-md-9">
-                    <h4 class="page-header"><?= __('List of Attachments'); ?></h4>
-                    <?php if (count($data['related']['attached']) > 0) { ?>
-                        <ul id="sortable-attachments" class="sortable">
-                            <?php foreach ($data['related']['attached'] as $row) : ?>
-                                <li id="<?= $row['id'] ?>" class="well well-sm">
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <i class="fa fa-arrows-v"></i> <?= $row->menu_order ?>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input class="input-sm form-control text-center" value="<?= $row->id ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-5">
-                                            <input id="related_content_title_<?= $row->id ?>" class="input-sm form-control" value="<?= $row->content_title ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label class="text-danger">
-                                                <input type="checkbox" name="delete_ck[content_id][<?= $row->id ?>]" value="1" /> <i class="fa fa-trash-o"></i> <?= __('Delete'); ?>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-2 text-right">
-                                            <a class="btn btn-sm btn-default" href="<?= $this->Url->Build() ?>"><i class="fa fa-download"></i></a>
-                                            <a class="btn btn-sm btn-primary related-attached-edit-button" content_id="<?= $row->id ?>"><i class="fa fa-pencil"></i></a>
-                                        </div>
-                                    </div>
-                                </li>                    
-                            <?php endforeach; ?>                       
-                        </ul>
-                    <?php } else { ?>
-                        <p class="text-center"><?= __('Empty') ?></p>
-                    <?php } ?>
-                    <h4 class="page-header"><?= __('Add Attachments'); ?></h4>
-                    <div id="block-attached"></div>
-                    <div class="text-right">
-                        <a id="add-attached-button" class="btn btn-sm btn-success">+</a>
-                        <a id="remove-attached-button" class="btn btn-sm btn-danger">-</a>
-                    </div> 
-                </div>
-                <div class="col-md-3">
-                    <div id="related-attached-edit">
-                        <div class="text-center">
-                            <h4><?= __('Edit Related Attached'); ?></h4>
-                            <p><?= __('Use the related edit button to change the content and settings'); ?></p>
-                            <i class="fa fa-3x fa-pencil"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- related attachments -->
+            <?= $this->extend('/Page/related_attachments'); ?> 
         </div>
         <div role="tabpanel" class="tab-pane" id="tab5">
-            <div class="row">
-                <div class="col-md-9">
-                    <h4 class="page-header"><?= __('List of Images'); ?></h4>
-                    <?php if (count($data['related']['image']) > 0) { ?>
-                        <ul id="sortable-images" class="sortable">
-                            <?php foreach ($data['related']['image'] as $row) : ?>
-                                <li id="<?= $row['id'] ?>" class="well well-sm">
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <i class="fa fa-arrows-v"></i> <?= $row->menu_order ?>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input class="input-sm form-control text-center" value="<?= $row->id ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-5">
-                                            <input id="related_content_title_<?= $row->id ?>" class="input-sm form-control" value="<?= $row->content_title ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label class="text-danger">
-                                                <input type="checkbox" name="delete_ck[content_id][<?= $row->id ?>]" value="1" /> <i class="fa fa-trash-o"></i> <?= __('Delete'); ?>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-2 text-right">
-                                            <a class="btn btn-sm btn-default" href="<?= $this->Url->Build('/') ?>"><i class="fa fa-picture-o"></i></a>
-                                            <a class="btn btn-sm btn-primary related-image-edit-button" content_id="<?= $row->id ?>"><i class="fa fa-pencil"></i></a>
-                                        </div>
-                                    </div>
-                                </li>                    
-                            <?php endforeach; ?>                         
-                        </ul>
-                    <?php } else { ?>
-                        <p class="text-center"><?= __('Empty') ?></p>
-                    <?php } ?> 
-                    <h4 class="page-header"><?= __('Add Images'); ?></h4>
-                    <div id="block-image"></div>
-                    <div class="text-right">
-                        <a id="add-image-button" class="btn btn-sm btn-success">+</a>
-                        <a id="remove-image-button" class="btn btn-sm btn-danger">-</a>
-                    </div> 
-                </div>
-                <div class="col-md-3">
-                    <div id="related-image-edit">
-                        <div class="text-center">
-                            <h4><?= __('Edit Related Image'); ?></h4>
-                            <p><?= __('Use the related edit button to change the content and settings'); ?></p>
-                            <i class="fa fa-3x fa-pencil"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- related images -->
+            <?= $this->extend('/Page/related_images'); ?>           
         </div>
         <div role="tabpanel" class="tab-pane" id="tab6">
-            <div class="row">
-                <div class="col-md-9">
-                    <h4 class="page-header"><?= __('List of Meta Key'); ?></h4>
-                    <?php if (count($data['related']['meta']) > 0) { ?>
-                        <ul id="sortable-meta" class="sortable"> 
-                            <?php foreach ($data['related']['meta'] as $row) : ?>
-                                <li id="<?= $row['id'] ?>" class="well well-sm">
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <i class="fa fa-arrows-v"></i> <?= $row->priority ?>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input id="related_meta_key_<?= $row->id ?>" class="input-sm form-control" value="<?= $row->meta_key ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input id="related_meta_value_<?= $row->id ?>" class="input-sm form-control" value="<?= $row->meta_value ?>" readonly="" />
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label class="text-danger">
-                                                <input type="checkbox" name="delete_ck[meta_id][<?= $row->id ?>]" value="1" /> <i class="fa fa-trash-o"></i> <?= __('Delete'); ?>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-2 text-right">
-                                            <a class="btn btn-sm btn-primary related-meta-edit-button" meta_id="<?= $row->id ?>"><i class="fa fa-pencil"></i></a>
-                                        </div>
-                                    </div>
-                                </li>                    
-                            <?php endforeach; ?>   
-                        </ul>
-                    <?php } else { ?>
-                        <p class="text-center"><?= __('Empty') ?></p>
-                    <?php } ?>
-                    <h4 class="page-header"><?= __('Add Meta Key'); ?></h4>
-                    <div id="block-meta"></div>
-                    <div class="text-right">
-                        <a id="add-meta-button" class="btn btn-sm btn-success">+</a>
-                        <a id="remove-meta-button" class="btn btn-sm btn-danger">-</a>
-                    </div> 
-                </div>
-                <div class="col-md-3">
-                    <div id="related-meta-edit">
-                        <div class="text-center">
-                            <h4><?= __('Edit Related Meta'); ?></h4>
-                            <p><?= __('Use the related edit button to change the content and settings of meta'); ?></p>
-                            <i class="fa fa-3x fa-pencil"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- related options -->
+            <?= $this->extend('/Page/related_options'); ?>
         </div>
         <div role="tabpanel" class="tab-pane" id="tab7">
-            <div class="row">
-                <div class="col-md-9">
-                    <h4 class="page-header"><?= __('Content Permits for Users'); ?></h4>
-                    <div class="thumbnail">
-                        <?php
-                        $USER_CHECKED = array();
-                        foreach ($data['list_of_user_checked'] as $row):
-                            $USER_CHECKED[$row['sys_user_id']] = 1;
-                        endforeach;
-                        ?>
-                        <table id="user-permits-table" class="table table-striped table-hover dataTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Username</th>
-                                    <th class="no-sorting"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($data['list_of_user'] as $row): ?>
-                                    <tr>
-                                        <td><?= $row['name']; ?></td>
-                                        <td><?= $row['username']; ?></td>
-                                        <?php $CHECKED = array_key_exists($row['id'], $USER_CHECKED) ? ' checked' : '' ?>
-                                        <td class="text-right"><input type="checkbox" class="checkbox-user-permit" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h4 class="page-header"><?= __('Content Permits for Roles'); ?></h4>
-                    <div class="thumbnail">
-                        <?php
-                        $ROLE_CHECKED = array();
-                        foreach ($data['list_of_role_checked'] as $row):
-                            $ROLE_CHECKED[$row['sys_role_id']] = 1;
-                        endforeach;
-                        ?>
-                        <table id="role-permits-table" class="table table-striped table-hover dataTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th class="no-sorting"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($data['list_of_role'] as $row): ?>
-                                    <tr>
-                                        <td><?= $row['name']; ?></td>
-                                        <td><?= $row['description']; ?></td>
-                                        <?php $CHECKED = array_key_exists($row['id'], $ROLE_CHECKED) ? ' checked' : '' ?>
-                                        <td class="text-right"><input type="checkbox" class="checkbox-role-permit" value="<?= $row['id'] ?>" <?= $CHECKED ?>/></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="well well-sm">
-                        <h4><?= __('Info'); ?></h4>
-                    </div>
-                </div>
-            </div>
+            <!-- related roles -->
+            <?= $this->extend('/Page/related_roles'); ?>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab8">
+            <!-- related users -->
+            <?= $this->extend('/Page/related_users'); ?>
         </div>
     </div>
 </div>    
