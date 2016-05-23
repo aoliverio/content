@@ -74,8 +74,8 @@ class PageController extends AppController {
     public function edit($id = null) {
 
         if ($id) {
-            $content = $this->Content->get($id);
-            if ($content->cms_content_type_id != $this->type_id) {
+            $cmsContent = $this->Content->get($id);
+            if ($cmsContent->cms_content_type_id != $this->type_id) {
                 $this->Flash->error(__('The Content type is not page'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -129,93 +129,24 @@ class PageController extends AppController {
             }
         }
 
-        /**
-         * Set parent_page_list
-         */
-        $cmsContent['parent_page_list'] = $this->_getPagesList($id);
+        $cmsContent['parent_page_list'] = $this->Content->getPageList($id);
+        $cmsContent['content_status_list'] = ['1' => 'Draft', '2' => 'Published'];
 
-        /**
-         * Set content_status_list
-         */
-        $cmsContent['content_status_list'] = ['1' => 'Draft', '2' => 'Publish'];
+        $cmsContent['list_of_taxonomy'] = $this->Content->getTaxonomies($id);
+        $cmsContent['list_of_taxonomy_checked'] = $this->Content->getCheckedTaxonomies($id);
 
-        /**
-         * Set list of taxonomy
-         */
-        $where = ['taxonomy' => 'page'];
-        $cmsContent['list_of_taxonomy'] = parent::getListOfTaxonomy($where);
+        $cmsContent['list_of_user'] = $this->Content->getUsers($id);
+        $cmsContent['list_of_user_checked'] = $this->Content->getCheckedUsers($id);
 
-        /**
-         * Set list of taxonomy checked
-         */
-        $relationTable = TableRegistry::get('CmsTermRelation');
-        $query = $relationTable->find()
-                ->select(['cms_term_taxonomy_id'])
-                ->where(['cms_content_id' => $id]);
-        $cmsContent['list_of_taxonomy_checked'] = $query->all();
+        $cmsContent['list_of_role'] = $this->Content->getRoles($id);
+        $cmsContent['list_of_role_checked'] = $this->Content->getCheckedRoles($id);
 
-        /**
-         * Set list of user
-         */
-        $cmsContent['list_of_user'] = parent::getListOfUser();
-
-        /**
-         * Set list of user checked
-         */
-        $cmsPermissionTable = TableRegistry::get('CmsPermission');
-        $query = $cmsPermissionTable->find()
-                ->select(['sys_user_id'])
-                ->where(['cms_content_id' => $id]);
-        $cmsContent['list_of_user_checked'] = $query->all();
-
-        /**
-         * Set list of role
-         */
-        $cmsContent['list_of_role'] = parent::getListOfRole();
-
-        /**
-         * Set list of role checked
-         */
-        $cmsPermissionTable = TableRegistry::get('CmsPermission');
-        $query = $cmsPermissionTable->find()
-                ->select(['sys_role_id'])
-                ->where(['cms_content_id' => $id]);
-        $cmsContent['list_of_role_checked'] = $query->all();
-
-        /**
-         * Create related array
-         */
         $cmsContent['related'] = array();
-
-        /**
-         * Set related page
-         */
-        $where = ['parent' => $id, 'content_type' => 'page'];
-        $cmsContent['related']['page'] = parent::getListOfContent($where);
-
-        /**
-         * Set related image
-         */
-        $where = ['parent' => $id, 'content_type' => 'image'];
-        $cmsContent['related']['image'] = parent::getListOfContent($where);
-
-        /**
-         * Set related attached
-         */
-        $where = ['parent' => $id, 'content_type' => 'attached'];
-        $cmsContent['related']['attached'] = parent::getListOfContent($where);
-
-        /**
-         * Set related meta
-         */
-        $where = ['cms_content_id' => $id];
-        $cmsContent['related']['meta'] = parent::getListOfMeta($where);
-
-        $cmsContent['content_status_list'] = [
-            '1' => 'Draft',
-            '2' => 'Publish'
-        ];
-
+        $cmsContent['related']['page'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 1]);
+        $cmsContent['related']['attached'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 3]);
+        $cmsContent['related']['image'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 4]);
+        $cmsContent['related']['meta'] = $this->Content->getRelatedOptions($id);
+                
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
     }
@@ -374,8 +305,6 @@ class PageController extends AppController {
         exit('ok');
     }
 
-
-    
     /**
      * 
      * 
@@ -383,8 +312,6 @@ class PageController extends AppController {
      * 
      * 
      */
-    
-    
 
     /**
      * 
@@ -441,29 +368,6 @@ class PageController extends AppController {
                 ->order('priority')
                 ->limit($limit);
         return $query->all();
-    }
-
-    /*
-     * This function provides the {key, value} of the 'page' Content type.
-     * 
-     * 
-     * @param type $content_id
-     * @return type
-     */
-
-    protected function _getPagesList($id) {
-
-        $data = [];
-
-        $Table = TableRegistry::get('CmsContents');
-        $query = $Table->find('all')
-                ->where(['id <>' => $id, 'cms_content_type_id' => $this->type_id]);
-
-        foreach ($query->toArray() as $row):
-            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
-        endforeach;
-
-        return $data;
     }
 
 }

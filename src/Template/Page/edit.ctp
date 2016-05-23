@@ -337,14 +337,14 @@ $this->append('script');
 <div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab"><strong><?= __('MAIN'); ?></strong></a></li>
+        <li role="presentation" class="active"><a class="bg-info" href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab"><strong><?= __('Main'); ?></strong></a></li>
         <li role="presentation"><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab"><?= __('Pages'); ?> <span class="badge"><?= count($data['related']['page']); ?></span></a></li>
         <li role="presentation"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab"><?= __('Taxonomy'); ?> <span class="badge"><?= count($data['list_of_taxonomy_checked']) ?></span></a></li>
         <li role="presentation"><a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab"><?= __('Attachments'); ?> <span class="badge"><?= count($data['related']['attached']); ?></span></a></li>
         <li role="presentation"><a href="#tab5" aria-controls="tab5" role="tab" data-toggle="tab"><?= __('Images'); ?> <span class="badge"><?= count($data['related']['image']); ?></span></a></li>
-        <li role="presentation"><a href="#tab6" aria-controls="tab6" role="tab" data-toggle="tab"><?= __('Meta Key'); ?> <span class="badge"><?= count($data['related']['meta']); ?></span></a></li>
-        <li role="presentation"><a href="#tab7" aria-controls="tab7" role="tab" data-toggle="tab"><?= __('Roles Permits'); ?></a></li>
-        <li role="presentation"><a href="#tab8" aria-controls="tab8" role="tab" data-toggle="tab"><?= __('Users Permits'); ?></a></li>
+        <li role="presentation"><a href="#tab6" aria-controls="tab6" role="tab" data-toggle="tab"><?= __('Options'); ?> <span class="badge"><?= count($data['related']['meta']); ?></span></a></li>
+        <li role="presentation"><a class="bg-danger" href="#tab7" aria-controls="tab7" role="tab" data-toggle="tab"><i class="fa fa-lock"></i> <?= __('Roles'); ?> <span class="badge"><?= count($data['list_of_role_checked']); ?></span></a></li>
+        <li role="presentation"><a class="bg-danger" href="#tab8" aria-controls="tab8" role="tab" data-toggle="tab"><i class="fa fa-lock"></i> <?= __('Users'); ?> <span class="badge"><?= count($data['list_of_user_checked']); ?></span></a></li>
     </ul>
     <br/>
     <!-- Tab panes -->
@@ -421,31 +421,31 @@ $this->append('script');
         </div>
         <div role="tabpanel" class="tab-pane" id="tab2">
             <!-- related pages -->
-            <?= $this->extend('/Page/related_pages'); ?> 
+            <?= $this->element('/Content/related-pages'); ?> 
         </div>
         <div role="tabpanel" class="tab-pane" id="tab3">
             <!-- related attachments -->
-            <?= $this->extend('/Page/related_taxonomy'); ?>             
+            <?= $this->element('/Content/related-taxonomy'); ?>             
         </div>
         <div role="tabpanel" class="tab-pane" id="tab4">
             <!-- related attachments -->
-            <?= $this->extend('/Page/related_attachments'); ?> 
+            <?= $this->element('/Content/related-attachments'); ?> 
         </div>
         <div role="tabpanel" class="tab-pane" id="tab5">
             <!-- related images -->
-            <?= $this->extend('/Page/related_images'); ?>           
+            <?= $this->element('/Content/related-images'); ?>           
         </div>
         <div role="tabpanel" class="tab-pane" id="tab6">
             <!-- related options -->
-            <?= $this->extend('/Page/related_options'); ?>
+            <?= $this->element('/Content/related-options'); ?>
         </div>
         <div role="tabpanel" class="tab-pane" id="tab7">
             <!-- related roles -->
-            <?= $this->extend('/Page/related_roles'); ?>
+            <?= $this->element('/Content/related-roles'); ?>
         </div>
         <div role="tabpanel" class="tab-pane" id="tab8">
             <!-- related users -->
-            <?= $this->extend('/Page/related_users'); ?>
+            <?= $this->element('/Content/related-users'); ?>
         </div>
     </div>
 </div>    

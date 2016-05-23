@@ -354,26 +354,18 @@ Class Content {
      * Provide the related Content records for a $content_id filtered by $params.
      * 
      * @param type $content_id
-     * @param type $params
+     * @param type $filter
      * @return type
      */
-    public function getRelatedItems($content_id, $params = []) {
+    public function getRelatedItems($content_id, $filter = []) {
 
-        extract($params);
+        $where = array_merge(['parent_id' => $content_id], $filter);
 
-        $query = $this->Table->find('all');
-        $query->where(['parent' => $content_id]);
-
-        if (isset($type) && in_array($type, $this->permittedType))
-            $query->where(['content_type' => trim($type)]);
-
-        if (isset($status) && in_array($status, $this->permittedStatus))
-            $query->where(['content_status' => trim($status)]);
-        else
-            $query->where(['content_status' => $this->defaultStatus]);
-
-        $query->order('menu_order');
-        return $query->toArray();
+        return $this->Table
+                ->find('all')
+                ->where($where)
+                ->order(['menu_order'])
+                ->toArray();
     }
 
     /**
@@ -386,9 +378,85 @@ Class Content {
 
         return TableRegistry::get('CmsContentOptions')
                         ->find('all')
-                        ->where(['cms_parent_id' => $content_id])
+                        ->where(['cms_content_id' => $content_id])
                         ->order(['menu_order'])
                         ->toArray();
+    }
+
+    /**
+     * 
+     * 
+     * @param \Content\Lib\type $content_id
+     * @return \Content\Lib\stringThis|string * @param \Content\Lib\type $content_id
+     * @return \Content\Lib\stringThis|string} of the 'page' Content type.
+     */
+    public function getPageList($content_id) {
+
+        $data = [];
+
+        $Table = TableRegistry::get('CmsContents');
+        $query = $Table->find('all')
+                ->where(['id <>' => $content_id, 'cms_content_type_id' => 1]);
+
+        foreach ($query->toArray() as $row):
+            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
+        endforeach;
+
+        return $data;
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    public function getTaxonomies($content_id) {
+        return [];
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    public function getCheckedTaxonomies($content_id) {
+        return [];
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    public function getRoles($content_id) {
+        return [];
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    public function getCheckedRoles($content_id) {
+        return [];
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    public function getUsers($content_id) {
+        return [];
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    public function getCheckedUsers($content_id) {
+        return [];
     }
 
     /**
