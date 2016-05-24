@@ -82,7 +82,8 @@ class PageController extends AppController {
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            if ($this->_saveContent($cmsContent)) {
+
+            if ($this->Content->save($this->request->data)) {
 
                 if (isset($this->request->data['related']['page']) && count($this->request->data['related']['page'])) {
                     $items = $this->request->data['related']['page'];
@@ -102,8 +103,8 @@ class PageController extends AppController {
                     $this->Content->saveRelatedItems($id, $data, $params);
                 }
 
-                if (isset($this->request->data['related']['meta']) && count($this->request->data['related']['meta'])) {
-                    $this->Content->saveRelatedOptions($id, $this->request->data['related']['meta']);
+                if (isset($this->request->data['related']['option']) && count($this->request->data['related']['option'])) {
+                    $this->Content->saveRelatedOptions($id, $this->request->data['related']['option']);
                 }
 
                 if (isset($this->request->data['delete_ck']['content_id'])) {
@@ -112,20 +113,22 @@ class PageController extends AppController {
                     endforeach;
                 }
 
-                if (isset($this->request->data['delete_ck']['meta_id'])) {
-                    foreach ($this->request->data['delete_ck']['meta_id'] as $key => $val) :
+                if (isset($this->request->data['delete_ck']['option_id'])) {
+                    foreach ($this->request->data['delete_ck']['option_id'] as $key => $val) :
                         $this->Content->deleteRelatedOption($key);
                     endforeach;
                 }
 
                 $this->Flash->success('The cms content has been saved.');
 
-                if (isset($this->request->data['button_save_action']))
+                if (isset($this->request->data['button_save_action'])) {
                     return $this->redirect(['action' => 'edit', $id]);
-                else
+                } else {
                     return $this->redirect(['action' => 'index']);
+                }
             } else {
                 $this->Flash->error('The cms content could not be saved. Please, try again.');
+                return $this->redirect(['action' => 'edit', $id]);
             }
         }
 
@@ -145,8 +148,8 @@ class PageController extends AppController {
         $cmsContent['related']['page'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 1]);
         $cmsContent['related']['attached'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 3]);
         $cmsContent['related']['image'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 4]);
-        $cmsContent['related']['meta'] = $this->Content->getRelatedOptions($id);
-                
+        $cmsContent['related']['option'] = $this->Content->getRelatedOptions($id);
+
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
     }
@@ -235,10 +238,10 @@ class PageController extends AppController {
      * 
      * @param type $id
      */
-    public function addRelatedMetaBlock($id = 1) {
+    public function addRelatedOptionBlock($id = 1) {
         $this->set('id', $id);
         $this->viewBuilder()->layout('ajax');
-        $this->viewBuilder()->template('block_add_related_meta');
+        $this->viewBuilder()->template('block_add_related_option');
     }
 
     /**
@@ -284,13 +287,51 @@ class PageController extends AppController {
      * 
      * @param type $content_id
      */
-    public function editRelatedMeta($id) {
-        $this->CmsContentMeta = TableRegistry::get('CmsContentMeta');
-        $meta = $this->CmsContentMeta->get($id, ['contain' => []]);
-        $this->set('data', $meta);
+    public function editRelatedOption($id) {
+        $this->CmsContentOption = TableRegistry::get('CmsContentOption');
+        $option = $this->CmsContentOption->get($id, ['contain' => []]);
+        $this->set('data', $option);
         $this->set('_serialize', ['data']);
         $this->viewBuilder()->layout('ajax');
-        $this->viewBuilder()->template('block_edit_related_meta');
+        $this->viewBuilder()->template('block_edit_related_option');
+    }
+
+    /**
+     * This function is invoked in AJAX to save the ordering of the related elements
+     * 
+     * @return boolean
+     */
+    public function saveContentsOrder() {
+        $ITER = 1;
+        $contentTable = TableRegistry::get('CmsContents');
+        if ($this->request->is('post')) :
+            $items = explode(',', $this->request->data['order']);
+            foreach ($items as $id) :
+                $content = $contentTable->get($id);
+                $content->menu_order = $ITER++;
+                $contentTable->save($content);
+            endforeach;
+        endif;
+        exit('ok');
+    }
+
+    /**
+     * This function is invoked in AJAX to save the ordering of the related options
+     * 
+     * @return boolean
+     */
+    public function saveOptionsOrder() {
+        $ITER = 1;
+        $contentTable = TableRegistry::get('CmsContentOptions');
+        if ($this->request->is('post')) :
+            $items = explode(',', $this->request->data['order']);
+            foreach ($items as $id) :
+                $content = $contentTable->get($id);
+                $content->menu_order = $ITER++;
+                $contentTable->save($content);
+            endforeach;
+        endif;
+        exit('ok');
     }
 
     /**
@@ -299,11 +340,54 @@ class PageController extends AppController {
      * @param type $content_id
      * @param type $sys_user_id
      */
-    public function unsetRolePermit($content_id, $sys_role_id) {
-        $permissionTable = TableRegistry::get('CmsPermission');
-        $permissionTable->deleteAll(['cms_content_id' => $content_id, 'sys_role_id' => $sys_role_id]);
+    public function setUserPermit($content_id, $user_id) {
+        $permissionTable = TableRegistry::get('CmsContentUsers');
+        $permission = $permissionTable->newEntity();
+        $permission->cms_content_id = $content_id;
+        $permission->user_id = $user_id;
+        $permissionTable->save($permission);
         exit('ok');
     }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @param type $sys_user_id
+     */
+    public function unsetUserPermit($content_id, $user_id) {
+        $permissionTable = TableRegistry::get('CmsContentUsers');
+        $permissionTable->deleteAll(['cms_content_id' => $content_id, 'user_id' => $user_id]);
+        exit('ok');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @param type $sys_user_id
+     */
+    public function setRolePermit($content_id, $role_id) {
+        $permissionTable = TableRegistry::get('CmsContentRoles');
+        $permission = $permissionTable->newEntity();
+        $permission->cms_content_id = $content_id;
+        $permission->role_id = $role_id;
+        $permissionTable->save($permission);
+        exit('ok');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @param type $sys_user_id
+     */
+    public function unsetRolePermit($content_id, $role_id) {
+        $permissionTable = TableRegistry::get('CmsContentRoles');
+        $permissionTable->deleteAll(['cms_content_id' => $content_id, 'role_id' => $role_id]);
+        exit('ok');
+    }
+
 
     /**
      * 
@@ -361,9 +445,9 @@ class PageController extends AppController {
      * @param type $limit
      * @return type
      */
-    public function getListOfMeta($where = array(), $limit = 1000) {
-        $metaTable = TableRegistry::get('CmsContentMeta');
-        $query = $metaTable->find('all')
+    public function getListOfOption($where = array(), $limit = 1000) {
+        $optionTable = TableRegistry::get('CmsContentOption');
+        $query = $optionTable->find('all')
                 ->where($where)
                 ->order('priority')
                 ->limit($limit);
