@@ -17,6 +17,7 @@
 
 namespace Content\Lib;
 
+use Content\Lib\File;
 use Content\Lib\Utility;
 use Cake\Utility\Inflector;
 use Cake\ORM\TableRegistry;
@@ -165,6 +166,12 @@ Class Content {
     public $Term = null;
 
     /**
+     *
+     * @var type 
+     */
+    public $File = null;
+
+    /**
      * Create new Content in CmsContents table.
      * 
      * @param type $config
@@ -173,6 +180,8 @@ Class Content {
 
         $fullTableName = $this->PluginName . '.' . $this->TableName;
         $this->Table = TableRegistry::get($fullTableName);
+
+        $this->File = new File();
 
         // set user from session
         $this->user = 1;
@@ -268,21 +277,10 @@ Class Content {
             if (!$this->_isAuthorizedRole())
                 return false;
 
-        $parent_id = (isset($item['parent_id'])) ? intval($item['parent_id']) : 0;
-        $type_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
-        $status_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
-
-        $CONTENT_PATH = $this->_uploadFile($item['content_path']);
-        if ($CONTENT_PATH) :
-            $PATHINFO = pathinfo($CONTENT_PATH);
-            $item['content_title'] = (trim($item['content_title']) == '') ? Inflector::humanize($PATHINFO['filename']) : trim($item['content_title']);
-            $item['parent_id'] = $parent_id;
-            $item['cms_content_type_id'] = $type_id;
-            $item['cms_content_status_id'] = $status_id;
-            $item['content_path'] = $CONTENT_PATH;
-            $item['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
-            $this->Content->create($item);
-        endif;
+        $this->Table = TableRegistry::get($this->TableName);
+        $cmsContent = $this->Table->get($item['id']);
+        $cmsContent = $this->Table->patchEntity($cmsContent, $item);
+        $this->Table->save($cmsContent);
     }
 
     /**
@@ -297,6 +295,30 @@ Class Content {
                 array_merge($item, $params);
             $this->save($item);
         endforeach;
+
+        /**
+         * 
+          $parent_id = (isset($item['parent_id'])) ? intval($item['parent_id']) : 0;
+          $type_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
+          $status_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
+
+          if ($item['content_path'])
+          $CONTENT_PATH = $this->File->upload($item['content_path']);
+          else
+          $CONTENT_PATH = '';
+
+          if ($CONTENT_PATH) :
+          $PATHINFO = pathinfo($CONTENT_PATH);
+          $item['content_title'] = (trim($item['content_title']) == '') ? Inflector::humanize($PATHINFO['filename']) : trim($item['content_title']);
+          $item['parent_id'] = $parent_id;
+          $item['cms_content_type_id'] = $type_id;
+          $item['cms_content_status_id'] = $status_id;
+          $item['content_path'] = $CONTENT_PATH;
+          $item['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
+          $this->Table->save($item);
+          endif;
+         * 
+         */
     }
 
     /**
@@ -362,10 +384,10 @@ Class Content {
         $where = array_merge(['parent_id' => $content_id], $filter);
 
         return $this->Table
-                ->find('all')
-                ->where($where)
-                ->order(['menu_order'])
-                ->toArray();
+                        ->find('all')
+                        ->where($where)
+                        ->order(['menu_order'])
+                        ->toArray();
     }
 
     /**
@@ -429,7 +451,10 @@ Class Content {
      * @return type
      */
     public function getRoles($content_id) {
-        return [];
+        return TableRegistry::get('Roles')
+                        ->find('all')
+                        ->order(['name'])
+                        ->toArray();
     }
 
     /**
@@ -438,7 +463,10 @@ Class Content {
      * @return type
      */
     public function getCheckedRoles($content_id) {
-        return [];
+        return TableRegistry::get('CmsContentRoles')
+                        ->find('all')
+                        ->where(['cms_content_id' => $content_id])
+                        ->toArray();
     }
 
     /**
@@ -447,7 +475,10 @@ Class Content {
      * @return type
      */
     public function getUsers($content_id) {
-        return [];
+        return TableRegistry::get('Users')
+                        ->find('all')
+                        ->order(['name'])
+                        ->toArray();
     }
 
     /**
@@ -456,7 +487,10 @@ Class Content {
      * @return type
      */
     public function getCheckedUsers($content_id) {
-        return [];
+        return TableRegistry::get('CmsContentUsers')
+                        ->find('all')
+                        ->where(['cms_content_id' => $content_id])
+                        ->toArray();
     }
 
     /**

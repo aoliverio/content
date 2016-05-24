@@ -40,7 +40,8 @@ Class File {
      * 
      */
     public function __construct() {
-        
+
+        $this->path = WWW_ROOT . 'uploads';
     }
 
     /**
@@ -52,7 +53,7 @@ Class File {
      * @param string $destfile
      * @return boolean
      */
-    public function uploadFile($inputfile, $destfile = null) {
+    public function upload($inputfile, $destfile = null) {
 
         if (strlen(trim($inputfile['name'])) === 0)
             return FALSE;
@@ -63,7 +64,7 @@ Class File {
 
         $CONTENT_YEAR = date('Y');
         $CONTENT_MONTH = date('m');
-        $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : WWW_ROOT . 'uploads');
+        $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : $this->path);
         $folder_dest = new Folder($UPLOAD_DIR);
 
         if (!$folder_dest->inCakePath($folder_dest->pwd() . DS . $CONTENT_YEAR))
@@ -90,7 +91,7 @@ Class File {
      * @param type $content_path
      * @return boolean
      */
-    public function removeFile($path) {
+    public function remove($path) {
         $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : WWW_ROOT . 'uploads');
         $file = new File($UPLOAD_DIR . $path);
         return $file->delete();
