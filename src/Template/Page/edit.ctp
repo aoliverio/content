@@ -37,7 +37,7 @@ $this->append('script');
          */
         function addAttached() {
             $.ajax({
-                url: '<?php echo $this->Url->build('/content/CmsContent/addRelatedAttachedBlock/', true); ?>' + i,
+                url: '<?php echo $this->Url->build('/content/page/addRelatedAttachedBlock/', true); ?>' + i,
                 success: function (result) {
                     $("#block-attached").append(result);
                     i++;
@@ -63,7 +63,7 @@ $this->append('script');
          */
         function addImage() {
             $.ajax({
-                url: '<?php echo $this->Url->build('/content/CmsContent/addRelatedImageBlock/', true); ?>' + j,
+                url: '<?php echo $this->Url->build('/content/page/addRelatedImageBlock/', true); ?>' + j,
                 success: function (result) {
                     $("#block-image").append(result);
                     j++;
@@ -89,7 +89,7 @@ $this->append('script');
          */
         function addPage() {
             $.ajax({
-                url: '<?php echo $this->Url->build('/content/CmsContent/addRelatedPageBlock/', true); ?>' + k,
+                url: '<?php echo $this->Url->build('/content/page/addRelatedPageBlock/', true); ?>' + k,
                 success: function (result) {
                     $("#block-page").append(result);
                     k++;
@@ -113,11 +113,11 @@ $this->append('script');
          * 
          * @returns {undefined}
          */
-        function addMeta() {
+        function addOption() {
             $.ajax({
-                url: '<?php echo $this->Url->build('/content/CmsContent/addRelatedMetaBlock/', true); ?>' + l,
+                url: '<?php echo $this->Url->build('/content/page/addRelatedOptionBlock/', true); ?>' + l,
                 success: function (result) {
-                    $("#block-meta").append(result);
+                    $("#block-option").append(result);
                     l++;
                 }
             });
@@ -127,10 +127,10 @@ $this->append('script');
          * 
          * @returns {undefined}
          */
-        function removeMeta() {
+        function removeOption() {
             if (l > 2) {
                 l--;
-                var child = "#block-meta-" + l;
+                var child = "#block-option-" + l;
                 $(child).remove();
             }
         }
@@ -151,9 +151,9 @@ $this->append('script');
         addPage();
 
         /**
-         * Create first block for Meta
+         * Create first block for Option
          */
-        addMeta();
+        addOption();
 
         /**
          * Button action
@@ -164,8 +164,8 @@ $this->append('script');
         $("#remove-image-button").click(removeImage);
         $("#add-page-button").click(addPage);
         $("#remove-page-button").click(removePage);
-        $("#add-meta-button").click(addMeta);
-        $("#remove-meta-button").click(removeMeta)
+        $("#add-option-button").click(addOption);
+        $("#remove-option-button").click(removeOption)
 
         /**
          * 
@@ -183,7 +183,7 @@ $this->append('script');
                 $.ajax({
                     data: "order=" + order,
                     type: 'POST',
-                    url: '<?php echo $this->Url->build('/content/CmsContent/saveMenuOrder', true); ?>'
+                    url: '<?php echo $this->Url->build('/content/page/saveContentsOrder', true); ?>'
                 });
             }
         });
@@ -197,7 +197,7 @@ $this->append('script');
                 $.ajax({
                     data: "order=" + order,
                     type: 'POST',
-                    url: '<?php echo $this->Url->build('/content/CmsContent/saveMenuOrder', true); ?>'
+                    url: '<?php echo $this->Url->build('/content/page/saveContentsOrder', true); ?>'
                 });
             }
         });
@@ -211,7 +211,7 @@ $this->append('script');
                 $.ajax({
                     data: "order=" + order,
                     type: 'POST',
-                    url: '<?php echo $this->Url->build('/content/CmsContent/saveMenuOrder', true); ?>'
+                    url: '<?php echo $this->Url->build(['action' => 'saveContentsOrder'], true); ?>'
                 });
             }
         });
@@ -219,13 +219,13 @@ $this->append('script');
         /**
          * 
          */
-        $("#sortable-meta").sortable({
+        $("#sortable-option").sortable({
             update: function (event, ui) {
                 var order = $(this).sortable('toArray').toString();
                 $.ajax({
                     data: "order=" + order,
                     type: 'POST',
-                    url: '<?php echo $this->Url->build('/content/CmsContentMeta/savePriority', true); ?>'
+                    url: '<?php echo $this->Url->build(['action' => 'saveOptionsOrder'], true); ?>'
                 });
             }
         });
@@ -236,13 +236,13 @@ $this->append('script');
         $(".checkbox-content-taxonomy").change(function () {
             var taxonomy_id = $(this).val();
             if ($(this).is(':checked')) {
-                var URL = '<?= $this->Url->build('/content/CmsContent/setContentRelation/' . $data['id'] . '/', true); ?>' + taxonomy_id;
+                var URL = '<?= $this->Url->build('/content/page/setContentRelation/' . $data['id'] . '/', true); ?>' + taxonomy_id;
                 $.ajax({
                     type: 'POST',
                     url: URL
                 });
             } else {
-                var URL = '<?= $this->Url->build('/content/CmsContent/unsetContentRelation/' . $data['id'] . '/', true); ?>' + taxonomy_id;
+                var URL = '<?= $this->Url->build('/content/page/unsetContentRelation/' . $data['id'] . '/', true); ?>' + taxonomy_id;
                 $.ajax({
                     type: 'POST',
                     url: URL
@@ -256,13 +256,13 @@ $this->append('script');
         $(".checkbox-user-permit").change(function () {
             var user_id = $(this).val();
             if ($(this).is(':checked')) {
-                var URL = '<?= $this->Url->build('/content/CmsContent/setUserPermit/' . $data['id'] . '/', true); ?>' + user_id;
+                var URL = '<?= $this->Url->build('/content/page/setUserPermit/' . $data['id'] . '/', true); ?>' + user_id;
                 $.ajax({
                     type: 'POST',
                     url: URL
                 });
             } else {
-                var URL = '<?= $this->Url->build('/content/CmsContent/unsetUserPermit/' . $data['id'] . '/', true); ?>' + user_id;
+                var URL = '<?= $this->Url->build('/content/page/unsetUserPermit/' . $data['id'] . '/', true); ?>' + user_id;
                 $.ajax({
                     type: 'POST',
                     url: URL
@@ -276,13 +276,13 @@ $this->append('script');
         $(".checkbox-role-permit").change(function () {
             var role_id = $(this).val();
             if ($(this).is(':checked')) {
-                var URL = '<?= $this->Url->build('/content/CmsContent/setRolePermit/' . $data['id'] . '/', true); ?>' + role_id;
+                var URL = '<?= $this->Url->build('/content/page/setRolePermit/' . $data['id'] . '/', true); ?>' + role_id;
                 $.ajax({
                     type: 'POST',
                     url: URL
                 });
             } else {
-                var URL = '<?= $this->Url->build('/content/CmsContent/unsetRolePermit/' . $data['id'] . '/', true); ?>' + role_id;
+                var URL = '<?= $this->Url->build('/content/page/unsetRolePermit/' . $data['id'] . '/', true); ?>' + role_id;
                 $.ajax({
                     type: 'POST',
                     url: URL
@@ -295,7 +295,7 @@ $this->append('script');
          */
         $(".related-page-edit-button").click(function () {
             var id = $(this).attr("content_id");
-            var URL = '<?= $this->Url->build('/content/CmsContent/editRelatedPage/', true); ?>' + id;
+            var URL = '<?= $this->Url->build('/content/page/editRelatedPage/', true); ?>' + id;
             $("#related-page-edit").load(URL);
         });
 
@@ -304,7 +304,7 @@ $this->append('script');
          */
         $(".related-attached-edit-button").click(function () {
             var id = $(this).attr("content_id");
-            var URL = '<?= $this->Url->build('/content/CmsContent/editRelatedAttached/', true); ?>' + id;
+            var URL = '<?= $this->Url->build('/content/page/editRelatedAttached/', true); ?>' + id;
             $("#related-attached-edit").load(URL);
         });
 
@@ -313,23 +313,27 @@ $this->append('script');
          */
         $(".related-image-edit-button").click(function () {
             var id = $(this).attr("content_id");
-            var URL = '<?= $this->Url->build('/content/CmsContent/editRelatedImage/', true); ?>' + id;
+            var URL = '<?= $this->Url->build('/content/page/editRelatedImage/', true); ?>' + id;
             $("#related-image-edit").load(URL);
         });
 
         /** 
          * 
          */
-        $(".related-meta-edit-button").click(function () {
-            var id = $(this).attr("meta_id");
-            var URL = '<?= $this->Url->build('/content/CmsContent/editRelatedMeta/', true); ?>' + id;
-            $("#related-meta-edit").load(URL);
+        $(".related-option-edit-button").click(function () {
+
+            alert('click');
+
+            var id = $(this).attr("option_id");
+            var URL = '<?= $this->Url->build('/content/page/editRelatedOption/', true); ?>' + id;
+            $("#related-option-edit").load(URL);
         });
     });
 </script>
 <?php $this->end(); ?>
 
-<?= $this->Form->create(NULL, ['type' => 'file']); ?>
+<?= $this->Form->create(null, ['type' => 'file']); ?>
+<input type="hidden" name="id" value="<?= $data['id']; ?>">
 <p class="text-right"><small><?= __('Last modified'); ?>: <?= $data['modified'] ?></small></p>
 <div class="pull-right">
     <input type="submit" name="button_save_action" class="btn btn-primary" value="<?= __('Save'); ?>">
@@ -342,7 +346,7 @@ $this->append('script');
         <li role="presentation"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab"><?= __('Taxonomy'); ?> <span class="badge"><?= count($data['list_of_taxonomy_checked']) ?></span></a></li>
         <li role="presentation"><a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab"><?= __('Attachments'); ?> <span class="badge"><?= count($data['related']['attached']); ?></span></a></li>
         <li role="presentation"><a href="#tab5" aria-controls="tab5" role="tab" data-toggle="tab"><?= __('Images'); ?> <span class="badge"><?= count($data['related']['image']); ?></span></a></li>
-        <li role="presentation"><a href="#tab6" aria-controls="tab6" role="tab" data-toggle="tab"><?= __('Options'); ?> <span class="badge"><?= count($data['related']['meta']); ?></span></a></li>
+        <li role="presentation"><a href="#tab6" aria-controls="tab6" role="tab" data-toggle="tab"><?= __('Options'); ?> <span class="badge"><?= count($data['related']['option']); ?></span></a></li>
         <li role="presentation"><a class="bg-danger" href="#tab7" aria-controls="tab7" role="tab" data-toggle="tab"><i class="fa fa-lock"></i> <?= __('Roles'); ?> <span class="badge"><?= count($data['list_of_role_checked']); ?></span></a></li>
         <li role="presentation"><a class="bg-danger" href="#tab8" aria-controls="tab8" role="tab" data-toggle="tab"><i class="fa fa-lock"></i> <?= __('Users'); ?> <span class="badge"><?= count($data['list_of_user_checked']); ?></span></a></li>
     </ul>
@@ -364,7 +368,12 @@ $this->append('script');
                     <small><?= __('Content description'); ?>:</small>
                     <textarea name="content_description" class="form-control summernote" id="content-description">
                         <?= $data['content_description'] ?>
-                    </textarea>
+                    </textarea>     
+                    <hr/>
+                    <small><?= __('Content excerpt'); ?>:</small>
+                    <textarea name="content_excerpt" class="form-control" id="content-excerpt">
+                        <?= $data['content_excerpt'] ?>
+                    </textarea>     
                 </div>
                 <div class="col-md-3">
                     <div>
@@ -380,35 +389,30 @@ $this->append('script');
                         <hr/>
                         <small><?= __('Publish start'); ?>:</small>
                         <div class="input-group date datetimepicker">
-                            <input class="input-sm form-control" type="text" name="publish_start" value="<?= $data['publish_start'] ?>" placeholder="<?= __('Content publish'); ?>" />
+                            <input class="input-sm form-control" type="text" name="publish_start" value="<?= $data['publish_start']->i18nFormat('yyyy-MM-dd') ?>" placeholder="<?= __('Content publish'); ?>" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                        <small><?= __('Publish deadline'); ?>:</small>
+                        <small><?= __('Publish expiry'); ?>:</small>
                         <div class="input-group date datetimepicker">
-                            <input class="input-sm form-control" type="text" name="content_deadline" value="<?= $data['content_deadline'] ?>" placeholder="<?= __('Content deadline'); ?>" />
+                            <input class="input-sm form-control" type="text" name="content_expiry" value="<?= $data['content_expiry']->i18nFormat('yyyy-MM-dd') ?>" placeholder="<?= __('Content expiry'); ?>" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <hr/>
-                        <small><?= __('Publish status'); ?>:</small>
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-info-sign"></span>
-                            </span>
-                            <?= $this->Form->select('content_status', $data['content_status_list'], ['default' => $data['content_status'], 'class' => 'form-control input-sm']); ?>
-                        </div>
+                        <small><?= __('Content status'); ?>:</small>
+                        <?= $this->Form->select('cms_content_status_id', $data['content_status_list'], ['default' => $data['cms_content_status_id'], 'class' => 'input-sm']); ?>
                         <hr/>
-                        <small><?= __('Publish stop'); ?>:</small>
+                        <small><?= __('Hide content after'); ?>:</small>
                         <div class="input-group date datetimepicker">
-                            <input class="input-sm form-control" type="text" name="publish_end" value="<?= $data['publish_end'] ?>" placeholder="<?= __('Publish end'); ?>" />
+                            <input class="input-sm form-control" type="text" name="publish_end" value="<?= $data['publish_end']->i18nFormat('yyyy-MM-dd') ?>" placeholder="<?= __('Publish end'); ?>" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                        <small><?= __('Content password'); ?>:</small>
+                        <small><?= __('Content password for access'); ?>:</small>
                         <div class="input-group">
                             <input class="input-sm form-control" type="text" name="content_password" value="<?= $data['content_password'] ?>" placeholder="<?= __('Content password'); ?>" />
                             <span class="input-group-addon">
@@ -417,7 +421,7 @@ $this->append('script');
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>            
         </div>
         <div role="tabpanel" class="tab-pane" id="tab2">
             <!-- related pages -->
@@ -450,12 +454,14 @@ $this->append('script');
     </div>
 </div>    
 <?= $this->Form->end(); ?>
+
 <!-- myModal 1 -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div id="related-content-edit-modal" class="modal-content"></div>
     </div>
 </div>
+
 <!-- myModal 2 -->
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-sm" role="document">
