@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-9">
-        <div class="alert alert-danger">
+        <div class="alert alert-warning">
             <small><?= __('Change the Parent for this Page'); ?>:</small>
             <?= $this->Form->select('parent', $data['parent_page_list'], ['default' => $data['parent'], 'empty' => __('Root Page'), 'class' => 'form-control input-sm']); ?>
         </div>

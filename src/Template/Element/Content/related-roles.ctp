@@ -5,7 +5,7 @@
             <?php
             $ROLE_CHECKED = array();
             foreach ($data['list_of_role_checked'] as $row):
-                $ROLE_CHECKED[$row['sys_role_id']] = 1;
+                $ROLE_CHECKED[$row['role_id']] = 1;
             endforeach;
             ?>
             <table id="role-permits-table" class="table table-striped table-hover dataTable">

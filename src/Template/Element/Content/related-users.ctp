@@ -5,7 +5,7 @@
             <?php
             $USER_CHECKED = array();
             foreach ($data['list_of_user_checked'] as $row):
-                $USER_CHECKED[$row['sys_user_id']] = 1;
+                $USER_CHECKED[$row['user_id']] = 1;
             endforeach;
             ?>
             <table id="user-permits-table" class="table table-striped table-hover dataTable">
