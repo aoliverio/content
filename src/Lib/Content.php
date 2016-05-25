@@ -196,33 +196,17 @@ Class Content {
      * @param type $data
      * @return boolean
      */
-    public function create($data = []) {
+    public function create($item = []) {
 
+        /**
+         * Gestire il file upload
+         */
         $this->Table = TableRegistry::get($this->TableName);
-        extract($data);
-
-        $item = $this->Table->newEntity();
-        $item->parent_id = isset($parent_id) ? intval($parent_id) : 0;
-        $item->name = $this->_getPermittedName();
-        $item->content_title = isset($content_title) ? h($content_title) : '';
-        $item->content_description = isset($content_description) ? h($content_description) : '';
-        $item->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
-        $item->cms_content_status_id = isset($content_status) ? trim($content_status) : $this->default['cms_content_status_id'];
-        $item->cms_content_type_id = isset($content_type) ? trim($content_type) : $this->default['cms_content_type_id'];
-        $item->content_path = isset($content_path) ? trim($content_path) : '';
-        $item->menu_order = isset($menu_order) ? trim($menu_order) : 0;
-        $item->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
-        $item->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
-        $item->author_id = isset($author_id) ? intval($author_id) : $this->user;
-        $item->created = date('Y-m-d H:i:s');
-        $item->created_user = $this->user;
-        $item->modified = date('Y-m-d H:i:s');
-        $item->modified_user = $this->user;
-
-        if ($this->Table->save($item))
-            return $item->id;
-
-        return false;
+        $cmsContent = $this->_validateEntry($item);
+        if ($this->Table->save($cmsContent))
+            return $cmsContent->id;
+        else
+            return false;
     }
 
     /**
@@ -278,9 +262,13 @@ Class Content {
                 return false;
 
         $this->Table = TableRegistry::get($this->TableName);
-        $cmsContent = $this->Table->get($item['id']);
-        $cmsContent = $this->Table->patchEntity($cmsContent, $item);
-        $this->Table->save($cmsContent);
+        $item['content_path'] = '';
+        $cmsContent = $this->_validateEntry($item);
+
+        if ($this->Table->save($cmsContent))
+            return $cmsContent->id;
+        else
+            return false;
     }
 
     /**
@@ -291,17 +279,15 @@ Class Content {
      */
     public function saveRelatedItems($parent_id, $items, $params = null) {
         foreach ($items as $item) :
-            if ($params)
-                array_merge($item, $params);
-            $this->save($item);
+            $item = array_merge($item, $params);
+            if (isset($item['name']) && trim($item['name']) != '')
+                $this->create($item);
+            if (isset($item['content_title']) && trim($item['content_title']) != '')
+                $this->create($item);
         endforeach;
 
         /**
          * 
-          $parent_id = (isset($item['parent_id'])) ? intval($item['parent_id']) : 0;
-          $type_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
-          $status_id = (isset($item['cms_content_type_id'])) ? intval($item['cms_content_type_id']) : 1;
-
           if ($item['content_path'])
           $CONTENT_PATH = $this->File->upload($item['content_path']);
           else
@@ -324,21 +310,21 @@ Class Content {
     /**
      * This function is used to save related options.
      * 
-     * @param type $parent_id
+     * @param type $content_id
      * @param type $items
+     * @param type $params
      */
-    public function saveRelatedOptions($parent_id, $items, $params = null) {
+    public function saveRelatedOptions($content_id, $items, $params = []) {
         foreach ($items as $item) :
-            if ($params)
-                array_merge($item, $params);
-
-            if (trim($row['meta_key']) != '' && trim($row['meta_value']) != '') :
-                $metaTable = TableRegistry::get('CmsContentMeta');
-                $meta = $metaTable->newEntity();
-                $meta->cms_content_id = $content_id;
-                $meta->meta_key = $row['meta_key'];
-                $meta->meta_value = $row['meta_value'];
-                $metaTable->save($meta);
+            $item = array_merge($item, $params);
+            if (trim($item['option_key']) != '' && trim($item['option_value']) != '') :
+                $Table = TableRegistry::get('CmsContentOptions');
+                $option = $Table->newEntity();
+                $option->cms_content_id = $content_id;
+                $option->option_key = $item['option_key'];
+                $option->option_value = $item['option_value'];
+                $option->menu_order = $this->_getNextMenuOrderOptions($content_id);
+                $Table->save($option);
             endif;
         endforeach;
     }
@@ -349,6 +335,8 @@ Class Content {
      * @return boolean
      */
     public function delete($id) {
+        $this->Table = TableRegistry::get($this->TableName);
+        $this->Table->delete($id);
         return true;
     }
 
@@ -359,6 +347,19 @@ Class Content {
      * @return boolean
      */
     public function deleteRelatedItems($parent_id, $where = null) {
+        $this->Table = TableRegistry::get($this->TableName);
+        $this->Table->deleteAll(['parent_id' => $parent_id]);
+        return true;
+    }
+
+    /**
+     * 
+     * @param type $id
+     * @return boolean
+     */
+    public function deleteRelatedOption($id) {
+        $this->Table = TableRegistry::get('CmsContentOptions');
+        $this->Table->delete($id);
         return true;
     }
 
@@ -369,6 +370,8 @@ Class Content {
      * @return boolean
      */
     public function deleteRelatedOptions($parent_id, $where = null) {
+        $this->Table = TableRegistry::get('CmsContentOptions');
+        $this->Table->deleteAll(['parent_id' => $parent_id]);
         return true;
     }
 
@@ -549,6 +552,33 @@ Class Content {
                 ->toArray();
     }
 
+    private function _validateEntry($item) {
+
+        extract($item);
+
+        $this->Table = TableRegistry::get($this->TableName);
+        $cmsContent = $this->Table->newEntity();
+        $cmsContent->id = isset($id) ? intval($id) : 0;
+        $cmsContent->parent_id = isset($parent_id) ? intval($parent_id) : 0;
+        $cmsContent->name = $this->_getPermittedName();
+        $cmsContent->content_title = isset($content_title) ? h($content_title) : '';
+        $cmsContent->content_description = isset($content_description) ? h($content_description) : '';
+        $cmsContent->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
+        $cmsContent->cms_content_status_id = isset($content_status) ? trim($content_status) : $this->default['cms_content_status_id'];
+        $cmsContent->cms_content_type_id = isset($content_type) ? trim($content_type) : $this->default['cms_content_type_id'];
+        $cmsContent->content_path = isset($content_path) ? trim($content_path) : '';
+        $cmsContent->menu_order = $this->_getNextMenuOrder($cmsContent->parent_id, $cmsContent->cms_content_type_id);
+        $cmsContent->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
+        $cmsContent->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
+        $cmsContent->author_id = isset($author_id) ? intval($author_id) : $this->user;
+        $cmsContent->created = date('Y-m-d H:i:s');
+        $cmsContent->created_user = $this->user;
+        $cmsContent->modified = date('Y-m-d H:i:s');
+        $cmsContent->modified_user = $this->user;
+
+        return $cmsContent;
+    }
+
     /**
      * Provide permitted name for Content by passed text
      * 
@@ -587,17 +617,24 @@ Class Content {
      * @param type $content_type
      * @return int
      */
-    protected function _getNextMenuOrder($parent, $content_type) {
-        $contentTable = TableRegistry::get('CmsContent');
-        $query = $contentTable->find('all', [
-            'conditions' => ['parent' => $parent, 'content_type' => $content_type],
-            'order' => ['menu_order' => 'DESC']
-        ]);
-        $row = $query->first();
-        if ($row)
-            return intval($row->menu_order) + 1;
-        else
-            return 1;
+    protected function _getNextMenuOrder($parent_id, $cms_content_type_id) {
+        return $this->Table->find('all')
+                        ->where(['parent_id' => $parent_id, 'cms_content_type_id' => $cms_content_type_id])
+                        ->order(['menu_order' => 'DESC'])
+                        ->count() + 1;
+    }
+
+    /**
+     * This function provide the next menu order value for related Options.
+     * 
+     * @param type $content_id
+     * @return type
+     */
+    protected function _getNextMenuOrderOptions($content_id) {
+        return TableRegistry::get('CmsContentOptions')->find('all')
+                        ->where(['cms_content_id' => $content_id])
+                        ->order(['menu_order' => 'DESC'])
+                        ->count() + 1;
     }
 
 }
