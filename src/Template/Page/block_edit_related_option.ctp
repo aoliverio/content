@@ -14,7 +14,7 @@
         /**
          * 
          */
-        $('#form-related-meta').submit(function (event) {
+        $('#form-related-option').submit(function (event) {
 
             /**
              * stop form from submitting normally 
@@ -24,7 +24,7 @@
             var formData = new FormData($(this)[0]);
 
             $.ajax({
-                url: '<?= $this->Url->build('/content/CmsContent/saveMeta/', true); ?>', // the url where we want to POST
+                url: '<?= $this->Url->build(['action' => 'saveOption'], true); ?>', // the url where we want to POST
                 type: 'POST',
                 data: formData,
                 async: false,
@@ -38,35 +38,35 @@
             /**
              * Refresh block
              */
-            var URL = '<?= $this->Url->build('/content/CmsContent/editRelatedMeta/' . $data['id'], true); ?>';
-            $("#related-meta-edit").load(URL);
+            var URL = '<?= $this->Url->build(['action' => 'editRelatedOption', $data['id']], true); ?>';
+            $("#related-option-edit").load(URL);
 
             /**
-             * update input META_KEY value in related meta list
+             * update input META_KEY value in related option list
              */
-            var selector = '#related_meta_key_' + $('#form-related-meta input[name=id]').val();
-            var value = $('#form-related-meta input[name=meta_key]').val();
+            var selector = '#related_option_key_' + $('#form-related-option input[name=id]').val();
+            var value = $('#form-related-option input[name=option_key]').val();
             $(selector).val(value);
 
             /**
-             * update input META_VALUE value in related meta list
+             * update input META_VALUE value in related option list
              */
-            var selector = '#related_meta_value_' + $('#form-related-meta input[name=id]').val();
-            var value = $('#form-related-meta textarea[name=meta_value]').val();
+            var selector = '#related_option_value_' + $('#form-related-option input[name=id]').val();
+            var value = $('#form-related-option textarea[name=option_value]').val();
             $(selector).val(value);
         });
     });
 </script>
 
-<form id="form-related-meta">
+<form id="form-related-option">
     <input type="hidden" name="id" value="<?= $data['id'] ?>">
     <div class="alert alert-warning" role="alert">
         <h4><?= __('Edit Related Page'); ?></h4>
         <hr/>
         <small><?= __('Key'); ?>:</small>
-        <input type="text" name="meta_key" class="form-control input-sm" value="<?= $data['meta_key'] ?>">
+        <input type="text" name="option_key" class="form-control input-sm" value="<?= $data['option_key'] ?>">
         <small><?= __('Value'); ?>:</small>
-        <textarea name="meta_value" class="form-control input-sm" rows="3"><?= $data['meta_value'] ?></textarea>                            
+        <textarea name="option_value" class="form-control input-sm" rows="3"><?= $data['option_value'] ?></textarea>                            
         <hr/>
         <div class="text-right">
             <button type="submit" class="btn btn-primary">Save</button>
