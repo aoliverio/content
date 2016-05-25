@@ -1,640 +1,459 @@
 <?php
 
-/**
- * Content Project (tm) the CMS core plugin (http://www.getcontent.org)
- * Copyright (c) 2016, Antonio Oliverio (http://www.aoliverio.com)
- * 
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) 2016 Antonio Oliverio.
- * @link          http://www.aoliverio.com
- * @since         1.0.0
- * @author        Antonio Oliverio <antonio.oliverio@gmail.com>
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
+namespace Content\Controller;
 
-namespace Content\Lib;
-
-use Content\Lib\File;
-use Content\Lib\Utility;
-use Cake\Utility\Inflector;
+use Content\Lib\Content;
+use Content\Controller\AppController;
+use Content\Controller\CmsContentsController;
 use Cake\ORM\TableRegistry;
+use Cake\Controller\Component\AuthComponent;
+use Cake\Utility\Inflector;
 
 /**
- * Content class.
+ * 
  */
-Class Content {
+class PageController extends AppController {
 
     /**
-     * Contend id
+     * Use Content\Lib\Content.
      *
      * @var type 
      */
-    public $id = null;
+    public $Content = null;
 
     /**
-     * Content type
+     * Define Content type_id.
      *
      * @var type 
      */
-    public $type = null;
+    public $type_id = 1;
 
     /**
-     * Content status
+     * Define Content limit.
      *
      * @var type 
      */
-    public $status = null;
+    public $limit = 1000;
 
     /**
-     * Content options
-     *
-     * @var type 
+     * Initilize
      */
-    public $options = [];
-
-    /**
-     * It is the user who is accessing the Content
-     *
-     * @var type 
-     */
-    public $user = null;
-
-    /**
-     * External Users table, set Users by default
-     *
-     * @var type 
-     */
-    public $userTable = 'Users';
-
-    /**
-     * List of users authorized to access the Content.
-     * If empty all Users are authorized to access.
-     *
-     * @var type 
-     */
-    public $authorizedUsers = [];
-
-    /**
-     * It is the role who is accessing the Content
-     *
-     * @var type 
-     */
-    public $role = null;
-
-    /**
-     * External Roles table, set Roles by default
-     *
-     * @var type 
-     */
-    public $roleTable = 'Roles';
-
-    /**
-     * List of roles authorized to access the Content.
-     * If empty all Roles are authorized to access.
-     *
-     * @var type 
-     */
-    public $authorizedRoles = [];
-
-    /**
-     * Define permitted Content type.
-     *
-     * @var type 
-     */
-    public $permittedTypes = [
-        1 => 'page',
-        2 => 'news',
-        3 => 'attached',
-        4 => 'image'
-    ];
-
-    /**
-     * Define permitted Content status.
-     *
-     * @var type 
-     */
-    public $permittedStatues = [
-        1 => 'draft',
-        2 => 'publish',
-        3 => 'review'
-    ];
-
-    /**
-     * Define $default array.
-     *
-     * @var type 
-     */
-    public $default = [
-        'cms_content_status_id' => 1,
-        'cms_content_type_id' => 1,
-        'limit' => 1000
-    ];
-
-    /**
-     *
-     * @var type 
-     */
-    public $PluginName = 'Content';
-
-    /**
-     * Define TableRegistry object using Cake\ORM\TableRegistry
-     *
-     * @var type 
-     */
-    public $Table = null;
-
-    /**
-     * Define TableName for use Cake\ORM\TableRegistry
-     *
-     * @var type 
-     */
-    public $TableName = 'cms_contents';
-
-    /**
-     *
-     * @var type 
-     */
-    public $Site = null;
-
-    /**
-     *
-     * @var type 
-     */
-    public $Term = null;
-
-    /**
-     *
-     * @var type 
-     */
-    public $File = null;
-
-    /**
-     * Create new Content in CmsContents table.
-     * 
-     * @param type $config
-     */
-    public function __construct($options = null) {
-
-        $fullTableName = $this->PluginName . '.' . $this->TableName;
-        $this->Table = TableRegistry::get($fullTableName);
-
-        $this->File = new File();
-
-        // set user from session
-        $this->user = 1;
-
-        // set role from session
-        $this->role = 1;
+    public function initialize() {
+        parent::initialize();
+        $this->Content = new Content();
     }
 
     /**
-     * Create new empty Content item and store in database.
-     * 
-     * @param type $data
-     * @return boolean
+     * Retrieve the list of Content, and loads the template for the view in list.
      */
-    public function create($item = []) {
-
-        /**
-         * Gestire il file upload
-         */
-        $this->Table = TableRegistry::get($this->TableName);
-        $cmsContent = $this->_validateEntry($item);
-        if ($this->Table->save($cmsContent))
-            return $cmsContent->id;
-        else
-            return false;
+    public function index() {
+        $this->set('data', $this->Content->find(['type_id' => $this->type_id, 'limit' => $this->limit]));
+        $this->set('_serialize', ['data']);
     }
 
     /**
-     * Get Content by $id params
-     * 
-     * @param type $id
-     */
-    public function get($id) {
-
-        if (!$this->_isAuthorizedUser())
-            if (!$this->_isAuthorizedRoles())
-                return false;
-
-        $content = $this->Table->get($id, ['contain' => ['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']]);
-        return $content;
-    }
-
-    /**
-     * Find list of Content filtered by $params
-     * 
-     * @param type $params
-     */
-    public function find($params = []) {
-
-        if (!$this->_isAuthorizedUser())
-            if (!$this->_isAuthorizedRole())
-                return false;
-
-        extract($params);
-
-        if (!isset($type_id))
-            $type_id = $default['cms_content_type_id'];
-        if (!isset($limit))
-            $limit = $default['limit'];
-
-        $query = $this->Table->find('all');
-        $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
-        $query->where([$this->TableName . '.cms_content_type_id' => $type_id]);
-        $query->limit($limit);
-
-        return $query->toArray();
-    }
-
-    /**
-     * Save the Content item
-     * 
-     * @param type $data
-     */
-    public function save($item) {
-
-        if (!$this->_isAuthorizedUser())
-            if (!$this->_isAuthorizedRole())
-                return false;
-
-        $this->Table = TableRegistry::get($this->TableName);
-        $item['content_path'] = '';
-        $cmsContent = $this->_validateEntry($item);
-
-        if ($this->Table->save($cmsContent))
-            return $cmsContent->id;
-        else
-            return false;
-    }
-
-    /**
-     * This function is used to save related items.
-     * 
-     * @param type $parent_id
-     * @param type $items
-     */
-    public function saveRelatedItems($parent_id, $items, $params = null) {
-        foreach ($items as $item) :
-            $item = array_merge($item, $params);
-            if (isset($item['name']) && trim($item['name']) != '')
-                $this->create($item);
-            if (isset($item['content_title']) && trim($item['content_title']) != '')
-                $this->create($item);
-        endforeach;
-
-        /**
-         * 
-          if ($item['content_path'])
-          $CONTENT_PATH = $this->File->upload($item['content_path']);
-          else
-          $CONTENT_PATH = '';
-
-          if ($CONTENT_PATH) :
-          $PATHINFO = pathinfo($CONTENT_PATH);
-          $item['content_title'] = (trim($item['content_title']) == '') ? Inflector::humanize($PATHINFO['filename']) : trim($item['content_title']);
-          $item['parent_id'] = $parent_id;
-          $item['cms_content_type_id'] = $type_id;
-          $item['cms_content_status_id'] = $status_id;
-          $item['content_path'] = $CONTENT_PATH;
-          $item['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
-          $this->Table->save($item);
-          endif;
-         * 
-         */
-    }
-
-    /**
-     * This function is used to save related options.
-     * 
-     * @param type $content_id
-     * @param type $items
-     * @param type $params
-     */
-    public function saveRelatedOptions($content_id, $items, $params = []) {
-        foreach ($items as $item) :
-            $item = array_merge($item, $params);
-            if (trim($item['option_key']) != '' && trim($item['option_value']) != '') :
-                $Table = TableRegistry::get('CmsContentOptions');
-                $option = $Table->newEntity();
-                $option->cms_content_id = $content_id;
-                $option->option_key = $item['option_key'];
-                $option->option_value = $item['option_value'];
-                $option->menu_order = $this->_getNextMenuOrderOptions($content_id);
-                $Table->save($option);
-            endif;
-        endforeach;
-    }
-
-    /**
-     * 
-     * @param type $id
-     * @return boolean
-     */
-    public function delete($id) {
-        $this->Table = TableRegistry::get($this->TableName);
-        $this->Table->delete($id);
-        return true;
-    }
-
-    /**
-     * 
-     * @param type $parent_id
-     * @param type $where
-     * @return boolean
-     */
-    public function deleteRelatedItems($parent_id, $where = null) {
-        $this->Table = TableRegistry::get($this->TableName);
-        $this->Table->deleteAll(['parent_id' => $parent_id]);
-        return true;
-    }
-
-    /**
-     * 
-     * @param type $id
-     * @return boolean
-     */
-    public function deleteRelatedOption($id) {
-        $this->Table = TableRegistry::get('CmsContentOptions');
-        $this->Table->delete($id);
-        return true;
-    }
-
-    /**
-     * 
-     * @param type $parent_id
-     * @param type $where
-     * @return boolean
-     */
-    public function deleteRelatedOptions($parent_id, $where = null) {
-        $this->Table = TableRegistry::get('CmsContentOptions');
-        $this->Table->deleteAll(['parent_id' => $parent_id]);
-        return true;
-    }
-
-    /**
-     * Provide the related Content records for a $content_id filtered by $params.
-     * 
-     * @param type $content_id
-     * @param type $filter
-     * @return type
-     */
-    public function getRelatedItems($content_id, $filter = []) {
-
-        $where = array_merge(['parent_id' => $content_id], $filter);
-
-        return $this->Table
-                        ->find('all')
-                        ->where($where)
-                        ->order(['menu_order'])
-                        ->toArray();
-    }
-
-    /**
-     * Provide the Content options for a $content_id.
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    public function getRelatedOptions($content_id) {
-
-        return TableRegistry::get('CmsContentOptions')
-                        ->find('all')
-                        ->where(['cms_content_id' => $content_id])
-                        ->order(['menu_order'])
-                        ->toArray();
-    }
-
-    /**
-     * 
-     * 
-     * @param \Content\Lib\type $content_id
-     * @return \Content\Lib\stringThis|string * @param \Content\Lib\type $content_id
-     * @return \Content\Lib\stringThis|string} of the 'page' Content type.
-     */
-    public function getPageList($content_id) {
-
-        $data = [];
-
-        $Table = TableRegistry::get('CmsContents');
-        $query = $Table->find('all')
-                ->where(['id <>' => $content_id, 'cms_content_type_id' => 1]);
-
-        foreach ($query->toArray() as $row):
-            $data[$row->id] = '[' . $row->id . '] ' . $row->name;
-        endforeach;
-
-        return $data;
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    public function getTaxonomies($content_id) {
-        return [];
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    public function getCheckedTaxonomies($content_id) {
-        return [];
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    public function getRoles($content_id) {
-        return TableRegistry::get('Roles')
-                        ->find('all')
-                        ->order(['name'])
-                        ->toArray();
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    public function getCheckedRoles($content_id) {
-        return TableRegistry::get('CmsContentRoles')
-                        ->find('all')
-                        ->where(['cms_content_id' => $content_id])
-                        ->toArray();
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    public function getUsers($content_id) {
-        return TableRegistry::get('Users')
-                        ->find('all')
-                        ->order(['name'])
-                        ->toArray();
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     * @return type
-     */
-    public function getCheckedUsers($content_id) {
-        return TableRegistry::get('CmsContentUsers')
-                        ->find('all')
-                        ->where(['cms_content_id' => $content_id])
-                        ->toArray();
-    }
-
-    /**
-     * This function can be used to check if $user is authorized to access Content.
-     * 
-     * @return boolean
-     */
-    protected function _isAuthorizedUser() {
-
-        if (count($this->authorizedUsers) > 0) {
-            foreach ($this->authorizedUsers as $authorizedUsers) {
-                if ($authorizedUsers->user_id == $this->user)
-                    return true;
-            }
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * This function can be used to check if $role is authorized to access Content.
-     * 
-     * @return boolean
-     */
-    protected function _isAuthorizedRole() {
-
-        if (count($this->authorizedRoles) > 0) {
-            foreach ($this->authorizedRoles as $authorizedRole) {
-                if ($authorizedRole->role_id == $this->role)
-                    return true;
-            }
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     */
-    protected function _setAuthorizedUsers($content_id) {
-        $this->authorizedUsers = TableRegistry::get('cms_content_users')
-                ->find('all')
-                ->where(['cms_contents_id' => $content_id])
-                ->toArray();
-    }
-
-    /**
-     * 
-     * @param type $content_id
-     */
-    protected function _setAuthorizedRoles($content_id) {
-        $this->authorizedRoles = TableRegistry::get('cms_content_roles')
-                ->find('all')
-                ->where(['cms_contents_id' => $content_id])
-                ->toArray();
-    }
-
-    private function _validateEntry($item) {
-
-        extract($item);
-
-        $this->Table = TableRegistry::get($this->TableName);
-        $cmsContent = $this->Table->newEntity();
-        $cmsContent->id = isset($id) ? intval($id) : 0;
-        $cmsContent->parent_id = isset($parent_id) ? intval($parent_id) : 0;
-        $cmsContent->name = $this->_getPermittedName();
-        $cmsContent->content_title = isset($content_title) ? h($content_title) : '';
-        $cmsContent->content_description = isset($content_description) ? h($content_description) : '';
-        $cmsContent->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
-        $cmsContent->cms_content_status_id = isset($content_status) ? trim($content_status) : $this->default['cms_content_status_id'];
-        $cmsContent->cms_content_type_id = isset($content_type) ? trim($content_type) : $this->default['cms_content_type_id'];
-        $cmsContent->content_path = isset($content_path) ? trim($content_path) : '';
-        $cmsContent->menu_order = $this->_getNextMenuOrder($cmsContent->parent_id, $cmsContent->cms_content_type_id);
-        $cmsContent->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
-        $cmsContent->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
-        $cmsContent->author_id = isset($author_id) ? intval($author_id) : $this->user;
-        $cmsContent->created = date('Y-m-d H:i:s');
-        $cmsContent->created_user = $this->user;
-        $cmsContent->modified = date('Y-m-d H:i:s');
-        $cmsContent->modified_user = $this->user;
-
-        return $cmsContent;
-    }
-
-    /**
-     * Provide permitted name for Content by passed text
-     * 
-     * @param type $text
-     * @return string
-     */
-    protected function _getPermittedName($text = null) {
-
-        if (!isset($name))
-            return Utility::randomString();
-
-        if (trim($name) == '')
-            return $content_id;
-
-        $slugContentName = $slugTarget = strtolower(Inflector::slug($name));
-        $iter = 0;
-
-        while (true):
-            if ($iter > 0)
-                $slugTarget = $slugContentName . '-' . $iter;
-
-            $query = $this->Table->find('all');
-            $query->where(['conditions' => ['id <>' => $content_id, 'name' => $slugTarget]]);
-
-            if ($query->count() == 0)
-                return $slugTarget;
-
-            $iter++;
-        endwhile;
-    }
-
-    /**
-     * This function provide the next menu order value for related Content.
+     * Create new Content and redirect to edit controller.
      * 
      * @param type $parent
-     * @param type $content_type
-     * @return int
      */
-    protected function _getNextMenuOrder($parent_id, $cms_content_type_id) {
-        return $this->Table->find('all')
-                        ->where(['parent_id' => $parent_id, 'cms_content_type_id' => $cms_content_type_id])
-                        ->order(['menu_order' => 'DESC'])
-                        ->count() + 1;
+    public function add($parent = null) {
+        $content_id = $this->Content->create(['content_type' => $this->type_id]);
+        if (intval($content_id) > 0)
+            $this->redirect(['action' => 'edit', $content_id]);
+        else
+            exit(__('Error! Unable to create the content.'));
     }
 
     /**
-     * This function provide the next menu order value for related Options.
+     * Edit and save a specific type 'page' Content.
+     *
+     * @param string|null $id Cms Content id.
+     * @return void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null) {
+
+        if ($id) {
+            $cmsContent = $this->Content->get($id);
+            if ($cmsContent->cms_content_type_id != $this->type_id) {
+                $this->Flash->error(__('The Content type is not page'));
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            
+            if(!isset($this->request->data['id']))
+                $this->request->data['id'] = $id;
+            
+            if ($this->Content->save($this->request->data)) {
+
+                if (isset($this->request->data['related']['page']) && count($this->request->data['related']['page'])) {
+                    $items = $this->request->data['related']['page'];
+                    $params = ['parent_id' => $id, 'cms_content_type_id' => 1, 'cms_content_status_id' => 1];
+                    $this->Content->saveRelatedItems($id, $items, $params);
+                }
+
+                if (isset($this->request->data['related']['attached']) && count($this->request->data['related']['attached'])) {
+                    $items = $this->request->data['related']['attached'];
+                    $params = ['parent_id' => $id, 'cms_content_type_id' => 3, 'cms_content_status_id' => 3];
+                    $this->Content->saveRelatedItems($id, $items, $params);
+                }
+
+                if (isset($this->request->data['related']['image']) && count($this->request->data['related']['image'])) {
+                    $items = $this->request->data['related']['image'];
+                    $params = ['parent_id' => $id, 'cms_content_type_id' => 4, 'cms_content_status_id' => 3];
+                    $this->Content->saveRelatedItems($id, $items, $params);
+                }
+
+                if (isset($this->request->data['related']['option']) && count($this->request->data['related']['option'])) {
+                    $this->Content->saveRelatedOptions($id, $this->request->data['related']['option']);
+                }
+
+                if (isset($this->request->data['delete_ck']['content_id'])) {
+                    foreach ($this->request->data['delete_ck']['content_id'] as $key => $val) :
+                        $this->Content->delete($key);
+                    endforeach;
+                }
+
+                if (isset($this->request->data['delete_ck']['option_id'])) {
+                    foreach ($this->request->data['delete_ck']['option_id'] as $key => $val) :
+                        $this->Content->deleteRelatedOption($key);
+                    endforeach;
+                }
+
+                $this->Flash->success('The cms content has been saved.');
+
+                if (isset($this->request->data['button_save_action'])) {
+                    return $this->redirect(['action' => 'edit', $id]);
+                } else {
+                    return $this->redirect(['action' => 'index']);
+                }
+            } else {
+                $this->Flash->error('The cms content could not be saved. Please, try again.');
+                return $this->redirect(['action' => 'edit', $id]);
+            }
+        }
+
+        $cmsContent['parent_page_list'] = $this->Content->getPageList($id);
+        $cmsContent['content_status_list'] = ['1' => 'Draft', '2' => 'Published'];
+
+        $cmsContent['list_of_taxonomy'] = $this->Content->getTaxonomies($id);
+        $cmsContent['list_of_taxonomy_checked'] = $this->Content->getCheckedTaxonomies($id);
+
+        $cmsContent['list_of_user'] = $this->Content->getUsers($id);
+        $cmsContent['list_of_user_checked'] = $this->Content->getCheckedUsers($id);
+
+        $cmsContent['list_of_role'] = $this->Content->getRoles($id);
+        $cmsContent['list_of_role_checked'] = $this->Content->getCheckedRoles($id);
+
+        $cmsContent['related'] = array();
+        $cmsContent['related']['page'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 1]);
+        $cmsContent['related']['attached'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 3]);
+        $cmsContent['related']['image'] = $this->Content->getRelatedItems($id, ['cms_content_type_id' => 4]);
+        $cmsContent['related']['option'] = $this->Content->getRelatedOptions($id);
+
+        $this->set('data', $cmsContent);
+        $this->set('_serialize', ['data']);
+    }
+
+    /**
+     * 
+     * AJAX functions
+     * 
+     */
+
+    /**
+     * This function is invoked in AJAX for saving data related to an object
+     * 
+     * @param type $id
+     */
+    public function saveContent($id = null) {
+
+        $id = (isset($this->request->data['id'])) ? $this->request->data['id'] : $id;
+        $this->CmsContent = TableRegistry::get('CmsContent');
+        $cmsContent = $this->CmsContent->get($id);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->CmsContent->patchEntity($cmsContent, $this->request->data);
+
+            /**
+             * Upload file
+             */
+            $CONTENT_PATH = $this->_uploadFile($this->request->data['content_file']);
+            if ($CONTENT_PATH) {
+                $cmsContent->content_path = $CONTENT_PATH;
+            } else {
+                if ($this->request->data['content_file_remove_ck'] == 1) {
+                    $this->_removeFile($cmsContent->content_path);
+                    $cmsContent->content_path = '';
+                }
+            }
+
+            /**
+             * Save the Content
+             */
+            if ($this->CmsContent->save($cmsContent)) {
+                $this->Flash->success('The cms content has been saved.');
+                exit('ok');
+            } else {
+                $this->Flash->error('The cms content could not be saved. Please, try again.');
+                exit('ko');
+            }
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @param type $id
+     */
+    public function addRelatedPageBlock($id = 1) {
+        $this->set('id', $id);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_add_related_page');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $id
+     */
+    public function addRelatedAttachedBlock($id = 1) {
+        $this->set('id', $id);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_add_related_attached');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $id
+     */
+    public function addRelatedImageBlock($id = 1) {
+        $this->set('id', $id);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_add_related_image');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $id
+     */
+    public function addRelatedOptionBlock($id = 1) {
+        $this->set('id', $id);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_add_related_option');
+    }
+
+    /**
      * 
      * @param type $content_id
+     */
+    public function editRelatedPage($id) {
+        $this->CmsContent = TableRegistry::get('CmsContent');
+        $cmsContent = $this->CmsContent->get($id, ['contain' => []]);
+        $this->set('data', $cmsContent);
+        $this->set('_serialize', ['data']);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_edit_related_page');
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     */
+    public function editRelatedAttached($id) {
+        $this->CmsContent = TableRegistry::get('CmsContent');
+        $cmsContent = $this->CmsContent->get($id, ['contain' => []]);
+        $this->set('data', $cmsContent);
+        $this->set('_serialize', ['data']);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_edit_related_attached');
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     */
+    public function editRelatedImage($id) {
+        $this->CmsContent = TableRegistry::get('CmsContent');
+        $cmsContent = $this->CmsContent->get($id, ['contain' => []]);
+        $this->set('data', $cmsContent);
+        $this->set('_serialize', ['data']);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_edit_related_image');
+    }
+
+    /**
+     * 
+     * @param type $content_id
+     */
+    public function editRelatedOption($id) {
+        $this->CmsContentOption = TableRegistry::get('CmsContentOption');
+        $option = $this->CmsContentOption->get($id, ['contain' => []]);
+        $this->set('data', $option);
+        $this->set('_serialize', ['data']);
+        $this->viewBuilder()->layout('ajax');
+        $this->viewBuilder()->template('block_edit_related_option');
+    }
+
+    /**
+     * This function is invoked in AJAX to save the ordering of the related elements
+     * 
+     * @return boolean
+     */
+    public function saveContentsOrder() {
+        $ITER = 1;
+        $contentTable = TableRegistry::get('CmsContents');
+        if ($this->request->is('post')) :
+            $items = explode(',', $this->request->data['order']);
+            foreach ($items as $id) :
+                $content = $contentTable->get($id);
+                $content->menu_order = $ITER++;
+                $contentTable->save($content);
+            endforeach;
+        endif;
+        exit('ok');
+    }
+
+    /**
+     * This function is invoked in AJAX to save the ordering of the related options
+     * 
+     * @return boolean
+     */
+    public function saveOptionsOrder() {
+        $ITER = 1;
+        $contentTable = TableRegistry::get('CmsContentOptions');
+        if ($this->request->is('post')) :
+            $items = explode(',', $this->request->data['order']);
+            foreach ($items as $id) :
+                $content = $contentTable->get($id);
+                $content->menu_order = $ITER++;
+                $contentTable->save($content);
+            endforeach;
+        endif;
+        exit('ok');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @param type $sys_user_id
+     */
+    public function setUserPermit($content_id, $user_id) {
+        $permissionTable = TableRegistry::get('CmsContentUsers');
+        $permission = $permissionTable->newEntity();
+        $permission->cms_content_id = $content_id;
+        $permission->user_id = $user_id;
+        $permissionTable->save($permission);
+        exit('ok');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @param type $sys_user_id
+     */
+    public function unsetUserPermit($content_id, $user_id) {
+        $permissionTable = TableRegistry::get('CmsContentUsers');
+        $permissionTable->deleteAll(['cms_content_id' => $content_id, 'user_id' => $user_id]);
+        exit('ok');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @param type $sys_user_id
+     */
+    public function setRolePermit($content_id, $role_id) {
+        $permissionTable = TableRegistry::get('CmsContentRoles');
+        $permission = $permissionTable->newEntity();
+        $permission->cms_content_id = $content_id;
+        $permission->role_id = $role_id;
+        $permissionTable->save($permission);
+        exit('ok');
+    }
+
+    /**
+     * 
+     * 
+     * @param type $content_id
+     * @param type $sys_user_id
+     */
+    public function unsetRolePermit($content_id, $role_id) {
+        $permissionTable = TableRegistry::get('CmsContentRoles');
+        $permissionTable->deleteAll(['cms_content_id' => $content_id, 'role_id' => $role_id]);
+        exit('ok');
+    }
+
+    /**
+     * 
+     * 
+     * Funzioni da spostare in Lib\Content
+     * 
+     * 
+     */
+
+    /**
+     * 
+     * @param type $where
+     * @param type $limit
      * @return type
      */
-    protected function _getNextMenuOrderOptions($content_id) {
-        return TableRegistry::get('CmsContentOptions')->find('all')
-                        ->where(['cms_content_id' => $content_id])
-                        ->order(['menu_order' => 'DESC'])
-                        ->count() + 1;
+    public function getListOfTaxonomy($where = array(), $limit = 1000) {
+        $taxonomyTable = TableRegistry::get('CmsTermTaxonomy');
+        $query = $taxonomyTable->find('all')
+                ->where($where)
+                ->limit($limit);
+        return $query->all();
+    }
+
+    /**
+     * 
+     * @param type $where
+     * @param type $limit
+     * @return type
+     */
+    public function getListOfUser($where = array(), $limit = 1000) {
+        $userTable = TableRegistry::get('SysUser');
+        $query = $userTable->find('all')
+                ->where($where)
+                ->limit($limit);
+        return $query->all();
+    }
+
+    /**
+     * 
+     * @param type $where
+     * @param type $limit
+     * @return type
+     */
+    public function getListOfRole($where = array(), $limit = 1000) {
+        $roleTable = TableRegistry::get('SysRole');
+        $query = $roleTable->find('all')
+                ->where($where)
+                ->limit($limit);
+        return $query->all();
+    }
+
+    /**
+     * 
+     * @param type $where
+     * @param type $limit
+     * @return type
+     */
+    public function getListOfOption($where = array(), $limit = 1000) {
+        $optionTable = TableRegistry::get('CmsContentOption');
+        $query = $optionTable->find('all')
+                ->where($where)
+                ->order('priority')
+                ->limit($limit);
+        return $query->all();
     }
 
 }
