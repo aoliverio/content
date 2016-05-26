@@ -128,7 +128,7 @@ class PageController extends AppController {
                     return $this->redirect(['action' => 'edit', $id]);
                 } else {
                     return $this->redirect(['action' => 'index']);
-                }
+                }                
             } else {
                 $this->Flash->error('The cms content could not be saved. Please, try again.');
                 return $this->redirect(['action' => 'edit', $id]);
