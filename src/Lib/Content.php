@@ -198,11 +198,14 @@ Class Content {
      */
     public function create($item = []) {
 
-        /**
-         * Gestire il file upload
-         */
+        if (is_array($item['content_path']))
+            $item['content_path'] = $this->File->upload($item['content_path']);
+        else
+            $item['content_path'] = '';
+
         $this->Table = TableRegistry::get($this->TableName);
         $cmsContent = $this->_validateEntry($item);
+
         if ($this->Table->save($cmsContent))
             return $cmsContent->id;
         else
@@ -235,8 +238,6 @@ Class Content {
             if (!$this->_isAuthorizedRole())
                 return false;
 
-        extract($params);
-
         if (!isset($type_id))
             $type_id = $default['cms_content_type_id'];
         if (!isset($limit))
@@ -262,7 +263,6 @@ Class Content {
                 return false;
 
         $this->Table = TableRegistry::get($this->TableName);
-        $item['content_path'] = '';
         $cmsContent = $this->_validateEntry($item);
 
         if ($this->Table->save($cmsContent))
@@ -280,10 +280,16 @@ Class Content {
     public function saveRelatedItems($parent_id, $items, $params = null) {
         foreach ($items as $item) :
             $item = array_merge($item, $params);
-            if (isset($item['name']) && trim($item['name']) != '')
+
+            if (isset($item['name']) && trim($item['name']) != '') {
                 $this->create($item);
-            if (isset($item['content_title']) && trim($item['content_title']) != '')
+                return;
+            }
+
+            if (isset($item['content_title']) && trim($item['content_title']) != '') {
                 $this->create($item);
+                return;
+            }
         endforeach;
 
         /**
@@ -336,7 +342,7 @@ Class Content {
      */
     public function delete($id) {
         $this->Table = TableRegistry::get($this->TableName);
-        $this->Table->delete($id);
+        $this->Table->deleteAll(['id' => $id]);
         return true;
     }
 
@@ -359,7 +365,7 @@ Class Content {
      */
     public function deleteRelatedOption($id) {
         $this->Table = TableRegistry::get('CmsContentOptions');
-        $this->Table->delete($id);
+        $this->Table->deleteAll(['id' => $id]);
         return true;
     }
 
@@ -564,8 +570,8 @@ Class Content {
         $cmsContent->content_title = isset($content_title) ? h($content_title) : '';
         $cmsContent->content_description = isset($content_description) ? h($content_description) : '';
         $cmsContent->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
-        $cmsContent->cms_content_status_id = isset($content_status) ? trim($content_status) : $this->default['cms_content_status_id'];
-        $cmsContent->cms_content_type_id = isset($content_type) ? trim($content_type) : $this->default['cms_content_type_id'];
+        $cmsContent->cms_content_status_id = isset($cms_content_status_id) ? trim($cms_content_status_id) : $this->default['cms_content_status_id'];
+        $cmsContent->cms_content_type_id = isset($cms_content_type_id) ? trim($cms_content_type_id) : $this->default['cms_content_type_id'];
         $cmsContent->content_path = isset($content_path) ? trim($content_path) : '';
         $cmsContent->menu_order = $this->_getNextMenuOrder($cmsContent->parent_id, $cmsContent->cms_content_type_id);
         $cmsContent->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
