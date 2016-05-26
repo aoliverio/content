@@ -17,6 +17,9 @@
 
 namespace Content\Lib;
 
+use Cake\Filesystem\Folder;
+use Cake\Utility\Inflector;
+
 /**
  * File class
  */
@@ -35,6 +38,12 @@ Class File {
      * @var type 
      */
     public $path = null;
+
+    /**
+     *
+     * @var type 
+     */
+    public $defaultUploadsDir = null;
 
     /**
      * 
@@ -60,11 +69,11 @@ Class File {
 
         $filename = strtolower($inputfile['name']);
         $sourcefile = $inputfile['tmp_name'];
-        $file = new File($sourcefile, true, 0775);
+        $file = new \Cake\Filesystem\File($sourcefile, true, 0775);
 
         $CONTENT_YEAR = date('Y');
         $CONTENT_MONTH = date('m');
-        $UPLOAD_DIR = (Configure::check('DEFAULT_UPLOAD_DIR') ? Configure::read('DEFAULT_UPLOAD_DIR') : $this->path);
+        $UPLOAD_DIR = $this->path;
         $folder_dest = new Folder($UPLOAD_DIR);
 
         if (!$folder_dest->inCakePath($folder_dest->pwd() . DS . $CONTENT_YEAR))
@@ -76,7 +85,7 @@ Class File {
         $folder_dest->cd($CONTENT_MONTH);
 
         $path = DS . $CONTENT_YEAR . DS . $CONTENT_MONTH . DS;
-        $permittedFilename = $this->_permittedFileName($UPLOAD_DIR . $path, $filename);
+        $permittedFilename = $this->getPermittedFilename($UPLOAD_DIR . $path, $filename);
         $destfile = $folder_dest->pwd() . DS . $permittedFilename;
 
         if ($file->copy($destfile, true))
