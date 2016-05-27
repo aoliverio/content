@@ -138,19 +138,6 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `cms_term_taxonomy_types`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cms_term_taxonomy_types` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `title` VARCHAR(255) NULL DEFAULT NULL,
-  `description` LONGTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
 -- Table `cms_terms`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cms_terms` (
@@ -179,22 +166,22 @@ CREATE TABLE IF NOT EXISTS `cms_term_taxonomies` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `parent_id` BIGINT(20) NULL DEFAULT '0',
   `cms_term_id` INT(11) NOT NULL,
-  `cms_term_taxonomy_type_id` INT(11) NOT NULL,
+  `cms_content_type_id` INT(11) NOT NULL,
   `title` VARCHAR(255) NULL DEFAULT NULL,
   `description` TEXT NULL DEFAULT NULL,
   `count` BIGINT(20) NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   INDEX `parent_id` (`parent_id` ASC),
   INDEX `fk_cms_terms1_idx` (`cms_term_id` ASC),
-  INDEX `fk_cms_term_taxonomies_cms_term_taxonomy_types1_idx` (`cms_term_taxonomy_type_id` ASC),
+  INDEX `fk_cms_content_types1_idx` (`cms_content_type_id` ASC),
   CONSTRAINT `fk_cms_term_taxonomies_cms_terms`
     FOREIGN KEY (`cms_term_id`)
     REFERENCES `cms_terms` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cms_term_taxonomies_cms_term_taxonomy_types1`
-    FOREIGN KEY (`cms_term_taxonomy_type_id`)
-    REFERENCES `cms_term_taxonomy_types` (`id`)
+  CONSTRAINT `fk_cms_term_taxonomies_cms_content_types`
+    FOREIGN KEY (`cms_content_type_id`)
+    REFERENCES `cms_content_types` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
