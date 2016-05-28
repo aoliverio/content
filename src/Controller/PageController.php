@@ -138,7 +138,7 @@ class PageController extends AppController {
         $cmsContent['parent_page_list'] = $this->Content->getPageList($id);
         $cmsContent['content_status_list'] = ['1' => 'Draft', '2' => 'Published'];
 
-        $cmsContent['list_of_taxonomy'] = $this->Content->getTaxonomies($id);
+        $cmsContent['list_of_taxonomy'] = $this->Content->getTaxonomies($this->type_id);
         $cmsContent['list_of_taxonomy_checked'] = $this->Content->getCheckedTaxonomies($id);
 
         $cmsContent['list_of_user'] = $this->Content->getUsers($id);

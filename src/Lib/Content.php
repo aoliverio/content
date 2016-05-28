@@ -441,8 +441,12 @@ Class Content {
      * @param type $content_id
      * @return type
      */
-    public function getTaxonomies($content_id) {
-        return [];
+    public function getTaxonomies($content_type_id) {
+        return TableRegistry::get('CmsTermTaxonomies')
+                        ->find('all')
+                        ->where(['cms_content_type_id' => $content_type_id])
+                        ->order(['title'])
+                        ->toArray();
     }
 
     /**
@@ -451,7 +455,10 @@ Class Content {
      * @return type
      */
     public function getCheckedTaxonomies($content_id) {
-        return [];
+        return TableRegistry::get('CmsTermRelationship')
+                        ->find('all')
+                        ->where(['cms_content_id' => $content_id])
+                        ->toArray();
     }
 
     /**
