@@ -157,7 +157,7 @@ Class Content {
      *
      * @var type 
      */
-    public $Site = null;
+    public $site_id = null;
 
     /**
      *
@@ -188,6 +188,9 @@ Class Content {
 
         // set role from session
         $this->role = 1;
+
+        // Set site_id
+        $this->site_id = 1;
     }
 
     /**
@@ -584,6 +587,7 @@ Class Content {
         $cmsContent->publish_start = isset($publish_start) ? trim($publish_start) : date('Y-m-d H:i:s');
         $cmsContent->publish_end = isset($publish_end) ? trim($publish_end) : '0000-00-00 00:00:00';
         $cmsContent->author_id = isset($author_id) ? intval($author_id) : $this->user;
+        $cmsContent->site_id = $this->site_id;
         $cmsContent->created = date('Y-m-d H:i:s');
         $cmsContent->created_user = $this->user;
         $cmsContent->modified = date('Y-m-d H:i:s');
@@ -613,10 +617,12 @@ Class Content {
             if ($iter > 0)
                 $slugTarget = $slugContentName . '-' . $iter;
 
-            $query = $this->Table->find('all');
-            $query->where(['conditions' => ['id <>' => $content_id, 'name' => $slugTarget]]);
+            $result = $this->Table
+                    ->find('all')
+                    ->where(['conditions' => ['id <>' => $content_id, 'name' => $slugTarget, 'cms_site_id' => $this->site_id]])
+                    ->count();
 
-            if ($query->count() == 0)
+            if ($result == 0)
                 return $slugTarget;
 
             $iter++;
