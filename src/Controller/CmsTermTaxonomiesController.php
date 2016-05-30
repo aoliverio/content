@@ -20,7 +20,7 @@ class CmsTermTaxonomiesController extends AppController {
     public function index() {
         $this->CmsTermTaxonomies = TableRegistry::get('Content.CmsTermTaxonomies');
         $query = $this->CmsTermTaxonomies->find('all');
-        $query->contain(['ParentCmsTermTaxonomies', 'CmsTerms', 'CmsTermTaxonomyTypes']);
+        $query->contain(['ParentCmsTermTaxonomies', 'CmsTerms', 'CmsContentTypes']);
         $query->where($this->filteredWhereConditions());        
         $query->limit(1000);
         $this->set('data', $query->toArray());
@@ -36,7 +36,7 @@ class CmsTermTaxonomiesController extends AppController {
      */
     public function view($id = null) {
         $cmsTermTaxonomy = $this->CmsTermTaxonomies->get($id, [
-            'contain' => ['ParentCmsTermTaxonomies', 'CmsTerms', 'CmsTermTaxonomyTypes', 'CmsTermRelationships', 'ChildCmsTermTaxonomies']
+            'contain' => ['ParentCmsTermTaxonomies', 'CmsTerms', 'CmsContentTypes', 'CmsTermRelationships', 'ChildCmsTermTaxonomies']
         ]);
         $this->set('cmsTermTaxonomy', $cmsTermTaxonomy);
         $this->set('_serialize', ['cmsTermTaxonomy']);
@@ -148,8 +148,8 @@ class CmsTermTaxonomiesController extends AppController {
     public function filteredSelectOptions() {
         $parentCmsTermTaxonomies = $this->CmsTermTaxonomies->ParentCmsTermTaxonomies->find('list', ['limit' => 200]);
         $cmsTerms = $this->CmsTermTaxonomies->CmsTerms->find('list', ['limit' => 200]);
-        $cmsTermTaxonomyTypes = $this->CmsTermTaxonomies->CmsTermTaxonomyTypes->find('list', ['limit' => 200]);
-        $this->set(compact('parentCmsTermTaxonomies', 'cmsTerms', 'cmsTermTaxonomyTypes'));
+        $cmsContentTypes = $this->CmsTermTaxonomies->CmsContentTypes->find('list', ['limit' => 200]);
+        $this->set(compact('parentCmsTermTaxonomies', 'cmsTerms', 'cmsContentTypes'));
     }
     
 }
