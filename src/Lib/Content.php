@@ -241,14 +241,14 @@ Class Content {
             if (!$this->_isAuthorizedRole())
                 return false;
 
-        if (!isset($type_id))
-            $type_id = $default['cms_content_type_id'];
+        if (!isset($this->type_id))
+            $this->type_id = $this->default['cms_content_type_id'];
         if (!isset($limit))
-            $limit = $default['limit'];
+            $limit = $this->default['limit'];
 
         $query = $this->Table->find('all');
         $query->contain(['ParentCmsContents', 'CmsContentStatues', 'CmsContentTypes', 'Authors']);
-        $query->where([$this->TableName . '.cms_content_type_id' => $type_id]);
+        $query->where([$this->TableName . '.cms_content_type_id' => $this->type_id]);
         $query->limit($limit);
 
         return $query->toArray();
@@ -458,7 +458,7 @@ Class Content {
      * @return type
      */
     public function getCheckedTaxonomies($content_id) {
-        return TableRegistry::get('CmsTermRelationship')
+        return TableRegistry::get('CmsTermRelationships')
                         ->find('all')
                         ->where(['cms_content_id' => $content_id])
                         ->toArray();
