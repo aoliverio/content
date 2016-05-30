@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property string $description
  * @property string $params
  * @property \Content\Model\Entity\CmsContent[] $cms_contents
+ * @property \Content\Model\Entity\CmsTermTaxonomy[] $cms_term_taxonomies
  */
 class CmsContentType extends Entity
 {

@@ -11,8 +11,8 @@ use Cake\ORM\Entity;
  * @property \Content\Model\Entity\ParentCmsTermTaxonomy $parent_cms_term_taxonomy
  * @property int $cms_term_id
  * @property \Content\Model\Entity\CmsTerm $cms_term
- * @property int $cms_term_taxonomy_type_id
- * @property \Content\Model\Entity\CmsTermTaxonomyType $cms_term_taxonomy_type
+ * @property int $cms_content_type_id
+ * @property \Content\Model\Entity\CmsContentType $cms_content_type
  * @property string $title
  * @property string $description
  * @property int $count

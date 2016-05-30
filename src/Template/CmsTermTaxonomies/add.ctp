@@ -5,7 +5,7 @@
     <?= $this->Form->create($cmsTermTaxonomy) ?>
     <?= $this->Form->input('parent_id', ['options' => $parentCmsTermTaxonomies, 'empty' => true]); ?>
     <?= $this->Form->input('cms_term_id', ['options' => $cmsTerms]); ?>
-    <?= $this->Form->input('cms_term_taxonomy_type_id', ['options' => $cmsTermTaxonomyTypes]); ?>
+    <?= $this->Form->input('cms_content_type_id', ['options' => $cmsContentTypes]); ?>
     <?= $this->Form->input('title'); ?>
     <?= $this->Form->input('description'); ?>
     <?= $this->Form->input('count'); ?>

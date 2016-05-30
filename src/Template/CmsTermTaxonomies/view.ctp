@@ -13,8 +13,8 @@
                 <p><?= $cmsTermTaxonomy->has('parent_cms_term_taxonomy') ? $this->Html->link($cmsTermTaxonomy->parent_cms_term_taxonomy->title, ['controller' => 'CmsTermTaxonomies', 'action' => 'view', $cmsTermTaxonomy->parent_cms_term_taxonomy->id]) : '' ?></p>
                 <label class="subheader"><?= __('Cms Term') ?></label>
                 <p><?= $cmsTermTaxonomy->has('cms_term') ? $this->Html->link($cmsTermTaxonomy->cms_term->name, ['controller' => 'CmsTerms', 'action' => 'view', $cmsTermTaxonomy->cms_term->id]) : '' ?></p>
-                <label class="subheader"><?= __('Cms Term Taxonomy Type') ?></label>
-                <p><?= $cmsTermTaxonomy->has('cms_term_taxonomy_type') ? $this->Html->link($cmsTermTaxonomy->cms_term_taxonomy_type->name, ['controller' => 'CmsTermTaxonomyTypes', 'action' => 'view', $cmsTermTaxonomy->cms_term_taxonomy_type->id]) : '' ?></p>
+                <label class="subheader"><?= __('Cms Content Type') ?></label>
+                <p><?= $cmsTermTaxonomy->has('cms_content_type') ? $this->Html->link($cmsTermTaxonomy->cms_content_type->name, ['controller' => 'CmsContentTypes', 'action' => 'view', $cmsTermTaxonomy->cms_content_type->id]) : '' ?></p>
                 <label class="subheader"><?= __('Title') ?></label>
                 <p><?= h($cmsTermTaxonomy->title) ?></p>
                 <hr/>

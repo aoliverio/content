@@ -12,7 +12,7 @@ use Content\Model\Entity\CmsTermTaxonomy;
  *
  * @property \Cake\ORM\Association\BelongsTo $ParentCmsTermTaxonomies
  * @property \Cake\ORM\Association\BelongsTo $CmsTerms
- * @property \Cake\ORM\Association\BelongsTo $CmsTermTaxonomyTypes
+ * @property \Cake\ORM\Association\BelongsTo $CmsContentTypes
  * @property \Cake\ORM\Association\HasMany $CmsTermRelationships
  * @property \Cake\ORM\Association\HasMany $ChildCmsTermTaxonomies
  */
@@ -42,10 +42,10 @@ class CmsTermTaxonomiesTable extends Table
             'joinType' => 'INNER',
             'className' => 'Content.CmsTerms'
         ]);
-        $this->belongsTo('CmsTermTaxonomyTypes', [
-            'foreignKey' => 'cms_term_taxonomy_type_id',
+        $this->belongsTo('CmsContentTypes', [
+            'foreignKey' => 'cms_content_type_id',
             'joinType' => 'INNER',
-            'className' => 'Content.CmsTermTaxonomyTypes'
+            'className' => 'Content.CmsContentTypes'
         ]);
         $this->hasMany('CmsTermRelationships', [
             'foreignKey' => 'cms_term_taxonomy_id',
@@ -91,7 +91,7 @@ class CmsTermTaxonomiesTable extends Table
     {
         $rules->add($rules->existsIn(['parent_id'], 'ParentCmsTermTaxonomies'));
         $rules->add($rules->existsIn(['cms_term_id'], 'CmsTerms'));
-        $rules->add($rules->existsIn(['cms_term_taxonomy_type_id'], 'CmsTermTaxonomyTypes'));
+        $rules->add($rules->existsIn(['cms_content_type_id'], 'CmsContentTypes'));
         return $rules;
     }
 }

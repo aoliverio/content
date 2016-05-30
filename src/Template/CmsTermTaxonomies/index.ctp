@@ -17,7 +17,7 @@
                     <th><?= __('Id') ?></th>
                     <th><?= __('Parent Id') ?></th>
                     <th><?= __('Cms Term Id') ?></th>
-                    <th><?= __('Cms Term Taxonomy Type Id') ?></th>
+                    <th><?= __('Cms Content Type Id') ?></th>
                     <th><?= __('Title') ?></th>
                     <th><?= __('Count') ?></th>
                     <th class="actions no-sorting"><?= __('Actions') ?></th>
@@ -30,7 +30,7 @@
                         <td><?= $this->Number->format($cmsTermTaxonomy->id) ?></td>
                         <td><?= $cmsTermTaxonomy->has('parent_cms_term_taxonomy') ? $this->Html->link($cmsTermTaxonomy->parent_cms_term_taxonomy->title, ['controller' => 'CmsTermTaxonomies', 'action' => 'view', $cmsTermTaxonomy->parent_cms_term_taxonomy->id]) : '' ?></td>
                         <td><?= $cmsTermTaxonomy->has('cms_term') ? $this->Html->link($cmsTermTaxonomy->cms_term->name, ['controller' => 'CmsTerms', 'action' => 'view', $cmsTermTaxonomy->cms_term->id]) : '' ?></td>
-                        <td><?= $cmsTermTaxonomy->has('cms_term_taxonomy_type') ? $this->Html->link($cmsTermTaxonomy->cms_term_taxonomy_type->name, ['controller' => 'CmsTermTaxonomyTypes', 'action' => 'view', $cmsTermTaxonomy->cms_term_taxonomy_type->id]) : '' ?></td>
+                        <td><?= $cmsTermTaxonomy->has('cms_content_type') ? $this->Html->link($cmsTermTaxonomy->cms_content_type->name, ['controller' => 'CmsContentTypes', 'action' => 'view', $cmsTermTaxonomy->cms_content_type->id]) : '' ?></td>
                         <td><?= h($cmsTermTaxonomy->title) ?></td>
                         <td><?= $this->Number->format($cmsTermTaxonomy->count) ?></td>
                         <td class="actions text-right">

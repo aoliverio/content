@@ -11,6 +11,7 @@ use Content\Model\Entity\CmsContentType;
  * CmsContentTypes Model
  *
  * @property \Cake\ORM\Association\HasMany $CmsContents
+ * @property \Cake\ORM\Association\HasMany $CmsTermTaxonomies
  */
 class CmsContentTypesTable extends Table
 {
@@ -32,6 +33,10 @@ class CmsContentTypesTable extends Table
         $this->hasMany('CmsContents', [
             'foreignKey' => 'cms_content_type_id',
             'className' => 'Content.CmsContents'
+        ]);
+        $this->hasMany('CmsTermTaxonomies', [
+            'foreignKey' => 'cms_content_type_id',
+            'className' => 'Content.CmsTermTaxonomies'
         ]);
     }
 

@@ -35,7 +35,7 @@ class CmsContentTypesController extends AppController {
      */
     public function view($id = null) {
         $cmsContentType = $this->CmsContentTypes->get($id, [
-            'contain' => ['CmsContents']
+            'contain' => ['CmsContents', 'CmsTermTaxonomies']
         ]);
         $this->set('cmsContentType', $cmsContentType);
         $this->set('_serialize', ['cmsContentType']);
