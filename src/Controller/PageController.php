@@ -82,10 +82,10 @@ class PageController extends AppController {
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            
-            if(!isset($this->request->data['id']))
+
+            if (!isset($this->request->data['id']))
                 $this->request->data['id'] = $id;
-            
+
             if ($this->Content->save($this->request->data)) {
 
                 if (isset($this->request->data['related']['page']) && count($this->request->data['related']['page'])) {
@@ -128,7 +128,7 @@ class PageController extends AppController {
                     return $this->redirect(['action' => 'edit', $id]);
                 } else {
                     return $this->redirect(['action' => 'index']);
-                }                
+                }
             } else {
                 $this->Flash->error('The cms content could not be saved. Please, try again.');
                 return $this->redirect(['action' => 'edit', $id]);
@@ -171,11 +171,11 @@ class PageController extends AppController {
     public function saveContent($id = null) {
 
         $id = (isset($this->request->data['id'])) ? $this->request->data['id'] : $id;
-        $this->CmsContent = TableRegistry::get('CmsContent');
-        $cmsContent = $this->CmsContent->get($id);
+        $this->CmsContents = TableRegistry::get('CmsContents');
+        $cmsContent = $this->CmsContents->get($id);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $this->CmsContent->patchEntity($cmsContent, $this->request->data);
+            $this->CmsContents->patchEntity($cmsContent, $this->request->data);
 
             /**
              * Upload file
@@ -193,7 +193,7 @@ class PageController extends AppController {
             /**
              * Save the Content
              */
-            if ($this->CmsContent->save($cmsContent)) {
+            if ($this->CmsContents->save($cmsContent)) {
                 $this->Flash->success('The cms content has been saved.');
                 exit('ok');
             } else {
@@ -252,8 +252,8 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedPage($id) {
-        $this->CmsContent = TableRegistry::get('CmsContent');
-        $cmsContent = $this->CmsContent->get($id, ['contain' => []]);
+        $this->CmsContents = TableRegistry::get('CmsContents');
+        $cmsContent = $this->CmsContents->get($id, ['contain' => []]);
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
         $this->viewBuilder()->layout('ajax');
@@ -265,8 +265,8 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedAttached($id) {
-        $this->CmsContent = TableRegistry::get('CmsContent');
-        $cmsContent = $this->CmsContent->get($id, ['contain' => []]);
+        $this->CmsContents = TableRegistry::get('CmsContents');
+        $cmsContent = $this->CmsContents->get($id, ['contain' => []]);
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
         $this->viewBuilder()->layout('ajax');
@@ -278,8 +278,8 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedImage($id) {
-        $this->CmsContent = TableRegistry::get('CmsContent');
-        $cmsContent = $this->CmsContent->get($id, ['contain' => []]);
+        $this->CmsContents = TableRegistry::get('CmsContents');
+        $cmsContent = $this->CmsContents->get($id, ['contain' => []]);
         $this->set('data', $cmsContent);
         $this->set('_serialize', ['data']);
         $this->viewBuilder()->layout('ajax');
@@ -291,8 +291,8 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedOption($id) {
-        $this->CmsContentOption = TableRegistry::get('CmsContentOption');
-        $option = $this->CmsContentOption->get($id, ['contain' => []]);
+        $this->CmsContentsOption = TableRegistry::get('CmsContentOption');
+        $option = $this->CmsContentsOption->get($id, ['contain' => []]);
         $this->set('data', $option);
         $this->set('_serialize', ['data']);
         $this->viewBuilder()->layout('ajax');
