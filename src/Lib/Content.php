@@ -201,10 +201,10 @@ Class Content {
      */
     public function create($item = []) {
 
-        if (is_array($item['content_path']))
+        if (isset($item['content_path']) && is_array($item['content_path']))
             $item['content_path'] = $this->File->upload($item['content_path']);
         else
-            $item['content_path'] = '';
+            $item['content_path'] = (isset($item['content_path'])) ? trim($item['content_path']) : '';
 
         $this->Table = TableRegistry::get($this->TableName);
         $cmsContent = $this->_validateEntry($item);
@@ -279,6 +279,7 @@ Class Content {
      * 
      * @param type $parent_id
      * @param type $items
+     * @param type $params
      */
     public function saveRelatedItems($parent_id, $items, $params = null) {
         foreach ($items as $item) :
@@ -286,34 +287,14 @@ Class Content {
 
             if (isset($item['name']) && trim($item['name']) != '') {
                 $this->create($item);
-                return;
+                continue;
             }
 
             if (isset($item['content_title']) && trim($item['content_title']) != '') {
                 $this->create($item);
-                return;
+                continue;
             }
         endforeach;
-
-        /**
-         * 
-          if ($item['content_path'])
-          $CONTENT_PATH = $this->File->upload($item['content_path']);
-          else
-          $CONTENT_PATH = '';
-
-          if ($CONTENT_PATH) :
-          $PATHINFO = pathinfo($CONTENT_PATH);
-          $item['content_title'] = (trim($item['content_title']) == '') ? Inflector::humanize($PATHINFO['filename']) : trim($item['content_title']);
-          $item['parent_id'] = $parent_id;
-          $item['cms_content_type_id'] = $type_id;
-          $item['cms_content_status_id'] = $status_id;
-          $item['content_path'] = $CONTENT_PATH;
-          $item['menu_order'] = $this->Content->_getNextMenuOrder($parent_id, $type_id);
-          $this->Table->save($item);
-          endif;
-         * 
-         */
     }
 
     /**
