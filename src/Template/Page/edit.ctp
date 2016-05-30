@@ -389,14 +389,16 @@ $this->append('script');
                         <hr/>
                         <small><?= __('Publish start'); ?>:</small>
                         <div class="input-group date datetimepicker">
-                            <input class="input-sm form-control" type="text" name="publish_start" value="<?= $data['publish_start']->i18nFormat('yyyy-MM-dd') ?>" placeholder="<?= __('Content publish'); ?>" />
+                            <?php $publish_start = (isset($data['publish_start'])) ? $data['publish_start']->i18nFormat('yyyy-MM-dd') : '0000-00-00'; ?>
+                            <input class="input-sm form-control" type="text" name="publish_start" value="<?= $publish_start ?>" placeholder="<?= __('Content publish'); ?>" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <small><?= __('Publish expiry'); ?>:</small>
                         <div class="input-group date datetimepicker">
-                            <input class="input-sm form-control" type="text" name="content_expiry" value="<?= $data['content_expiry']->i18nFormat('yyyy-MM-dd') ?>" placeholder="<?= __('Content expiry'); ?>" />
+                            <?php $content_expiry = (isset($data['content_expiry'])) ? $data['content_expiry']->i18nFormat('yyyy-MM-dd') : '0000-00-00'; ?>
+                            <input class="input-sm form-control" type="text" name="content_expiry" value="<?= $content_expiry ?>" placeholder="<?= __('Content expiry'); ?>" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -407,7 +409,8 @@ $this->append('script');
                         <hr/>
                         <small><?= __('Hide content after'); ?>:</small>
                         <div class="input-group date datetimepicker">
-                            <input class="input-sm form-control" type="text" name="publish_end" value="<?= $data['publish_end']->i18nFormat('yyyy-MM-dd') ?>" placeholder="<?= __('Publish end'); ?>" />
+                            <?php $publish_end = (isset($data['publish_end'])) ? $data['publish_end']->i18nFormat('yyyy-MM-dd') : '0000-00-00'; ?>
+                            <input class="input-sm form-control" type="text" name="publish_end" value="<?= $publish_end ?>" placeholder="<?= __('Publish end'); ?>" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
