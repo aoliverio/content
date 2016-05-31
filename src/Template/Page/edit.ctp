@@ -321,9 +321,6 @@ $this->append('script');
          * 
          */
         $(".related-option-edit-button").click(function () {
-
-            alert('click');
-
             var id = $(this).attr("option_id");
             var URL = '<?= $this->Url->build('/content/page/editRelatedOption/', true); ?>' + id;
             $("#related-option-edit").load(URL);
