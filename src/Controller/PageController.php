@@ -82,9 +82,12 @@ class PageController extends AppController {
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-
+            
             if (!isset($this->request->data['id']))
                 $this->request->data['id'] = $id;
+            
+            if (isset($this->request->data['button_publish_action']))
+                $this->request->data['cms_content_status_id'] = 2;
 
             if ($this->Content->save($this->request->data)) {
 
@@ -291,7 +294,7 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedOption($id) {
-        $this->CmsContentsOption = TableRegistry::get('CmsContentOption');
+        $this->CmsContentsOption = TableRegistry::get('CmsContentOptions');
         $option = $this->CmsContentsOption->get($id, ['contain' => []]);
         $this->set('data', $option);
         $this->set('_serialize', ['data']);
