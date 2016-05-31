@@ -8,7 +8,7 @@
                 $USER_CHECKED[$row['user_id']] = 1;
             endforeach;
             ?>
-            <table id="user-permits-table" class="table table-striped table-hover dataTable">
+            <table id="user-permits-table" class="table table-striped table-hover dataTable" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>Name</th>
