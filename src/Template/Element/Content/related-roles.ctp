@@ -8,7 +8,7 @@
                 $ROLE_CHECKED[$row['role_id']] = 1;
             endforeach;
             ?>
-            <table id="role-permits-table" class="table table-striped table-hover dataTable">
+            <table id="role-permits-table" class="table table-striped table-hover dataTable" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>Name</th>
