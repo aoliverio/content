@@ -9,7 +9,7 @@
             endforeach;
             ?>
             <div id="asd">
-                <table id="content-category-table" class="table table-striped table-hover dataTable">
+                <table id="content-category-table" class="table table-striped table-hover dataTable" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Categoria</th>
