@@ -1,3 +1,3 @@
 # Welcome to Content Docs
 
-Content Management System backend, is a Builder extension.
+A CakePHP 3.x plugin for Content Management System solution in Bootstrap style.
