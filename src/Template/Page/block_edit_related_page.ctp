@@ -1,7 +1,4 @@
-<!-- Load datepicker -->
-<script type="text/javascript" src="<?php echo $this->Url->build('/'); ?>bower/bower_components/moment/min/moment.min.js"></script>
-<script type="text/javascript" src="<?php echo $this->Url->build('/'); ?>bower/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<link rel="stylesheet" href="<?php echo $this->Url->build('/'); ?>bower/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<?php $this->append('script'); ?>
 <script>
     $(document).ready(function () {
         /**
@@ -24,7 +21,7 @@
             var formData = new FormData($(this)[0]);
 
             $.ajax({
-                url: '<?= $this->Url->build('/content/CmsContent/saveContent/', true); ?>', // the url where we want to POST
+                url: '<?= $this->Url->build('/content/page/saveContent/', true); ?>', // the url where we want to POST
                 type: 'POST',
                 data: formData,
                 async: false,
@@ -38,7 +35,7 @@
             /**
              * Refresh block
              */
-            var URL = '<?= $this->Url->build('/content/CmsContent/editRelatedPage/' . $data['id'], true); ?>';
+            var URL = '<?= $this->Url->build('/content/page/editRelatedPage/' . $data['id'], true); ?>';
             $("#related-page-edit").load(URL);
 
             /**
@@ -50,6 +47,7 @@
         });
     });
 </script>
+<?php $this->end(); ?>
 
 <form id="form-related-content">
     <input type="hidden" name="id" value="<?= $data['id'] ?>">
