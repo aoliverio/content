@@ -82,10 +82,10 @@ class PageController extends AppController {
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            
+
             if (!isset($this->request->data['id']))
                 $this->request->data['id'] = $id;
-            
+
             if (isset($this->request->data['button_publish_action']))
                 $this->request->data['cms_content_status_id'] = 2;
 
@@ -208,6 +208,13 @@ class PageController extends AppController {
 
     /**
      * 
+     */
+    public function saveOption() {
+        
+    }
+
+    /**
+     * 
      * 
      * @param type $id
      */
@@ -255,6 +262,9 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedPage($id) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->saveContent();
+        }
         $this->CmsContents = TableRegistry::get('CmsContents');
         $cmsContent = $this->CmsContents->get($id, ['contain' => []]);
         $this->set('data', $cmsContent);
@@ -268,6 +278,9 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedAttached($id) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->saveContent();
+        }
         $this->CmsContents = TableRegistry::get('CmsContents');
         $cmsContent = $this->CmsContents->get($id, ['contain' => []]);
         $this->set('data', $cmsContent);
@@ -281,6 +294,9 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedImage($id) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->saveContent();
+        }
         $this->CmsContents = TableRegistry::get('CmsContents');
         $cmsContent = $this->CmsContents->get($id, ['contain' => []]);
         $this->set('data', $cmsContent);
@@ -294,6 +310,9 @@ class PageController extends AppController {
      * @param type $content_id
      */
     public function editRelatedOption($id) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->saveOption();
+        }
         $this->CmsContentsOption = TableRegistry::get('CmsContentOptions');
         $option = $this->CmsContentsOption->get($id, ['contain' => []]);
         $this->set('data', $option);
