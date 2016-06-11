@@ -100,29 +100,6 @@ Class Content {
     public $authorizedRoles = [];
 
     /**
-     * Define permitted Content type.
-     *
-     * @var type 
-     */
-    public $permittedTypes = [
-        1 => 'page',
-        2 => 'news',
-        3 => 'attached',
-        4 => 'image'
-    ];
-
-    /**
-     * Define permitted Content status.
-     *
-     * @var type 
-     */
-    public $permittedStatues = [
-        1 => 'draft',
-        2 => 'publish',
-        3 => 'review'
-    ];
-
-    /**
      * Define $default array.
      *
      * @var type 
