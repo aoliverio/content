@@ -363,18 +363,14 @@ $this->append('script');
                     <small><?= __('Content title'); ?>:</small>
                     <input name="content_title" type="text" class="form-control" id="" value="<?= $data['content_title'] ?>" placeholder="<?= __('Content title'); ?>">
                     <small><?= __('Content description'); ?>:</small>
-                    <textarea name="content_description" class="form-control summernote" id="content-description">
-                        <?= $data['content_description'] ?>
-                    </textarea>     
+                    <textarea name="content_description" class="form-control summernote" id="content-description"><?= $data['content_description'] ?></textarea>     
                     <hr/>
                     <small><?= __('Content excerpt'); ?>:</small>
-                    <textarea name="content_excerpt" class="form-control" id="content-excerpt">
-                        <?= $data['content_excerpt'] ?>
-                    </textarea>     
+                    <textarea name="content_excerpt" class="form-control" id="content-excerpt"><?= $data['content_excerpt'] ?></textarea>     
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <?php if (trim($data['content_status']) != 'publish') { ?>
+                        <?php if (trim($data['cms_content_status_id']) != 2) { ?>
                             <input type="submit" name="button_publish_action" class="btn btn-success btn-lg btn-block" value="<?= __('Publish'); ?>">
                         <?php } else { ?>
                             <input type="submit" name="" class="btn btn-success btn-lg btn-block" value="<?= __('Update'); ?>">
@@ -392,10 +388,10 @@ $this->append('script');
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                        <small><?= __('Publish expiry'); ?>:</small>
+                        <small><?= __('Content Expiry'); ?>:</small>
                         <div class="input-group date datetimepicker">
                             <?php $content_expiry = (isset($data['content_expiry'])) ? $data['content_expiry']->i18nFormat('yyyy-MM-dd') : '0000-00-00'; ?>
-                            <input class="input-sm form-control" type="text" name="content_expiry" value="<?= $content_expiry ?>" placeholder="<?= __('Content expiry'); ?>" />
+                            <input class="input-sm form-control" type="text" name="content_expiry" value="<?= $content_expiry ?>" placeholder="<?= __('Content Expiry'); ?>" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>

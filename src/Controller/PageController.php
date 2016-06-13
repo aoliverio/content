@@ -88,7 +88,7 @@ class PageController extends AppController {
 
             if (isset($this->request->data['button_publish_action']))
                 $this->request->data['cms_content_status_id'] = 2;
-
+            
             if ($this->Content->save($this->request->data)) {
 
                 if (isset($this->request->data['related']['page']) && count($this->request->data['related']['page'])) {

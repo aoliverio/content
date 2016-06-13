@@ -529,15 +529,19 @@ Class Content {
     private function _validateEntry($item) {
 
         extract($item);
+        
+        if (!isset($name))
+            $name = Utility::randomString(16);
 
         $this->Table = TableRegistry::get($this->TableName);
         $cmsContent = $this->Table->newEntity();
         $cmsContent->id = isset($id) ? intval($id) : 0;
         $cmsContent->parent_id = isset($parent_id) ? intval($parent_id) : 0;
-        $cmsContent->name = $this->_getPermittedName();
+        $cmsContent->name = $this->_getPermittedName($cmsContent->id, $name);
         $cmsContent->content_title = isset($content_title) ? h($content_title) : '';
         $cmsContent->content_description = isset($content_description) ? h($content_description) : '';
         $cmsContent->content_excerpt = isset($content_excerpt) ? h($content_excerpt) : '';
+        $cmsContent->content_expiry = isset($content_expiry) ? trim($content_expiry) : '0000-00-00 00:00:00';
         $cmsContent->cms_content_status_id = isset($cms_content_status_id) ? trim($cms_content_status_id) : $this->default['cms_content_status_id'];
         $cmsContent->cms_content_type_id = isset($cms_content_type_id) ? trim($cms_content_type_id) : $this->default['cms_content_type_id'];
         $cmsContent->content_path = isset($content_path) ? trim($content_path) : '';
@@ -560,10 +564,7 @@ Class Content {
      * @param type $text
      * @return string
      */
-    protected function _getPermittedName($text = null) {
-
-        if (!isset($name))
-            return Utility::randomString();
+    protected function _getPermittedName($content_id, $name = null) {
 
         if (trim($name) == '')
             return $content_id;
@@ -575,9 +576,10 @@ Class Content {
             if ($iter > 0)
                 $slugTarget = $slugContentName . '-' . $iter;
 
+            $this->Table = TableRegistry::get('CmsContents');
             $result = $this->Table
                     ->find('all')
-                    ->where(['conditions' => ['id <>' => $content_id, 'name' => $slugTarget, 'cms_site_id' => $this->site_id]])
+                    ->where(['id <>' => $content_id, 'name' => $slugTarget, 'cms_site_id' => $this->site_id])
                     ->count();
 
             if ($result == 0)

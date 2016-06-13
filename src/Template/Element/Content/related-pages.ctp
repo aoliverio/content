@@ -2,7 +2,7 @@
     <div class="col-md-9">
         <div class="alert alert-warning">
             <small><?= __('Change the Parent for this Page'); ?>:</small>
-            <?= $this->Form->select('parent', $data['parent_page_list'], ['default' => $data['parent'], 'empty' => __('Root Page'), 'class' => 'form-control input-sm']); ?>
+            <?= $this->Form->select('parent_id', $data['parent_page_list'], ['default' => $data['parent_id'], 'empty' => __('This content is root page'), 'class' => 'form-control input-sm']); ?>
         </div>
         <h4 class="page-header"><?= __('List of Related Page'); ?></h4>
         <?php if (count($data['related']['page']) > 0) { ?>
