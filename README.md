@@ -16,6 +16,15 @@ Load plugin in your application:
 bin/cake plugin load -r Content
 ```
 
+Set routes in /config/routes.php
+```
+    $routes->connect('/', ['plugin' => 'Content', 'controller' => 'Frontend']);
+    $routes->connect('/page/*', ['plugin' => 'Content', 'controller' => 'Frontend', 'action' => 'page']);
+    $routes->connect('/news/*', ['plugin' => 'Content', 'controller' => 'Frontend', 'action' => 'news']);
+    $routes->connect('/category/*', ['plugin' => 'Content', 'controller' => 'Frontend', 'action' => 'category']);
+    $routes->connect('/search/*', ['plugin' => 'Content', 'controller' => 'Frontend', 'action' => 'search']);
+```
+
 ## Docs
 
 For more informations about installation and configuration options, see the [wiki](https://github.com/aoliverio/content/wiki).
