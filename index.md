@@ -60,4 +60,4 @@ For more informations about installation and configuration options, see the [WIK
 
 ## License
 
-Copyright (c) 2015 Antonio Oliverio and licensed under [MIT License](http://opensource.org/licenses/mit-license.php).
+Copyright (c) 2015 - 2017 Antonio Oliverio and licensed under [MIT License](http://opensource.org/licenses/mit-license.php).
